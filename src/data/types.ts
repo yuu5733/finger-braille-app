@@ -32,3 +32,13 @@ export type InputMode =
   | 'YouDakuon'    // 拗濁音待機モード
   | 'YouHandakuon' // 拗半濁音待機モード
   | 'GouYouon';    // 合拗音待機モード
+
+  export type ModeChar =
+  | '濁音符'
+  | '半濁音符'
+  | '拗音符'
+  | '拗濁音符'
+  | '拗半濁音符'
+  | '数符'
+  | '外字符'
+  | '合拗音符';
