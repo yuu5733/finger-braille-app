@@ -74,7 +74,7 @@ export const hiraganaKigouTable: { [key: string]: number } = {
   //"・": 0x10,
 };
 
-export const brailleCodes = {
+export const brailleCodes: { [key: string]: number } = {
   // 濁音符　例）ぎ。中黒と同じ。[5]
   dakuonFu: 0x10,
   // 半濁音符　例）ぴ。[6]
