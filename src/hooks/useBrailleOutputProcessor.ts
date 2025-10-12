@@ -13,6 +13,12 @@ import { getConvertedCharacter } from '../utils/modeLogic';
 
 // 6. スタイルシート / アセット
 
+export type OutputProcessResult = {
+  /** 確定処理後に入力データ (pendingData) をリセットすべきか */
+  shouldResetPendingData: boolean;
+  /** モード変更の指示がある場合、その新しいモード名。指示がない場合は null */
+  nextMode: InputMode | null;
+};
 
 /**
  * キー解放時に入力された文字を確定し、モードに基づいて変換・出力する
@@ -30,13 +36,13 @@ export function useBrailleOutputProcessor(
 ) {
 
   // pendingData, currentMode, onOutput, setModeが変更された時のみ再生成
-  const processOutput = useCallback(() => {
-    if (!pendingData) return false;
+  const processOutput = useCallback((): OutputProcessResult => {
+    if (!pendingData) return { shouldResetPendingData: false, nextMode: null };
     // BrailleData型のcharacterプロパティは、本来符号に限定されない
     const confirmedCharacter = pendingData.character;
-    
+
     // --- 1. モード維持の最優先チェック ---
-    // ここに Suuji モード、Suujiは待機ではなく継続モードではあるが、次のボタンが押されるまでは、共通処理で良さそう
+    // Suujiは待機ではなく継続モードではあるが、次のボタンが押されるまでは、共通処理で良さそう
     const isModeMaintained = 
         (currentMode === 'Suuji' && confirmedCharacter === '数符') ||
         (currentMode === 'Alphabet' && confirmedCharacter === '外字符') ||
@@ -47,7 +53,7 @@ export function useBrailleOutputProcessor(
         (currentMode === 'YouHandakuon' && confirmedCharacter === '拗半濁音符');
 
     if (isModeMaintained) {
-        return true; // モードを維持
+        return { shouldResetPendingData: false, nextMode: currentMode }; // モードを維持
     }
 
     // --- 2. 待機モードの処理 ---
@@ -68,60 +74,84 @@ export function useBrailleOutputProcessor(
                 onOutput(convertedChar);
             }
         }
+
         // モードをリセット
-        //setMode('Kana');
-        return false; // モードが変更されたことを示す
+        return { shouldResetPendingData: true, nextMode: 'Kana' }; // モードが変更するよう指示
     } 
 
-    // --- 3. Kanaモードの処理 ---
-    else if (currentMode === 'Kana') {
-        let nextMode: InputMode | null = null;
-        
-        // 確定された文字がモード符であるかを判定し、次のモードを決定
-        if (confirmedCharacter === '濁音符') {
-            nextMode = 'Dakuon';
-        } else if (confirmedCharacter === '半濁音符') {
-            nextMode = 'Handakuon';
-        } else if (confirmedCharacter === '拗音符') {
-            nextMode = 'Youon';
-        } else if (confirmedCharacter === '拗濁音符') {
-            nextMode = 'YouDakuon';
-        } else if (confirmedCharacter === '拗半濁音符') {
-            nextMode = 'YouHandakuon';
-        } else if (confirmedCharacter === '数符') {
-            nextMode = 'Suuji';
-        } else if (confirmedCharacter === '外字符') {
-            nextMode = 'Alphabet';
-        }
-
-        if (nextMode !== null) {
-            // モード符が入力された場合、待機モードへ移行
-            // setMode(nextMode);
-            return false; // モードが変更されたことを示す
-        }
-        
-        // モード符ではなく、清音または不明な点字の場合
-        else if (confirmedCharacter !== '不明') {
-            onOutput(confirmedCharacter); // 清音の確定
-        }
+    // --- 3. モード共通の処理 ---
+    let nextMode: InputMode | null = null;
+    
+    // 確定された文字がモード符であるかを判定し、次のモードを決定
+    if (confirmedCharacter === '濁音符') {
+        nextMode = 'Dakuon';
+    } else if (confirmedCharacter === '半濁音符') {
+        nextMode = 'Handakuon';
+    } else if (confirmedCharacter === '拗音符') {
+        nextMode = 'Youon';
+    } else if (confirmedCharacter === '拗濁音符') {
+        nextMode = 'YouDakuon';
+    } else if (confirmedCharacter === '拗半濁音符') {
+        nextMode = 'YouHandakuon';
+    } else if (confirmedCharacter === '数符') {
+        nextMode = 'Suuji';
+    } else if (confirmedCharacter === '外字符') {
+        nextMode = 'Alphabet';
     }
 
-    // --- 4. Suujiモードの処理 (数字の確定とモード継続) ---
+    if (nextMode !== null) {
+        // モード符が入力された場合、モード変更を指示する
+        return { shouldResetPendingData: false, nextMode: nextMode }; // モード符は pendingData を維持（useBrailleLogicで別途処理）
+    }
+
+    // --- 4. Kanaモードの処理 ---
+    if (currentMode === 'Kana') {
+        // モード符ではなく、清音または不明な点字の場合
+        if (confirmedCharacter !== '不明') {
+            onOutput(confirmedCharacter); // 清音の確定
+            return { shouldResetPendingData: true, nextMode: null };
+        }
+
+        return { shouldResetPendingData: false, nextMode: null };
+    }
+
+    // --- 5. Suujiモードの処理 (数字の確定とモード継続) ---
     else if (currentMode === 'Suuji') {
+        let result: OutputProcessResult = {
+            shouldResetPendingData: true, // デフォルトでリセット
+            nextMode: null,
+        };
+
+        if (confirmedCharacter === '不明') {
+            return { shouldResetPendingData: true, nextMode: 'Kana' };
         // '数符'自体は出力しない
-        if (confirmedCharacter !== '数符') {
+        } else if (confirmedCharacter !== '数符') {
             // 数字、小数点、位取り点（アポストロフィ）が入力された場合
             // 数字モードでは変換ロジック(getConvertedCharacter)は不要。文字をそのまま出力する。
             onOutput(confirmedCharacter);
         }
         
         // モードは 'Suuji' のまま維持するが、
-        // pendingDataをリセットするために 'false' を返す必要がある。
-        // （'true'を返すとuseBrailleLogic側でpendingDataがリセットされない）
-        return false; // モードが変更されていないが、pendingDataをリセットさせる
+        // 数字の確定後は pendingData をリセットする
+        return { shouldResetPendingData: false, nextMode: null };
     }
 
-    return false;
+    // --- 6. Alphabetモードの処理 (数字の確定とモード継続) ---
+    else if (currentMode === 'Alphabet') {
+        if (confirmedCharacter === '不明') {
+            return { shouldResetPendingData: true, nextMode: 'Kana' };
+        // '外字符'自体は出力しない
+        } else if (confirmedCharacter !== '外字符') {
+            onOutput(confirmedCharacter);
+        }
+        
+        // モードは 'Alphabet' のまま維持するが、
+        // 数字の確定後は pendingData をリセットする
+        return { shouldResetPendingData: false, nextMode: null };
+    }
+
+    // 上記以外の場合は pendingData をリセット
+    return { shouldResetPendingData: true, nextMode: null };
 
 }, [pendingData, currentMode, onOutput, setMode]);
 

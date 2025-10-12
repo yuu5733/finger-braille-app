@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData, InputMode, ModeChar } from '../data/types'; 
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -72,22 +71,17 @@ export function useBrailleLogic() {
     // A. キーが全て離された場合（確定処理）
     if (isKeysReleased) {
       if (pendingData) {
-        // 1. processOutputは、待機データがあれば、文字の確定処理を実行する。返値としてモードが維持されたかを返す
-        const isModeMaintained = processOutput();
+        // 1. processOutputを実行し、確定処理の結果を受け取る
+        const { shouldResetPendingData, nextMode } = processOutput();
 
-        // 2. 確定文字がモードキーだった時、現在とモードが異なる場合切り替える
-        if (stabilizedModeData !== null && stabilizedKeys !== null) {
-          const { mode } = stabilizedModeData;
-
-          if (currentMode !== mode) {
-            // 状態が異なる場合のみ更新
-            setCurrentMode(mode);
-          }
+        // 2. モード変更が必要な場合、ここで currentMode を更新する
+        if (nextMode !== null && currentMode !== nextMode) {
+          setCurrentMode(nextMode);
         }
 
         // 3. 確定処理後に入力待ちの状態をリセットする
         // 濁音符入力モードなどではなくなった時に、pendingDataをリセット
-        if (!isModeMaintained) {
+        if (shouldResetPendingData) {
           setPendingData(null); 
           onDisplayUpdate({ character: '', braille: '', dots: [] });
 
@@ -102,7 +96,25 @@ export function useBrailleLogic() {
               setCurrentMode('Kana');
           }
         }
-      } else {
+
+        // 4. Suujiモードで不明な文字入力時にリセットするロジックを再配置
+        // モード符ではない文字かつ変換できない文字が確定された際Kana にリセットする
+        if (currentMode === 'Suuji' && shouldResetPendingData) {
+          if (nextMode === null) { // モード符ではないことが確定している
+            setCurrentMode('Kana');
+          }
+        }
+
+        // 5. Alphabetモードで不明な文字入力時にリセットするロジックを再配置
+        // モード符ではない文字かつ変換できない文字が確定された際Kana にリセットする
+        if (currentMode === 'Alphabet' && shouldResetPendingData) {
+          if (nextMode === null) { // モード符ではないことが確定している
+            setCurrentMode('Kana');
+          }
+        }
+
+      }
+      else {
         // 無限ループ防止のため、表示がすでにクリアな場合は更新しない
         if (character !== '' || dots.length > 0) {
             onDisplayUpdate({ character: '', braille: '', dots: [] });
@@ -143,19 +155,9 @@ export function useBrailleLogic() {
       else if (characterInput !== null) {
         const { data: characterData, shouldResetMode } = characterInput;
 
-        // (1) 画面表示と待機データの更新
+        // 画面表示と待機データの更新
         onDisplayUpdate(characterData);
         setPendingData(characterData);
-
-        // (2) モードリセットの判定
-        if (shouldResetMode && currentMode === 'Suuji') {
-            // Suujiモードで不明な点字が入力された場合のみモードをKanaにリセット
-            setCurrentMode('Kana'); 
-            
-            // Note: この時点では pendingData は '不明' のデータで上書きされています。
-            // キーが離された時 (isKeysReleased) に確定処理が行われますが、
-            // '不明' な点字は processOutput のロジック次第で出力がスキップされる可能性があります。
-        }
       }
     }
     
