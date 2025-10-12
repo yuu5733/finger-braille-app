@@ -105,7 +105,7 @@ flowchart TD
     listen --> pressedKeys("pressedKeys: Set<string>");
 
     %% "Timing & Display（useBrailleInputTiming & useBrailleLogic）"
-    subgraph "安定した入力から文字計算。モード変更"
+    subgraph "安定した入力"
         pressedKeys --> debounce{"100msデバウンス"};
         debounce -- 100ms経過後 --> stabilizedKeys("stabilizedKeys: Set<string>");
 
