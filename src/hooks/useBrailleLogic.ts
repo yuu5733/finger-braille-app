@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData, InputMode } from '../data/types'; 
+import type { BrailleData, InputMode, ModeChar } from '../data/types'; 
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -16,7 +16,7 @@ import { useBrailleOutputProcessor } from './useBrailleOutputProcessor';
 import { isBrailleCodeMatch, getCurrentDots } from '../utils/brailleConverter'; 
 import { dotsToHex } from '../utils/dotsToHex';
 import { hexToBraille } from '../utils/hexToBraille';
-import { getBrailleData } from '../utils/brailleConverter'; // 通常の点字データを取得
+import { getBrailleData, getNumberData } from '../utils/brailleConverter'; // 通常の点字データを取得
 
 // 5. 相対パスによるインポート
 
@@ -95,6 +95,12 @@ export function useBrailleLogic() {
       // const keys = Array.from(stabilizedKeys);
 
       // モードキーの判定
+      // 数字 ('s, j, k, l'キー = 3, 4, 5, 6点)
+      const isSufuOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.suFu);
+
+      // 外字 ('k, l' = 5, 6点)
+      const isGaijiOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.gaijiFu);
+
       // 濁音 ('k' 単独 = 点5)
       const isDakuonOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.dakuonFu);
       
@@ -111,10 +117,18 @@ export function useBrailleLogic() {
       const isYouHandakuon = isBrailleCodeMatch(stabilizedKeys, brailleCodes.youhandakuonFu); 
 
       // モードキー共通のデータ格納変数
-      let modeData: { mode: InputMode; char: string; code: number } | null = null;
+      let modeData: { mode: InputMode; char: ModeChar; code: number } | null = null;
       
       // memo: "Kana" | "Suuji" | "Alphabet" | "Dakuon" | "Handakuon" | "Youon" | "YouDakuon" | "YouHandakuon" | "GouYouon"
-      if (isDakuonOnly) { 
+      if (isSufuOnly) { 
+        // 数符 (キー)
+        modeData = { mode: 'Suuji', char: '数符', code: brailleCodes.suFu };
+      } 
+      else if (isGaijiOnly) { 
+        // 外字符 (キー)
+        modeData = { mode: 'Alphabet', char: '外字符', code: brailleCodes.gaijiFu };
+      } 
+      else if (isDakuonOnly) { 
         // 濁音符 (kキー)
         modeData = { mode: 'Dakuon', char: '濁音符', code: brailleCodes.dakuonFu };
       } 
@@ -134,9 +148,36 @@ export function useBrailleLogic() {
         // 拗半濁音符 (j + lキー)
         modeData = { mode: 'YouHandakuon', char: '拗半濁音符', code: brailleCodes.youhandakuonFu };
       }
-      
+
+      // --- Suujiモードの処理 (最優先) ---
+      if (currentMode === 'Suuji') {
+        const numberData = getNumberData(stabilizedKeys);
+
+        if (numberData !== null) {
+          // 数字や記号が入力された場合
+          onDisplayUpdate(numberData);
+          setPendingData(numberData);
+          return;
+        } else {
+          // 数字モード中に数字・記号以外の点字が入力された場合
+          const brailleText = currentDots.length > 0 ? hexToBraille(dotsToHex(currentDots)) : '';
+          const displayData: BrailleData = {
+              character: '不明',
+              braille: brailleText,
+              dots: currentDots,
+          };
+          onDisplayUpdate(displayData);
+          setPendingData(displayData);
+
+          // 数字モードは継続しないとみなし、Kanaモードへ戻す
+          // （このpendingDataがuseBrailleOutputProcessorで処理されるのを待つ）
+          setCurrentMode('Kana'); 
+          return; 
+
+        }
+      }
       // ★★★ 共通処理ブロック ★★★
-      if (modeData !== null) {
+      else if (modeData !== null) {
         const { mode, char, code } = modeData; // データを取り出し
         
         const braille = hexToBraille(code);
@@ -154,6 +195,7 @@ export function useBrailleLogic() {
             JSON.stringify(pendingData.dots) === JSON.stringify(currentDots);
             
         // 現在の状態と設定しようとしている状態がすべて同じであれば、更新をスキップしてループを防止
+        // ただし、大文字符の場合は、二重大文字符とトグルさせる予定
         if (isModeSame && isPendingDataSame) {
             return; 
         }
