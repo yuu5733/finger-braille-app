@@ -69,7 +69,7 @@ export function useBrailleOutputProcessor(
             }
         }
         // モードをリセット
-        setMode('Kana');
+        //setMode('Kana');
         return false; // モードが変更されたことを示す
     } 
 

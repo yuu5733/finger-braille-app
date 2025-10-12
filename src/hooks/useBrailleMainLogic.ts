@@ -90,6 +90,17 @@ export function useBrailleLogic() {
         if (!isModeMaintained) {
           setPendingData(null); 
           onDisplayUpdate({ character: '', braille: '', dots: [] });
+
+          // 待機モードからのリセット
+          // 待機モード（Dakuon, Handakuon, Youonなど）は、処理後に必ず Kana に戻る
+          const isWaitingMode = 
+              currentMode === 'Dakuon' || currentMode === 'Handakuon' ||
+              currentMode === 'Youon' || currentMode === 'YouDakuon' ||
+              currentMode === 'YouHandakuon';
+
+          if (isWaitingMode) {
+              setCurrentMode('Kana');
+          }
         }
       } else {
         // 無限ループ防止のため、表示がすでにクリアな場合は更新しない
