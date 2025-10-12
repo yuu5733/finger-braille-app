@@ -60,7 +60,7 @@ export function useBrailleLogic() {
   );
 
   // 4. モードキーの判定
-  const modeData = useBrailleInputMode(stabilizedKeys);
+  const stabilizedModeData = useBrailleInputMode(stabilizedKeys);
   
   // 4. 通常の点字入力の判定
   const characterInput = useBrailleInputData(stabilizedKeys, currentMode);
@@ -76,17 +76,10 @@ export function useBrailleLogic() {
         const isModeMaintained = processOutput();
 
         // 2. 確定文字がモードキーだった時、現在とモードが異なる場合切り替える
-        if (modeData !== null && stabilizedKeys !== null) {
-          const { mode, char } = modeData;
-          const currentDots = getCurrentDots(stabilizedKeys);
+        if (stabilizedModeData !== null && stabilizedKeys !== null) {
+          const { mode } = stabilizedModeData;
 
-          const isModeSame = currentMode === mode;
-          const isPendingDataSame = 
-              pendingData !== null && 
-              pendingData.character === char && 
-              JSON.stringify(pendingData.dots) === JSON.stringify(currentDots);
-              
-          if (!isModeSame || !isPendingDataSame) {
+          if (currentMode !== mode) {
             // 状態が異なる場合のみ更新
             setCurrentMode(mode);
           }
@@ -110,8 +103,8 @@ export function useBrailleLogic() {
     // B. 安定したキー入力があった場合 (stabilizedKeysが更新されたとき)
     if (stabilizedKeys) {
       // 1. モードキーの処理
-      if (modeData !== null) {
-        const { mode, char, code } = modeData;
+      if (stabilizedModeData !== null) {
+        const { mode, char, code } = stabilizedModeData;
         const currentDots = getCurrentDots(stabilizedKeys); // dotsはここで再取得が必要
         const braille = hexToBraille(code);
         const displayData = { character: char, braille, dots: currentDots };
@@ -135,7 +128,7 @@ export function useBrailleLogic() {
         return;
       }
 
-      // 2. 通常の点字入力の処理 (modeDataがnullの場合)
+      // 2. 通常の点字入力の処理 (stabilizedModeDataがnullの場合)
       else if (characterInput !== null) {
         const { data: characterData, shouldResetMode } = characterInput;
 
