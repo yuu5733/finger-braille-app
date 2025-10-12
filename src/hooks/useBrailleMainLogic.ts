@@ -72,10 +72,27 @@ export function useBrailleLogic() {
     // A. キーが全て離された場合（確定処理）
     if (isKeysReleased) {
       if (pendingData) {
-        // 1. 待機データがあれば、確定処理を実行する
+        // 1. processOutputは、待機データがあれば、文字の確定処理を実行する。返値としてモードが維持されたかを返す
         const isModeMaintained = processOutput();
-        
-        // 2. 確定処理後に入力待ちの状態をリセットする
+
+        // 2. 確定文字がモードキーだった時、現在とモードが異なる場合切り替える
+        if (modeData !== null && stabilizedKeys !== null) {
+          const { mode, char } = modeData;
+          const currentDots = getCurrentDots(stabilizedKeys);
+
+          const isModeSame = currentMode === mode;
+          const isPendingDataSame = 
+              pendingData !== null && 
+              pendingData.character === char && 
+              JSON.stringify(pendingData.dots) === JSON.stringify(currentDots);
+              
+          if (!isModeSame || !isPendingDataSame) {
+            // 状態が異なる場合のみ更新
+            setCurrentMode(mode);
+          }
+        }
+
+        // 3. 確定処理後に入力待ちの状態をリセットする
         // 濁音符入力モードなどではなくなった時に、pendingDataをリセット
         if (!isModeMaintained) {
           setPendingData(null); 
@@ -112,7 +129,7 @@ export function useBrailleLogic() {
         }
 
         // 状態が異なる場合のみ更新
-        setCurrentMode(mode);
+        //setCurrentMode(mode);
         onDisplayUpdate(displayData);
         setPendingData(displayData);
         return;
