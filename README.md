@@ -104,7 +104,8 @@ flowchart TD
     start["キーボードイベント発生"] --> listen{"useKeyboardListener"};
     listen --> pressedKeys("pressedKeys: Set<string>");
 
-    subgraph "Timing & Display（useBrailleInputTiming & useBrailleLogic）"
+    %% "Timing & Display（useBrailleInputTiming & useBrailleLogic）"
+    subgraph "安定した入力から文字計算。モード変更"
         pressedKeys --> debounce{"100msデバウンス"};
         debounce -- 100ms経過後 --> stabilizedKeys("stabilizedKeys: Set<string>");
 
@@ -117,7 +118,8 @@ flowchart TD
         isKana -- No --> setUnknown["pendingDataに「不明」をセット"];
     end
 
-    subgraph "Output Processing（useBrailleOutputProcessor）"
+    %% Output Processing（useBrailleOutputProcessor）
+    subgraph "最終的な文字を確定"
         pressedKeys --> isKeysReleased{"キーは全て<br>離されたか？"};
         
         isKeysReleased -- Yes --> processOutput["processOutput関数実行"];
