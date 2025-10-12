@@ -10,7 +10,7 @@ import type { BrailleContextType } from '../contexts/BrailleContext';
 
 // 4. プロジェクト内のモジュール / エイリアスパス
 import { BrailleContext, useBrailleContext } from '../contexts/BrailleContext'; 
-import { useBrailleLogic } from '../hooks/useBrailleLogic';
+import { useBrailleLogic } from '../hooks/useBrailleMainLogic';
 import BrailleInput from "./BrailleInput";
 import ResultDisplay from "./ResultDisplay";
 import ModeDisplay from './ModeDisplay'; 

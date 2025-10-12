@@ -1,0 +1,143 @@
+// 1. コアライブラリ
+import { useEffect, useState } from 'react';
+
+// 2. 型定義 (Type Imports)
+import type { BrailleData, InputMode, ModeChar } from '../data/types'; 
+
+// 3. サードパーティライブラリ (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
+// --- カスタムフック
+import { useBrailleContext } from '../contexts/BrailleContext';
+import { useKeyboardListener } from './useKeyboardListener';
+import { useBrailleInputTiming } from './useBrailleInputTiming';
+import { useBrailleOutputProcessor } from './useBrailleOutputProcessor';
+import { useBrailleInputMode } from './useBrailleInputMode';
+import { useBrailleInputData } from './useBrailleInputData';
+// --- utility関数
+import { isBrailleCodeMatch, getCurrentDots } from '../utils/brailleConverter'; 
+import { dotsToHex } from '../utils/dotsToHex';
+import { hexToBraille } from '../utils/hexToBraille';
+import { getBrailleData, getNumberData } from '../utils/brailleConverter'; // 通常の点字データを取得
+
+// 5. 相対パスによるインポート
+
+// 6. スタイルシート / アセット
+import { brailleCodes } from '../data/table'; 
+
+const keyToDotMap: { [key: string]: number } = {
+  'f': 1, 'd': 2, 's': 3,
+  'j': 4, 'k': 5, 'l': 6
+};
+
+export function useBrailleLogic() {
+  // 1. キー入力の監視
+  const pressedKeys = useKeyboardListener(); 
+
+  const { 
+    currentMode, 
+    setCurrentMode, 
+
+    pendingData, 
+    setPendingData, 
+
+    onOutput, 
+    onDisplayUpdate, 
+
+    character, 
+    dots,   
+  } = useBrailleContext();
+
+  // 2. タイミング処理 (デバウンス)
+  const { stabilizedKeys, isKeysReleased } = useBrailleInputTiming(pressedKeys);
+
+  // 3. 確定ロジック (Processorの初期化)
+  const { processOutput } = useBrailleOutputProcessor(
+    pendingData,
+    currentMode,
+    onOutput,
+    setCurrentMode,
+  );
+
+  // 4. モードキーの判定
+  const modeData = useBrailleInputMode(stabilizedKeys);
+  
+  // 4. 通常の点字入力の判定
+  const characterData = useBrailleInputData(stabilizedKeys, currentMode);
+
+  // -----------------------------------------------------
+  // useEffect: メインロジック
+  // -----------------------------------------------------
+  useEffect(() => {
+    // A. キーが全て離された場合（確定処理）
+    if (isKeysReleased) {
+      if (pendingData) {
+        // 1. 待機データがあれば、確定処理を実行する
+        const isModeMaintained = processOutput();
+        
+        // 2. 確定処理後に入力待ちの状態をリセットする
+        // 濁音符入力モードなどではなくなった時に、pendingDataをリセット
+        if (!isModeMaintained) {
+          setPendingData(null); 
+          onDisplayUpdate({ character: '', braille: '', dots: [] });
+        }
+      } else {
+        // 無限ループ防止のため、表示がすでにクリアな場合は更新しない
+        if (character !== '' || dots.length > 0) {
+            onDisplayUpdate({ character: '', braille: '', dots: [] });
+        }
+      }
+      return;
+    }
+
+    // B. 安定したキー入力があった場合 (stabilizedKeysが更新されたとき)
+    if (stabilizedKeys) {
+      // 1. モードキーの処理
+      if (modeData !== null) {
+        const { mode, char, code } = modeData;
+        const currentDots = getCurrentDots(stabilizedKeys); // dotsはここで再取得が必要
+        const braille = hexToBraille(code);
+        const displayData = { character: char, braille, dots: currentDots };
+
+        // 比較ロジック (元のコードからそのまま移植)
+        // currentMode, pendingDataの比較...
+        const isModeSame = currentMode === mode;
+        const isPendingDataSame = 
+            pendingData !== null && 
+            pendingData.character === char && 
+            JSON.stringify(pendingData.dots) === JSON.stringify(currentDots);
+            
+        if (isModeSame && isPendingDataSame) {
+            return; 
+        }
+
+        // 状態が異なる場合のみ更新
+        setCurrentMode(mode);
+        onDisplayUpdate(displayData);
+        setPendingData(displayData);
+        return;
+      }
+
+      // 2. 通常の点字入力の処理 (modeDataがnullの場合)
+      else if (characterData !== null) {
+          // Suujiモードで数符が入力された場合や、
+          // 通常モードでの点字、不明な点字を含む全てのデータ
+          onDisplayUpdate(characterData);
+          setPendingData(characterData);
+          // Suujiモードで数符が入力された場合、ここで return しないことで、
+          // キーが離されたときの processOutput が実行され、モード継続が保証される。
+      }
+    }
+    
+  }, [isKeysReleased, 
+    stabilizedKeys, 
+    currentMode, 
+    pendingData, 
+    onDisplayUpdate, 
+    setPendingData, 
+    processOutput,
+    character, 
+    dots]);
+
+  return { pressedKeys, currentMode };
+}
