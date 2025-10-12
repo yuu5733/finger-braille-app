@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleMapping } from './types';
+import type { BrailleData } from './types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -27,7 +27,7 @@ const combinedTable = {
 
 // hiraganaTableをもとにbrailleMappingsを生成
 // オブジェクトをキーと値のペアの配列に変換する（Object.entries）
-export const brailleMappings: BrailleMapping[] = Object.entries(combinedTable).map(
+export const brailleMappings: BrailleData[] = Object.entries(combinedTable).map(
   ([character, hexCode]) => {
     return {
       character: character, // ひらがな

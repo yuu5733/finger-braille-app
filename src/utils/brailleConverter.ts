@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleMapping } from '../data/types';
+import type { BrailleData } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -41,14 +41,14 @@ function arraysEqual(a: number[], b: number[]): boolean {
  * @param pressedKeys 押されているキーのSet
  * @returns 判定された文字 (見つからない場合はnull)
  */
-export function getBrailleData(pressedKeys: Set<string>): BrailleMapping | null {
+export function getBrailleData(pressedKeys: Set<string>): BrailleData | null {
   // Setから点の配列に変換し、数字順にソートする
   const currentDots = Array.from(pressedKeys)
     .map(key => keyToDotMap[key])
     .sort((a, b) => a - b);
 
   const foundMapping = brailleMappings.find(
-    (mapping: BrailleMapping) =>
+    (mapping: BrailleData) =>
       mapping.dots && arraysEqual(mapping.dots, currentDots)
   );
 
@@ -60,7 +60,7 @@ export function getBrailleData(pressedKeys: Set<string>): BrailleMapping | null 
  * @param pressedKeys 押されているキーのSet
  * @returns 判定された数字・記号 (見つからない場合はnull)
  */
-export function getNumberData(pressedKeys: Set<string>): BrailleMapping | null {
+export function getNumberData(pressedKeys: Set<string>): BrailleData | null {
   // Setから点の配列に変換し、数字順にソートする
   const currentDots = Array.from(pressedKeys)
     .map(key => keyToDotMap[key])

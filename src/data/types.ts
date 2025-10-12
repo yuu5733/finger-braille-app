@@ -1,5 +1,3 @@
-export type BrailleCode = number[];
-
 export type FingerStates = {
   leftIndex: boolean;
   leftMiddle: boolean;
@@ -9,17 +7,12 @@ export type FingerStates = {
   rightRing: boolean;
 };
 
+export type BrailleCode = number[];
+
 export type BrailleData = {
   character: string;
   braille: string;
-  dots: number[];
-};
-
-export type BrailleMapping = {
-  character: string;
-  dots: BrailleCode;
-  braille: string;
-  combo?: [BrailleCode, BrailleCode];
+  dots: BrailleCode; /* number[] */
 };
 
 export type InputMode =
