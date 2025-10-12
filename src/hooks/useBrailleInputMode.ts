@@ -1,8 +1,6 @@
 import type { InputMode, ModeChar, BrailleData } from '../data/types';
 import { isBrailleCodeMatch } from '../utils/brailleConverter'; 
 import { brailleCodes } from '../data/table';
-import { getCurrentDots } from '../utils/brailleConverter';
-import { hexToBraille } from '../utils/hexToBraille';
 
 // モードキーに関するデータを返す型
 type ModeKeyResult = { 
