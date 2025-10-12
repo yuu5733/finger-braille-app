@@ -1,4 +1,4 @@
-import type { InputMode, ModeChar, BrailleData } from '../data/types';
+import type { InputMode, ModeChar } from '../data/types';
 import { isBrailleCodeMatch } from '../utils/brailleConverter'; 
 import { brailleCodes } from '../data/table';
 
