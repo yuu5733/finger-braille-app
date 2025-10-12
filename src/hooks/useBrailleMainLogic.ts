@@ -63,7 +63,7 @@ export function useBrailleLogic() {
   const modeData = useBrailleInputMode(stabilizedKeys);
   
   // 4. 通常の点字入力の判定
-  const characterData = useBrailleInputData(stabilizedKeys, currentMode);
+  const characterInput = useBrailleInputData(stabilizedKeys, currentMode);
 
   // -----------------------------------------------------
   // useEffect: メインロジック
@@ -119,13 +119,22 @@ export function useBrailleLogic() {
       }
 
       // 2. 通常の点字入力の処理 (modeDataがnullの場合)
-      else if (characterData !== null) {
-          // Suujiモードで数符が入力された場合や、
-          // 通常モードでの点字、不明な点字を含む全てのデータ
-          onDisplayUpdate(characterData);
-          setPendingData(characterData);
-          // Suujiモードで数符が入力された場合、ここで return しないことで、
-          // キーが離されたときの processOutput が実行され、モード継続が保証される。
+      else if (characterInput !== null) {
+        const { data: characterData, shouldResetMode } = characterInput;
+
+        // (1) 画面表示と待機データの更新
+        onDisplayUpdate(characterData);
+        setPendingData(characterData);
+
+        // (2) モードリセットの判定
+        if (shouldResetMode && currentMode === 'Suuji') {
+            // Suujiモードで不明な点字が入力された場合のみモードをKanaにリセット
+            setCurrentMode('Kana'); 
+            
+            // Note: この時点では pendingData は '不明' のデータで上書きされています。
+            // キーが離された時 (isKeysReleased) に確定処理が行われますが、
+            // '不明' な点字は processOutput のロジック次第で出力がスキップされる可能性があります。
+        }
       }
     }
     
