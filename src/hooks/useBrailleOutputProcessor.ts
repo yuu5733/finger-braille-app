@@ -96,7 +96,7 @@ export function useBrailleOutputProcessor(
 
         if (nextMode !== null) {
             // モード符が入力された場合、待機モードへ移行
-            setMode(nextMode);
+            // setMode(nextMode);
             return false; // モードが変更されたことを示す
         }
         
