@@ -1,6 +1,18 @@
+// 1. コアライブラリ
+
+// 2. 型定義 (Type Imports)
 import type { InputMode, ModeChar } from '../data/types';
+
+// 3. サードパーティライブラリ (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
+
+// 5. 相対パスによるインポート
 import { isBrailleCodeMatch } from '../utils/brailleConverter'; 
+
+// 6. スタイルシート / アセット
 import { brailleCodes } from '../data/table';
+
 
 // モードキーに関するデータを返す型
 type ModeKeyResult = { 
