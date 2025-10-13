@@ -1,4 +1,5 @@
-import type { InputMode } from '../data/types';
+import type { InputMode, ModeChar } from '../data/types';
+
 import { dakuonMap, handakuonMap, youonMap, youdakuonMap, youhandakuonMap } from '../data/table';
 
 /**
@@ -39,5 +40,27 @@ export function getConvertedCharacter(mode: InputMode, character: string): strin
   return character;
 }
 
+
 /**
+ * 確定したモード符の文字から、対応する次の入力モードを取得する。
+ * (Suuji や Alphabet の解除、待機モードの遷移などに使用)
+ * * @param modeChar 確定された文字（ModeChar型または string）
+ * @returns 対応する InputMode または null
  */
+export function getModeFromModeChar(modeChar: string): InputMode | null {
+  // ModeChar型に限定されたマッピングテーブル
+  const modeMap: { [key in ModeChar]?: InputMode } = {
+    '濁音符': 'Dakuon',
+    '半濁音符': 'Handakuon',
+    '拗音符': 'Youon',
+    '拗濁音符': 'YouDakuon',
+    '拗半濁音符': 'YouHandakuon',
+    '合拗音符': 'GouYouon',
+    '数符': 'Suuji',
+    '外字符': 'Alphabet',
+    // '大文字符'などの特殊な記号もここに追加可能
+  };
+
+  // modeCharが 'ModeChar' のユニオン型に含まれるかをチェックし、対応するモードを返す
+  return modeMap[modeChar as ModeChar] ?? null;
+}
