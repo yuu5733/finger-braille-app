@@ -14,7 +14,7 @@ import { dotsToHex } from './dotsToHex';
 
 // 6. スタイルシート / アセット
 import { brailleMappings } from '../data/brailleMappings';
-import { numberTable } from '../data/table';
+import { numberTable, alphabetTable } from '../data/table';
 
 // キーと点字の点の対応マップ
 const keyToDotMap: { [key: string]: number } = {
@@ -76,6 +76,37 @@ export function getNumberData(pressedKeys: Set<string>): BrailleData | null {
 
   if (numberMapping) {
     const [character, code] = numberMapping;
+    return {
+      character: character,
+      dots: hexToDots(code), // hexToDotsはインポート済みと仮定
+      braille: hexToBraille(code), // hexToBrailleはインポート済みと仮定
+    };
+  }
+
+  return null;
+}
+
+/**
+ * 押されたキーのSetから対応する英語の文字を判定する
+ * @param pressedKeys 押されているキーのSet
+ * @returns 判定されたアルファベット・記号 (見つからない場合はnull)
+ */
+export function getAlphabetData(pressedKeys: Set<string>): BrailleData | null {
+  // Setから点の配列に変換し、数字順にソートする
+  const currentDots = Array.from(pressedKeys)
+    .map(key => keyToDotMap[key])
+    .sort((a, b) => a - b);
+
+  // 点の配列からHexコードに変換
+  const hexCode = dotsToHex(currentDots);
+  
+  // alphabetTableから逆引きする（直接参照する）
+  const alphabetMapping = Object.entries(alphabetTable).find(
+    ([character, code]) => code === hexCode
+  );
+
+  if (alphabetMapping) {
+    const [character, code] = alphabetMapping;
     return {
       character: character,
       dots: hexToDots(code), // hexToDotsはインポート済みと仮定
