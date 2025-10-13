@@ -153,7 +153,7 @@ export function useBrailleLogic() {
 
       // 2. 通常の点字入力の処理 (stabilizedModeDataがnullの場合)
       else if (characterInput !== null) {
-        const { data: characterData, shouldResetMode } = characterInput;
+        const { data: characterData } = characterInput;
 
         // 画面表示と待機データの更新
         onDisplayUpdate(characterData);
