@@ -7,9 +7,9 @@ import { brailleCodes } from '../data/table';
 
 type BrailleInputResult = {
   data: BrailleData;
-  shouldResetMode: boolean; // モードをKanaにリセットすべきか
 } | null;
 
+// リアルタイムで、モードに合わせて文字を確定する関数
 export function useBrailleInputData(
   stabilizedKeys: Set<string> | null, 
   currentMode: InputMode
@@ -32,16 +32,16 @@ export function useBrailleInputData(
           dots: currentDots,
       };
 
-      return { data, shouldResetMode: false }; 
+      return { data }; 
     } 
     
     // 2. 数字の判定を試みる
     const numberData = getNumberData(stabilizedKeys);
     if (numberData !== null) {
-      return { data: numberData, shouldResetMode: false };
+      return { data: numberData };
     } 
 
-    // 3. ★ Suujiモードで不明な点字の場合（モードリセット対象）
+    // 3. Suujiモードで不明な点字の場合
     let brailleText = '';
     if (currentDots.length > 0) {
       brailleText = hexToBraille(dotsToHex(currentDots)); 
@@ -51,15 +51,15 @@ export function useBrailleInputData(
       braille: brailleText,
       dots: currentDots,
     };
-    // ここでリセットフラグを true に設定します
-    return { data: unknownData, shouldResetMode: true }; 
+
+    return { data: unknownData }; 
   }
 
   // --- 通常の点字入力判定 (Kana) ---
   else {
     const characterData = getBrailleData(stabilizedKeys);
     if (characterData !== null) {
-      return { data: characterData, shouldResetMode: false };
+      return { data: characterData };
     }
   }
 
@@ -75,5 +75,5 @@ export function useBrailleInputData(
     dots: currentDots,
   };
 
-  return { data: unknownData, shouldResetMode: false };
+  return { data: unknownData };
 }
