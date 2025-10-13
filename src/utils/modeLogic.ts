@@ -40,9 +40,4 @@ export function getConvertedCharacter(mode: InputMode, character: string): strin
 }
 
 /**
- * モードキー単独入力時（k/lキー）のモード変更判定と表示データ作成
- * この関数は、モードキー単独押下時の表示データ生成ロジックをカプセル化します。
- * * useBrailleLogic内のモードキー判定ロジックをここに移植することで、
- * useBrailleLogicのコードをスリム化できます。
  */
-// ... (このファイルには、useBrailleLogic内のモードキー判定ロジックも移植可能)
