@@ -137,11 +137,13 @@ export function useBrailleOutputProcessor(
             return { shouldResetPendingData: true, nextMode: 'Kana' };
         // '外字符'自体は出力しない
         } else if (confirmedCharacter !== '外字符') {
+            // アルファベット、記号が入力された場合
+            // 外字入力モードでは変換ロジック(getConvertedCharacter)は不要。文字をそのまま出力する。
             onOutput(confirmedCharacter);
         }
         
         // モードは 'Alphabet' のまま維持するが、
-        // 数字の確定後は pendingData をリセットする
+        // アルファベット・記号の確定後は pendingData をリセットする
         return { shouldResetPendingData: false, nextMode: null };
     }
 

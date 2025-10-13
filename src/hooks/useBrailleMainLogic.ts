@@ -129,6 +129,7 @@ export function useBrailleLogic() {
       if (stabilizedModeData !== null) {
         const { mode, char, code } = stabilizedModeData;
         const currentDots = getCurrentDots(stabilizedKeys); // dotsはここで再取得が必要
+        
         const braille = hexToBraille(code);
         const displayData = { character: char, braille, dots: currentDots };
 
@@ -151,8 +152,9 @@ export function useBrailleLogic() {
         return;
       }
 
-      // 2. 通常の点字入力の処理 (stabilizedModeDataがnullの場合)
+      // 2. 通常の点字入力（モードキー以外）の処理 (stabilizedModeDataがnullの場合)
       else if (characterInput !== null) {
+        // モードに合わせて変換済のデータを受け取る
         const { data: characterData } = characterInput;
 
         // 画面表示と待機データの更新
