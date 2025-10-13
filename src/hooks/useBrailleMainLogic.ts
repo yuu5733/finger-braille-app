@@ -80,37 +80,11 @@ export function useBrailleLogic() {
         }
 
         // 3. 確定処理後に入力待ちの状態をリセットする
-        // 濁音符入力モードなどではなくなった時に、pendingDataをリセット
+        // 濁音符入力モードなどではなくなった時や
+        // 継続モード（数字やアルファベット）で不明な文字の時、pendingDataをリセット
         if (shouldResetPendingData) {
           setPendingData(null); 
           onDisplayUpdate({ character: '', braille: '', dots: [] });
-
-          // 待機モードからのリセット
-          // 待機モード（Dakuon, Handakuon, Youonなど）は、処理後に必ず Kana に戻る
-          const isWaitingMode = 
-              currentMode === 'Dakuon' || currentMode === 'Handakuon' ||
-              currentMode === 'Youon' || currentMode === 'YouDakuon' ||
-              currentMode === 'YouHandakuon';
-
-          if (isWaitingMode) {
-              setCurrentMode('Kana');
-          }
-        }
-
-        // 4. Suujiモードで不明な文字入力時にリセットするロジックを再配置
-        // モード符ではない文字かつ変換できない文字が確定された際Kana にリセットする
-        if (currentMode === 'Suuji' && shouldResetPendingData) {
-          if (nextMode === null) { // モード符ではないことが確定している
-            setCurrentMode('Kana');
-          }
-        }
-
-        // 5. Alphabetモードで不明な文字入力時にリセットするロジックを再配置
-        // モード符ではない文字かつ変換できない文字が確定された際Kana にリセットする
-        if (currentMode === 'Alphabet' && shouldResetPendingData) {
-          if (nextMode === null) { // モード符ではないことが確定している
-            setCurrentMode('Kana');
-          }
         }
 
       }
@@ -145,8 +119,6 @@ export function useBrailleLogic() {
             return; 
         }
 
-        // 状態が異なる場合のみ更新
-        //setCurrentMode(mode);
         onDisplayUpdate(displayData);
         setPendingData(displayData);
         return;

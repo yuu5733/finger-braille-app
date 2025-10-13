@@ -9,7 +9,7 @@ import type { BrailleData, InputMode, ModeChar } from '../data/types';
 // 4. プロジェクト内のモジュール / エイリアスパス
 
 // 5. 相対パスによるインポート
-import { getConvertedCharacter } from '../utils/modeLogic'; 
+import { getConvertedCharacter, getModeFromModeChar } from '../utils/modeLogic'; 
 
 // 6. スタイルシート / アセット
 
@@ -74,13 +74,14 @@ export function useBrailleOutputProcessor(
             if (convertedChar !== '不明') {
                 onOutput(convertedChar);
             }
-        }
 
-        // モードをリセット
-        return { shouldResetPendingData: true, nextMode: 'Kana' }; // モードが変更するよう指示
+            // モードをリセット
+            return { shouldResetPendingData: true, nextMode: 'Kana' }; // モードが変更するよう指示
+
+        }
     } 
 
-    // --- 3. モード共通の処理 ---
+    // --- 3. モード共通の処理 ---l
     let nextMode: InputMode | null = null;
     
     // 確定された文字がモード符であるかを判定し、次のモードを決定
