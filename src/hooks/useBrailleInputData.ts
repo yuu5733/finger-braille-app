@@ -35,7 +35,7 @@ export function useBrailleInputData(
       return { data }; 
     } 
     
-    // 2. 数字の判定を試みる
+    // 2. 数字・記号への変換
     const numberData = getNumberData(stabilizedKeys);
     if (numberData !== null) {
       return { data: numberData };
