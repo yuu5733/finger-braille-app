@@ -117,11 +117,6 @@ export function useBrailleOutputProcessor(
 
     // --- 5. Suujiモードの処理 (数字の確定とモード継続) ---
     else if (currentMode === 'Suuji') {
-        let result: OutputProcessResult = {
-            shouldResetPendingData: true, // デフォルトでリセット
-            nextMode: null,
-        };
-
         if (confirmedCharacter === '不明') {
             return { shouldResetPendingData: true, nextMode: 'Kana' };
         // '数符'自体は出力しない
