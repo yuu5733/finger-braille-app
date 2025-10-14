@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/FingerButton.css';
+import '../styles/fingerButton.css';
 
 interface FingerButtonProps {
   id: string; // ボタンの識別子（例: 'leftIndex'）
