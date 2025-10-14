@@ -1,3 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
+:where(a, button, input, textarea):focus-visible {
+  outline-offset: .25rem;
+}
