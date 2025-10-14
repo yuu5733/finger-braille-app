@@ -13,6 +13,17 @@ const Header: React.FC = () => {
 
   return (
     <header className="header">
+      <nav className="header-links"> {/* リンクをまとめるコンテナを追加 */}
+        {/* ★ ホームへのリンクを追加 */}
+        <a href="/" style={{ marginRight: '20px', textDecoration: 'none', color: '#fff' }}>
+          ホーム
+        </a>
+        {/* ★ 練習ページへのリンクを追加 */}
+        <a href="/practice" style={{ textDecoration: 'none', color: '#fff' }}>
+          練習
+        </a>
+      </nav>
+
       <div>
         {isLoggedIn ? (
           <span>最高記録: {bestScore}</span>

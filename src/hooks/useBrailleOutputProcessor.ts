@@ -65,8 +65,8 @@ export function useBrailleOutputProcessor(
         // モード符ではない確定文字が入力された場合
         if (confirmedCharacter !== '数符' && confirmedCharacter !== '外字符' && 
             confirmedCharacter !== '濁音符' && confirmedCharacter !== '半濁音符' && 
-            confirmedCharacter !== '拗半濁音符' && confirmedCharacter !== '拗半濁音符' && 
-            confirmedCharacter !== '拗音符') {
+            confirmedCharacter !== '拗音符' && 
+            confirmedCharacter !== '拗濁音符' && confirmedCharacter !== '拗半濁音符' ) {
             
             // 変換ロジックはユーティリティ関数に一任
             const convertedChar = getConvertedCharacter(currentMode, confirmedCharacter);

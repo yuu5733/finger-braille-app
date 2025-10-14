@@ -1,25 +1,83 @@
 ---
-import { useState } from "react";
-
 import Layout from "../layouts/Layout.astro";
-import { BrailleProvider } from "../contexts/BrailleProvider";
-import BrailleApp from "../components/BrailleApp.tsx";
-
-import "../styles/global.css";
 ---
 
-<Layout title="指点字練習アプリ">
-  <main>
-    <BrailleApp client:only="react" />
+<Layout title="指点字練習アプリ | ホーム">
+  <main class="top-page-main">
+    <h1>指点字練習アプリ</h1>
+    <p>
+      指点字（ゆびてんじ）の入力を練習するための Web アプリケーションです。<br
+      />
+      キーボードを使って点字入力の基本を学びましょう。
+    </p>
+    <p>
+      指をホームポジションに置いた時の、人差し指、中指、薬指を使います。<br />
+      左の人差し指をFキー、右手の人差し指をJキーに置きます
+    </p>
+
+    <nav class="main-nav">
+      <a href="/practice" class="start-button"> 練習を始める → </a>
+      <p style="margin-top: 1.5rem; font-size: 0.9rem;">
+        ※ `/practice` ページで点字入力の確認ができます。
+      </p>
+    </nav>
   </main>
 
   <style>
-    main {
+    .top-page-main {
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 100vh;
-      padding: 2rem;
+      justify-content: start;
+      text-align: center;
+      padding: 4rem 2rem;
+      max-width: 800px;
+      margin: auto;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .main-nav {
+      margin-top: 3rem;
+    }
+
+    .start-button {
+      display: inline-block;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition:
+        background-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .start-button:hover {
+      background-color: hsl(211, 100%, 35%);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+    }
+
+    .start-button:active {
+      background-color: hsl(211, 100%, 26%);
+      transform: translateY(1px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
   </style>
 </Layout>
