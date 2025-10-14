@@ -150,7 +150,8 @@ export const handakuonMap: { [key: string]: string } = {
     // 'よ': 'ゔょ',
 
 export const youonMap: { [key: string]: string } = {
-    // --- 清音の拗音 ---
+    // --- 清音の(開)拗音 ---
+    // 母音である/a/ /u/ /o/と、その直前の子音の間に、半母音のyが入る音節
     // カ行
     'か': 'きゃ',
     'く': 'きゅ',
@@ -193,7 +194,8 @@ export const youonMap: { [key: string]: string } = {
 };
 
 export const youdakuonMap: { [key: string]: string } = {
-    // --- 濁音の拗音 ---
+    // --- 濁音の(開)拗音 ---
+    // 母音である/a/ /u/ /o/と、その直前の子音の間に、半母音のyが入る音節
     // ガ行
     'か': 'ぎゃ',
     'く': 'ぎゅ',
@@ -225,6 +227,7 @@ export const youhandakuonMap: { [key: string]: string } = {
 };
 
   // 合拗音（疑問符）
+  // 子音・母音の間に半母音wが入る音節のこと。現代日本語（共通語）では消失している
   // 'あ': 'うぁ',（点字図書館の点字表にはない）
   // 'い': 'うぃ',
   // 'え': 'うぇ',
@@ -245,7 +248,7 @@ export const youhandakuonMap: { [key: string]: string } = {
   // 'へ': 'ふぇ',
   // 'ほ': 'ふぉ',
 
-  // 合拗音（句点符）
+  // 合拗濁音（句点符）
   // 'か': 'ぐぁ',
   // 'き': 'ぐぃ',
   // 'け': 'ぐぇ',
