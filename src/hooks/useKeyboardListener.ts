@@ -15,9 +15,6 @@ export function useKeyboardListener() {
   // 重複を許容しないのと、要素の存在チェック (.has()) や削除 (.delete()) が簡単にできるため
   const [pressedKeys, setPressedKeys] = useState(new Set<string>());
 
-  // 数符などのために、最後に入力された点字コードを保存する
-  // const [lastCode, setLastCode] = useState<BrailleCode | null>(null);
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase();

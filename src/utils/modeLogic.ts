@@ -1,4 +1,5 @@
-import type { InputMode } from '../data/types';
+import type { InputMode, ModeChar } from '../data/types';
+
 import { dakuonMap, handakuonMap, youonMap, youdakuonMap, youhandakuonMap } from '../data/table';
 
 /**
@@ -39,10 +40,27 @@ export function getConvertedCharacter(mode: InputMode, character: string): strin
   return character;
 }
 
+
 /**
- * モードキー単独入力時（k/lキー）のモード変更判定と表示データ作成
- * この関数は、モードキー単独押下時の表示データ生成ロジックをカプセル化します。
- * * useBrailleLogic内のモードキー判定ロジックをここに移植することで、
- * useBrailleLogicのコードをスリム化できます。
+ * 確定したモード符の文字から、対応する次の入力モードを取得する。
+ * (Suuji や Alphabet の解除、待機モードの遷移などに使用)
+ * * @param modeChar 確定された文字（ModeChar型または string）
+ * @returns 対応する InputMode または null
  */
-// ... (このファイルには、useBrailleLogic内のモードキー判定ロジックも移植可能)
+export function getModeFromModeChar(modeChar: string): InputMode | null {
+  // ModeChar型に限定されたマッピングテーブル
+  const modeMap: { [key in ModeChar]?: InputMode } = {
+    '濁音符': 'Dakuon',
+    '半濁音符': 'Handakuon',
+    '拗音符': 'Youon',
+    '拗濁音符': 'YouDakuon',
+    '拗半濁音符': 'YouHandakuon',
+    '合拗音符': 'GouYouon',
+    '数符': 'Suuji',
+    '外字符': 'Alphabet',
+    // '大文字符'などの特殊な記号もここに追加可能
+  };
+
+  // modeCharが 'ModeChar' のユニオン型に含まれるかをチェックし、対応するモードを返す
+  return modeMap[modeChar as ModeChar] ?? null;
+}

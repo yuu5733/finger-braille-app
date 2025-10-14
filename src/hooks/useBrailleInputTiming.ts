@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { getCurrentDots } from '../utils/brailleConverter';
-// import { dakuonFuKey, handakuonFuKey } from '../data/brailleMappings';
 
 /**
  * キー押下状態のデバウンスを行い、安定した入力とキー解放状態を提供するカスタムフック

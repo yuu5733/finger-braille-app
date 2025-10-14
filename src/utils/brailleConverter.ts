@@ -1,16 +1,20 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleMapping } from '../data/types';
+import type { BrailleData } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
-// 4. プロジェクト内のモジュール / エイリアスパス (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
+import { hexToDots } from '../utils/hexToDots';
+import { hexToBraille } from '../utils/hexToBraille';
+
 // 5. 相対パスによるインポート (※ 無し)
 import { dotsToHex } from './dotsToHex';
 
 // 6. スタイルシート / アセット
 import { brailleMappings } from '../data/brailleMappings';
-import { brailleCodes } from '../data/table';
+import { numberTable, alphabetTable } from '../data/table';
 
 // キーと点字の点の対応マップ
 const keyToDotMap: { [key: string]: number } = {
@@ -37,18 +41,80 @@ function arraysEqual(a: number[], b: number[]): boolean {
  * @param pressedKeys 押されているキーのSet
  * @returns 判定された文字 (見つからない場合はnull)
  */
-export function getBrailleData(pressedKeys: Set<string>): BrailleMapping | null {
+export function getBrailleData(pressedKeys: Set<string>): BrailleData | null {
   // Setから点の配列に変換し、数字順にソートする
   const currentDots = Array.from(pressedKeys)
     .map(key => keyToDotMap[key])
     .sort((a, b) => a - b);
 
   const foundMapping = brailleMappings.find(
-    (mapping: BrailleMapping) =>
+    (mapping: BrailleData) =>
       mapping.dots && arraysEqual(mapping.dots, currentDots)
   );
 
   return foundMapping ? foundMapping : null;
+}
+
+/**
+ * 押されたキーのSetから対応する数字の文字を判定する
+ * @param pressedKeys 押されているキーのSet
+ * @returns 判定された数字・記号 (見つからない場合はnull)
+ */
+export function getNumberData(pressedKeys: Set<string>): BrailleData | null {
+  // Setから点の配列に変換し、数字順にソートする
+  const currentDots = Array.from(pressedKeys)
+    .map(key => keyToDotMap[key])
+    .sort((a, b) => a - b);
+
+  // 点の配列からHexコードに変換
+  const hexCode = dotsToHex(currentDots);
+  
+  // numberTableから逆引きする（直接参照する）
+  const numberMapping = Object.entries(numberTable).find(
+    ([character, code]) => code === hexCode
+  );
+
+  if (numberMapping) {
+    const [character, code] = numberMapping;
+    return {
+      character: character,
+      dots: hexToDots(code), // hexToDotsはインポート済みと仮定
+      braille: hexToBraille(code), // hexToBrailleはインポート済みと仮定
+    };
+  }
+
+  return null;
+}
+
+/**
+ * 押されたキーのSetから対応する英語の文字を判定する
+ * @param pressedKeys 押されているキーのSet
+ * @returns 判定されたアルファベット・記号 (見つからない場合はnull)
+ */
+export function getAlphabetData(pressedKeys: Set<string>): BrailleData | null {
+  // Setから点の配列に変換し、数字順にソートする
+  const currentDots = Array.from(pressedKeys)
+    .map(key => keyToDotMap[key])
+    .sort((a, b) => a - b);
+
+  // 点の配列からHexコードに変換
+  const hexCode = dotsToHex(currentDots);
+  
+  // alphabetTableから逆引きする（直接参照する）
+  const alphabetMapping = Object.entries(alphabetTable).find(
+    ([character, code]) => code === hexCode
+  );
+
+  if (alphabetMapping) {
+    const [character, code] = alphabetMapping;
+    return {
+      character: character,
+      dots: hexToDots(code), // hexToDotsはインポート済みと仮定
+      braille: hexToBraille(code), // hexToBrailleはインポート済みと仮定
+    };
+  }
+
+  return null;
 }
 
 /**
