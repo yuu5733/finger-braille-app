@@ -11,7 +11,7 @@ import type { FC } from 'react';
 import FingerButton from './FingerButton';
 
 // 6. スタイルシート / アセット
-import '../styles/brailleInput.css';
+import '../../styles/brailleInput.css';
 
 interface BrailleInputProps {
   pressedKeys: Set<string>; 

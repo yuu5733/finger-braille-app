@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
-import '../styles/resultDisplay.css';
-import { dotsToHex } from '../utils/dotsToHex';
+import '../../styles/resultDisplay.css';
+import { dotsToHex } from '../../utils/dotsToHex';
 
 interface ResultDisplayProps {
   text: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
-import type { InputMode } from '../data/types'; 
-import '../styles/modeDisplay.css'; // スタイルをインポート
+import type { InputMode } from '../../data/types'; 
+import '../../styles/modeDisplay.css'; // スタイルをインポート
 
 interface ModeDisplayProps {
   currentMode: InputMode;

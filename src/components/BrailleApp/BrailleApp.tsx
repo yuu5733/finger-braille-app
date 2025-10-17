@@ -3,14 +3,14 @@ import { useState, useCallback, useMemo } from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleData, InputMode } from '../data/types';
-import type { BrailleContextType } from '../contexts/BrailleContext';
+import type { BrailleData, InputMode } from '../../data/types';
+import type { BrailleContextType } from '../../contexts/BrailleContext';
 
 // 3. サードパーティライブラリ (※ 無し)
 
 // 4. プロジェクト内のモジュール / エイリアスパス
-import { BrailleContext, useBrailleContext } from '../contexts/BrailleContext'; 
-import { useBrailleLogic } from '../hooks/useBrailleMainLogic';
+import { BrailleContext, useBrailleContext } from '../../contexts/BrailleContext'; 
+import { useBrailleLogic } from '../../hooks/useBrailleMainLogic';
 import BrailleInput from "./BrailleInput";
 import ResultDisplay from "./ResultDisplay";
 import ModeDisplay from './ModeDisplay'; 
