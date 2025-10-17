@@ -1,0 +1,75 @@
+.brailleRowSection {
+  margin: -1px 0 0;
+}
+
+/* カテゴリ見出し */
+.categoryHeader {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+  padding: 10px 20px;
+  margin: 0;
+
+  /* カテゴリ行の境界線 */
+  border-top: 2px solid #333;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+  background-color: #f0f8ff;
+}
+
+/* 点字セルを配置するグリッドコンテナ (ul要素) */
+.brailleRowGrid {
+  /* --- ① 全体の枠線として、左を設定 --- */
+  display: grid;
+
+  /* 130pxの最小幅で、可能な限り多くの列を自動配置する */
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  /* セルの左側の境界線の始まり */
+  border-left: 2px solid #333;
+}
+
+@media (width>720px) {
+  /* 最大5列固定のレイアウト（数字やアルファベット用） */
+  .maxFiveColumnGrid {
+    /* 最小幅を約200pxに設定することで、コンテナ幅が約1000pxのとき最大5列となる */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (width<=760px) {
+  .gaijiFuGrid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (width>760px) {
+  .gaijiFuGrid {
+      grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+
+/* BrailleCell の li要素（.cellContainer）に適用されるスタイル */
+/* :global() を使用して、子コンポーネント内のクラスにアクセス */
+/* :globalは、CSS ModulesやScoped CSSなどの環境で使われる疑似クラス。そのスコープ化を一時的に解除し、カッコ内のセレクタがグローバルな名前として扱われるように指定できる */
+.brailleRowGrid :global(.cellContainer) {
+  /* --- ② 右と下の境界線のみを設定（隣接要素と共有する） --- */
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+
+  /* li要素のスタイルリセット */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  box-sizing: border-box;
+
+  /* BrailleCell.module.css内のpaddingをここでリセット・再設定する場合は以下を追記 */
+  /* padding: 10px; */
+}

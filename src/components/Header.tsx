@@ -14,24 +14,24 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <nav className="header-links"> {/* リンクをまとめるコンテナを追加 */}
-        {/* ★ ホームへのリンクを追加 */}
-        <a href="/" style={{ marginRight: '20px', textDecoration: 'none', color: '#fff' }}>
+        <a href="/" style={{ marginRight: '32px', textDecoration: 'none', color: '#fff' }}>
           ホーム
         </a>
-        {/* ★ 練習ページへのリンクを追加 */}
-        <a href="/practice" style={{ textDecoration: 'none', color: '#fff' }}>
+        <a href="/practice" style={{ marginRight: '32px', textDecoration: 'none', color: '#fff' }}>
           練習
+        </a>
+        <a href="/braille_table" style={{ textDecoration: 'none', color: '#fff' }}>
+          指点字表
         </a>
       </nav>
 
-      <div>
+      {/* <div>
         {isLoggedIn ? (
           <span>最高記録: {bestScore}</span>
         ) : (
           <button onClick={handleLogin}>ログイン</button>
         )}
-      </div>
-      {/* 他の設定ボタンなどをここに追加 */}
+      </div> */}
     </header>
   );
 };

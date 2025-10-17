@@ -7,12 +7,17 @@ export type FingerStates = {
   rightRing: boolean;
 };
 
-export type BrailleCode = number[];
+/**
+ * 点字の点の番号を表現する型 (1 から 6 のいずれか)
+ */
+export type BrailleDot = 1 | 2 | 3 | 4 | 5 | 6; 
+
+export type BrailleCode = BrailleDot[];
 
 export type BrailleData = {
   character: string;
   braille: string;
-  dots: BrailleCode; /* number[] */
+  dots: BrailleCode; /* BrailleDot[] */
 };
 
 export type InputMode =
@@ -35,3 +40,9 @@ export type InputMode =
   | '数符'
   | '外字符'
   | '合拗音符';
+
+/** 表をカテゴリ（行）ごとにまとめるための型 */
+export interface BrailleRowData {
+    category: string; // 例: 'あ行'
+    cells: BrailleData[];
+}
