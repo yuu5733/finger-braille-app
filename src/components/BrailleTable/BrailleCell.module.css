@@ -1,0 +1,69 @@
+/* BrailleCell.module.css */
+
+/* BrailleCell 全体のコンテナ */
+/* li要素に適用されるクラス */
+.cellContainer {
+  list-style: none;
+}
+
+/* グリッドコンテナの設定 */
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: 2fr 1fr 6fr;
+  gap: 4px;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  padding: 10px;
+  height: 220px;
+  max-width: 320px;
+}
+
+/* 文字（ひらがな/カタカナ） */
+.character {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  justify-content: center;
+}
+
+/* SVG (指点字) の配置: 左上の領域 */
+.fingerBraille {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+}
+
+/* 点番号のスタイル */
+.dotNumbers {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #666;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* 点字のスタイル */
+.brailleCharContainer {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  font-size: 2rem;
+  border: 1px solid #666;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 点字のspanのスタイル */
+.brailleCharContainer>span {
+  display: inline-block;
+  background-image: linear-gradient(transparent 15%,
+      #ffdd8888 10%,
+      #ddff8888 90%,
+      transparent 85%);
+}

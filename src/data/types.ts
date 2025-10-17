@@ -40,3 +40,9 @@ export type InputMode =
   | '数符'
   | '外字符'
   | '合拗音符';
+
+/** 表をカテゴリ（行）ごとにまとめるための型 */
+export interface BrailleRowData {
+    category: string; // 例: 'あ行'
+    cells: BrailleData[];
+}
