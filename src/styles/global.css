@@ -3,6 +3,26 @@
   padding: 0;
 }
 
+body {
+font-family:
+  /* システムフォント */
+  -apple-system,
+  "BlinkMacSystemFont",
+  "Segoe UI",
+  "Roboto",
+  "Oxygen",
+  "Ubuntu",
+  "Cantarell",
+  "Fira Sans",
+  "Droid Sans",
+  "Helvetica Neue",
+  /* 日本語フォント */
+  "メイリオ", "Meiryo",
+  "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN",
+  "Yu Gothic", "游ゴシック",
+  sans-serif;
+}
+
 /* :where(a, button, input, textarea):focus-visible {
   outline-offset: .25rem;
 } */

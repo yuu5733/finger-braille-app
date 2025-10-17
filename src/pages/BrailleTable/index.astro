@@ -1,0 +1,28 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+import BrailleTable from "../../components/BrailleTable/BrailleTable";
+import {
+  seionTableData,
+  numberTableData,
+  alphabetTableData,
+} from "../../data/brailleTableData";
+---
+
+<Layout title="指点字表">
+  <main>
+    <h1>指文字表</h1>
+    <BrailleTable h2_text="清音" id="seion" tableData={seionTableData} />
+    <BrailleTable h2_text="数字" id="number" tableData={numberTableData} />
+    <BrailleTable h2_text="アルファベット" id="alphabet" tableData={alphabetTableData} />
+
+    <style>
+      body > main {
+        max-width: 1000px;
+      }
+      main {
+        margin: 0 40px;
+      }
+    </style>
+  </main></Layout
+>
