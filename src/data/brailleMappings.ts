@@ -19,9 +19,11 @@ import { hiraganaTable, hiraganaKigouTable, numberTable, alphabetTable } from '.
 // ----------------------------------------------------------------------
 
 // スプレッド構文を使って二つのテーブルを結合する
-// キーが重複した場合は後者が優先される
+const hiraganaTableCopy = { ...hiraganaTable };
+delete hiraganaTableCopy['ゑ'];
+
 const combinedTable = {
-  ...hiraganaTable,
+  ...hiraganaTableCopy,
   ...hiraganaKigouTable,
 };
 
