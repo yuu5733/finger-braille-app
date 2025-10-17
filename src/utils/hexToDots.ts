@@ -1,6 +1,9 @@
+import type { BrailleCode } from '../data/types';
+
 // Unicode点字データの16進コードを、押されている点の番号（1から6まで）の配列に変換するユーティリティ関数
-export function hexToDots(hexCode: number): number[] {
-  const dots: number[] = [];
+export function hexToDots(hexCode: number): BrailleCode {
+  const dots: BrailleCode = [];
+
   if ((hexCode & 0x01) !== 0) dots.push(1);
   if ((hexCode & 0x02) !== 0) dots.push(2);
   if ((hexCode & 0x04) !== 0) dots.push(3);
