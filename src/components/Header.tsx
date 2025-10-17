@@ -20,7 +20,7 @@ const Header: React.FC = () => {
         <a href="/practice" style={{ marginRight: '32px', textDecoration: 'none', color: '#fff' }}>
           練習
         </a>
-        <a href="/BrailleTable" style={{ textDecoration: 'none', color: '#fff' }}>
+        <a href="/braille_table" style={{ textDecoration: 'none', color: '#fff' }}>
           指点字表
         </a>
       </nav>
