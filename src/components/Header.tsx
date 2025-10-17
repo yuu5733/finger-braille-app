@@ -25,14 +25,13 @@ const Header: React.FC = () => {
         </a>
       </nav>
 
-      <div>
+      {/* <div>
         {isLoggedIn ? (
           <span>最高記録: {bestScore}</span>
         ) : (
           <button onClick={handleLogin}>ログイン</button>
         )}
-      </div>
-      {/* 他の設定ボタンなどをここに追加 */}
+      </div> */}
     </header>
   );
 };
