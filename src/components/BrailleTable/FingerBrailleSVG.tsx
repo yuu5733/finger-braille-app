@@ -113,16 +113,16 @@ const processSVG = (svgString: string, dotMap: Record<BrailleDot, string> | Reco
 
 
   return (
-    <div className="finger-braille-svg-container" style={{ display: 'flex', justifyContent: 'center', gap: '30px' }}>
+    <div className="finger-braille-svg-container" style={{ display: 'flex', justifyContent: 'center', gap: '20px', width: '100%', height: '100%', objectFit: 'contain' }}>
       {/* 左手 */}
       <div 
         dangerouslySetInnerHTML={{ __html: leftSVG }} 
-        style={{ width: '50%', maxWidth: '300px' }}
+        style={{ width: '40%', maxWidth: '100px' }}
       />
       {/* 右手 */}
       <div 
         dangerouslySetInnerHTML={{ __html: rightSVG }} 
-        style={{ width: '50%', maxWidth: '300px' }} 
+        style={{ width: '40%', maxWidth: '100px' }} 
       />
     </div>
   );
