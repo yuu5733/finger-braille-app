@@ -3,14 +3,14 @@ import { useState, useCallback, useMemo } from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleData, InputMode } from '../data/types';
-import type { BrailleContextType } from '../contexts/BrailleContext';
+import type { BrailleData, InputMode } from '../../data/types';
+import type { BrailleContextType } from '../../contexts/BrailleContext';
 
 // 3. サードパーティライブラリ (※ 無し)
 
 // 4. プロジェクト内のモジュール / エイリアスパス
-import { BrailleContext, useBrailleContext } from '../contexts/BrailleContext'; 
-import { useBrailleLogic } from '../hooks/useBrailleMainLogic';
+import { BrailleContext, useBrailleContext } from '../../contexts/BrailleContext'; 
+import { useBrailleLogic } from '../../hooks/useBrailleMainLogic';
 import BrailleInput from "./BrailleInput";
 import ResultDisplay from "./ResultDisplay";
 import ModeDisplay from './ModeDisplay'; 
@@ -59,7 +59,7 @@ const BrailleApp: FC = () => {
     
     // ロジック定義
 const handleOutput = useCallback((char: string) => {
-    // ★ 確定文字列に追加すべきではない、全てのモード符と '不明' を除外する
+    // 確定文字列に追加すべきではない、全てのモード符と '不明' を除外する
     if (
         char !== '不明' &&
         char !== '濁音符' &&
