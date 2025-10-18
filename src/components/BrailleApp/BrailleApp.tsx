@@ -59,7 +59,7 @@ const BrailleApp: FC = () => {
     
     // ロジック定義
 const handleOutput = useCallback((char: string) => {
-    // ★ 確定文字列に追加すべきではない、全てのモード符と '不明' を除外する
+    // 確定文字列に追加すべきではない、全てのモード符と '不明' を除外する
     if (
         char !== '不明' &&
         char !== '濁音符' &&

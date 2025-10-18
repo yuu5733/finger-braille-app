@@ -1,5 +1,6 @@
 import React from 'react';
-import '../../styles/fingerButton.css';
+
+import styles from './FingerButton.module.css';
 
 interface FingerButtonProps {
   id: string; // ボタンの識別子（例: 'leftIndex'）
@@ -8,14 +9,16 @@ interface FingerButtonProps {
 }
 
 const FingerButton: React.FC<FingerButtonProps> = ({ id, isPressed, dot }) => {
+  const className = `${styles.fingerButton} ${isPressed ? styles.pressed : ''}`;
+
   return (
     <button
       id={id}
       type="button"
-      className={`finger-button ${isPressed ? 'pressed' : ''}`}
+      className={className} 
       aria-pressed={isPressed}
     >
-      <div className="dot-label">{dot}</div>
+      <div className={styles.dotLabel}>{dot}</div>
     </button>
   );
 };

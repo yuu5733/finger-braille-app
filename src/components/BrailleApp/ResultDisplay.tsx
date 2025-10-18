@@ -1,7 +1,10 @@
 import React from 'react';
+
 import type { FC } from 'react';
-import '../../styles/resultDisplay.css';
+
 import { dotsToHex } from '../../utils/dotsToHex';
+
+import styles from './ResultDisplay.module.css';
 
 interface ResultDisplayProps {
   text: string;
@@ -11,17 +14,17 @@ interface ResultDisplayProps {
 
 const ResultDisplay: FC<ResultDisplayProps> = ({ text, brailleText, dots }) => {
   return (
-    <div className="result-display">
+    <div className={styles.resultDisplay}>
       <div>
         {/* ひらがなと点字を一行に表示 */}
-        <p className="result-text-group">
-          <span className="result-text">{text}</span>
-          <span className="result-braille">{brailleText}</span>
+        <p className={styles.resultTextGroup}> 
+          <span className={styles.resultText}>{text}</span> 
+          <span className={styles.resultBraille}>{brailleText}</span>
         </p>
         {/* 数字データをその下に表示 */}
-        <p className="result-dots-group">
-          <span className="result-dots">[{dots.length > 0 ? dots.join(', ') : '空白'}]</span>、
-          <span className="result-hex">0x{dotsToHex(dots).toString(16).padStart(2, '0')}</span>
+        <p className={styles.resultDotsGroup}>
+          <span className={styles.resultDots}>[{dots.length > 0 ? dots.join(', ') : '空白'}]</span>、
+          <span className={styles.resultHex}>0x{dotsToHex(dots).toString(16).padStart(2, '0')}</span>
         </p>
       </div>
     </div>

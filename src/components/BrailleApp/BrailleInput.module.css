@@ -1,0 +1,36 @@
+.brailleInputContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 2rem;
+}
+
+@media (width<=630px) {
+  .brailleInputContainer {
+      grid-template-columns: 1fr;
+
+      /* justify-content: center; */
+      /* align-items: flex-end; */
+      margin-bottom: 2rem;
+    }
+
+  .leftHand {
+    justify-content: start;
+  }
+
+  .rightHand {
+    justify-content: end;
+  }
+
+}
+
+.fingerGroup {
+  display: flex;
+  gap: 1rem;
+  margin: 3rem 1rem 0;
+}
+
+/* 中央のボタンを上にずらす */
+.fingerGroup button:nth-child(2) {
+  transform: translateY(-2rem);
+  /* Y軸方向に上にずらす */
+}

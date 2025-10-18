@@ -1,8 +1,8 @@
-.mode-display-wrapper {
+.modeDisplayWrapper {
   margin-bottom: 1rem;
 }
 
-.mode-display {
+.modeDisplay {
   display: flex;
   align-items: center;
   height: 35px;
@@ -14,48 +14,31 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   width: fit-content;
-  /* テキストに合わせて幅を調整 */
 }
 
-/* 既存のカラースタイルはそのまま使用します */
 /* 1. かなモード (デフォルト/常に表示/灰色) */
-.mode-display--kana {
+.kana {
   background-color: #e0e0e0;
   color: #555;
 }
 
 /* 2. 数字モード (永続/青系統) */
-.mode-display--suuji {
+.suuji {
   background-color: #cce5ff;
   color: #004085;
   border: 1px solid #b8daff;
 }
 
 /* 3. 英字モード (永続/緑系統) */
-.mode-display--alphabet {
+.alphabet {
   background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
 }
 
 /* 4. 待機モード (一時的/黄色系統) */
-.mode-display--wait {
+.wait {
   background-color: #fff3cd;
   color: #856404;
   border: 1px solid #ffeeba;
-  animation: pulse-wait 1.5s infinite;
-}
-
-@keyframes pulse-wait {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.85;
-  }
-
-  100% {
-    opacity: 1;
-  }
 }

@@ -1,4 +1,4 @@
-.result-display {
+.resultDisplay {
   width: min(18rem, 80vw);
   height: 10rem;
   margin-top: 2rem;
@@ -16,31 +16,40 @@
   text-align: center;
 }
 
-.result-display p {
+.resultDisplay p {
   margin: 0.2rem 0;
 }
 
-.result-text {
+.resultTextGroup {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.resultText {
   font-size: 2rem;
   font-weight: bold;
 }
 
-.result-braille {
-  font-family: 'Noto Sans Braille', sans-serif;  /* 点字フォントを指定 */
-  font-size: 2.5rem;  /* 点字をひらがなより少し大きく */
-  margin-left: 1rem;  /* ひらがなとの間にスペースを空ける */
+.resultBraille {
+  font-family: 'Noto Sans Braille', sans-serif;
+  /* 点字フォントを指定 */
+  font-size: 2.5rem;
+  /* 点字をひらがなより少し大きく */
+  margin-left: 1rem;
+  /* ひらがなとの間にスペースを空ける */
   font-weight: bold;
 }
 
-.result-dots-group {
+.resultDotsGroup {
   font-size: 1rem;
   color: #666;
 }
 
-.result-dots {
-  
+.resultDots {
+  /* スタイル変更なし */
 }
 
-result-hex {
+.resultHex {
   margin-left: 1rem;
 }
