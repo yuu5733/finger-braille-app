@@ -27,7 +27,7 @@ const BrailleTable: FC<BrailleTableProps> = ({h2_text, id, tableData}) => {
             <h2 className={styles.tableHeader}>{h2_text}｜指点字表</h2>
             
             <div className={styles.tableContent}>
-                {/* ★ propsで渡された tableData をマップして表示 */}
+                {/* propsで渡された tableData をマップして表示 */}
                 {tableData.map((rowData) => (
                     <BrailleRow 
                         key={rowData.category}
