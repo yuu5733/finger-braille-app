@@ -66,6 +66,7 @@
   display: flex;
   justify-content: center;
   height: 50px;
+  max-width: 52px;
 }
 
 /* 点字のspanのスタイル */
