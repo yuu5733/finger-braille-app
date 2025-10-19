@@ -1,0 +1,94 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+import BrailleTable from "../../components/BrailleTable/BrailleTable";
+import {
+  seionTableData,
+  numberTableData,
+  alphabetTableData,
+} from "../../data/makeBrailleChartData";
+---
+
+<Layout title="指点字表">
+  <main>
+    <h1>指文字表</h1>
+
+    {/* 目次（アンカーリンク）セクション */}
+    <nav class="table-of-contents">
+      <h2 class="toc-header">目次</h2>
+      <ol class="toc-list">
+        <li><a href="#seion">清音</a></li>
+        <li><a href="#number">数字</a></li>
+        <li><a href="#alphabet">アルファベット</a></li>
+      </ol>
+    </nav>
+
+    <BrailleTable
+      h2_text="清音"
+      id="seion"
+      tableData={seionTableData}
+      client:visible
+    />
+    <BrailleTable
+      h2_text="数字"
+      id="number"
+      tableData={numberTableData}
+      client:visible
+    />
+    <BrailleTable
+      h2_text="アルファベット"
+      id="alphabet"
+      tableData={alphabetTableData}
+      client:visible
+    />
+
+    <style>
+      body > main {
+        max-width: 1000px;
+      }
+      main {
+        margin: 0 40px;
+        padding-top: 4rem;
+      }
+
+      h1 {
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .table-of-contents {
+        max-width: 1000px;
+        margin: 0 auto 3rem;
+        padding: 1rem;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      /* 目次リスト (ol) */
+      .toc-list {
+        padding-left: 2rem;
+      }
+
+      .toc-header {
+        font-size: 1.2rem;
+        color: #333;
+        margin-top: 0;
+        text-align: left;
+      }
+
+      /* アンカーリンク */
+      .toc-list a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        transition: color 0.2s;
+      }
+
+      .toc-list a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+      }
+    </style>
+  </main></Layout
+>

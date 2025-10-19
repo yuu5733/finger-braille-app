@@ -15,11 +15,14 @@ interface BrailleCellProps {
   dots: BrailleDot[];
   /** 対応する点字の Unicode 文字（例: '⠁'） */
   brailleChar: string;
+  /** 文字の長さの関係で、classを追加する必要があるか */
+  flag?: boolean;
 }
 
-const BrailleCell: FC<BrailleCellProps> = ({ character, dots, brailleChar }) => {
+const BrailleCell: FC<BrailleCellProps> = ({ character, dots, brailleChar, flag }) => {
   // 点番号をカンマ区切りで表示 (例: [1, 2, 3])
   const dotNumbersText = dots.length > 0 ? dots.join(', ') : 'なし';
+  const characterClassName = flag ? `${styles.character} ${styles.longCharacter}` : styles.character;
 
   return (
     // liにモジュールクラスを適用
@@ -34,7 +37,7 @@ const BrailleCell: FC<BrailleCellProps> = ({ character, dots, brailleChar }) => 
 
         {/* 2. 文字情報（右側） */}
         <p className={styles.dotNumbers}>[{dotNumbersText}]</p>
-        <p className={styles.character}>{character}</p>
+        <p className={characterClassName}>{character}</p>
         <p className={styles.brailleCharContainer}><span>{brailleChar}</span></p>
       </div>
     </li>

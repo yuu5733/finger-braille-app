@@ -1,5 +1,5 @@
 ---
-import Header from "../components/Header.tsx";
+import Header from "../components/layout/Header.astro";
 import "../styles/uaplus.css"
 import "../styles/global.css";
 ---
@@ -14,7 +14,7 @@ import "../styles/global.css";
     <title>指点字練習アプリ</title>
   </head>
   <body>
-    <Header client:only="react" />
+    <Header />
     <slot />
   </body>
 </html>

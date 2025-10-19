@@ -29,7 +29,7 @@ const SEION_ROW_CHARACTERS: Record<string, string[]> = {
 const NUMBER_ROW_CHARACTERS: Record<string, string[]> = {
     // 数符と数字 (0〜9) を1行にまとめる
     '数字': ['数符', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], 
-    '記号': ['小数点(.)', '位取り点(,)'], 
+    '記号など(数字)': ['小数点(.)', '位取り点(,)', 'つなぎ符'], 
     // 必要に応じて別の行を追加
 };
 

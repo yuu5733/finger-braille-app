@@ -19,9 +19,9 @@ interface BrailleRowProps extends BrailleRowData {}
 
 const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
   const isNumberOrAlphabetRow = category === '数字' || category === 'A〜J' || category === 'K〜T' || category === 'U〜Z'; 
-  const isGaijifu = category === '外字符など'; 
+  const isLongCharacter = category === '記号など(数字)' || category === '外字符など'; 
 
-    const gridClassName = `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isGaijifu ? styles.gaijiFuGrid : ''}`;
+    const gridClassName = `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
 
 
   return (
@@ -39,6 +39,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
             character={data.character}
             brailleChar={data.braille}
             dots={data.dots}
+            flag={data.character.length > 4 ? true : false}
           />
         ))}
       </ul>

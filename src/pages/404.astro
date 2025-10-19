@@ -1,0 +1,184 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// ヘッダーに表示されるナビゲーション項目を想定
+const navigationLinks = [
+  { href: "/", label: "ホーム" },
+  { href: "/practice", label: "練習" },
+  { href: "/braille-table", label: "点字一覧表" },
+  // { href: "/about", label: "このアプリについて" },
+  // { href: "/faq", label: "よくある質問" },
+  // { href: '/settings', label: '設定' },
+];
+---
+
+<Layout title="404: ページが見つかりません - 指点字アプリ">
+  <main>
+    <div class="error-container">
+      <span class="error-code">404</span>
+      <h1 class="error-heading">お探しのページは見つかりません。</h1>
+      <p class="error-message">
+        お探しのページは、存在しないようです。
+        <br class="mobile-break" />
+        URLに間違いがないかご確認ください。
+      </p>
+
+      <hr />
+
+      <div class="guidance-section">
+        <h2>下記のページとお間違いではないでしょうか。</h2>
+        <p>よくアクセスされているページです。</p>
+        <ul class="guidance-list">
+          {
+            navigationLinks.map((link) => (
+              <li>
+                <a href={link.href} class="guidance-link">
+                  <span class="icon">➜</span> {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="faq-section">
+        <h3>❓ よくある質問: 間違ってここにたどり着くのはなぜ？</h3>
+        <p class="faq-answer">
+          スペルミスの修正などによりURLが変更になった可能性。ブックマークが古くなっている。
+          不具合が見つかったため、更新のためにページを消しているなどの可能性があります。
+          ホームに戻り、表示されているリンク内に目当てのページがないかもご確認ください。
+        </p>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* ページの構造 */
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* ヘッダーの下から開始 */
+    padding: 60px 20px;
+    min-height: calc(100vh - 80px); /* 画面の高さを確保 */
+    background-color: #f8f9fa; /* やわらかい背景色 */
+  }
+
+  /* エラーコンテナ */
+  .error-container {
+    width: 100%;
+    max-width: 600px; /* PCでの幅を制限 */
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px; /* 丸みのあるデザイン */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* 立体感 */
+    text-align: center;
+  }
+
+  /* エラーコード */
+  .error-code {
+    display: block;
+    font-size: 5rem;
+    font-weight: 900;
+    color: #cc0000;
+    opacity: 0.85;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  /* 見出しとメッセージ */
+  .error-heading {
+    font-size: 2rem;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .error-message {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 30px 0;
+  }
+
+  /* 誘導セクション */
+  .guidance-section h2 {
+    font-size: 1.3rem;
+    color: #007bff; /* ブランドカラーを使用 */
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  .guidance-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+  }
+
+  .guidance-list li {
+    margin: 10px 0;
+  }
+
+  .guidance-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #e9f5ff; /* リンクの背景を薄い青に */
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    border: 1px solid #b3d9ff;
+  }
+
+  .guidance-link:hover {
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  }
+
+  .icon {
+    font-size: 1.2rem;
+    margin-right: 10px;
+  }
+
+  /* FAQセクション */
+  .faq-section {
+    padding-top: 15px;
+    border-top: 1px dashed #e0e0e0;
+    text-align: left;
+  }
+
+  .faq-section h3 {
+    font-size: 1rem;
+    color: #888;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  .faq-answer {
+    font-size: 0.9rem;
+    color: #999;
+    margin: 0;
+  }
+
+  /* レスポンシブ対応 */
+  @media (max-width: 500px) {
+    .error-code {
+      font-size: 4rem;
+    }
+    .error-heading {
+      font-size: 1.5rem;
+    }
+    .guidance-link {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
