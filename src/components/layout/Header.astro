@@ -1,0 +1,44 @@
+---
+import LoginButton from "../ui/LoginButton";
+---
+
+<header class="header">
+  <nav class="header-links">
+    <a
+      href="/"
+      style={{ marginRight: "32px", textDecoration: "none", color: "#fff" }}
+    >
+      ホーム
+    </a>
+    <a
+      href="/practice"
+      style={{ marginRight: "32px", textDecoration: "none", color: "#fff" }}
+    >
+      練習
+    </a>
+    <a href="/braille-table" style={{ textDecoration: "none", color: "#fff" }}>
+      指点字表
+    </a>
+  </nav>
+
+  <div>
+    <LoginButton client:load />
+  </div>
+</header>
+
+<style>
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+</style>
