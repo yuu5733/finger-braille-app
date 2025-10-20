@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
-import type { BrailleData, InputMode } from '../data/types';
+
+import type { BrailleData, InputMode, BrailleDot } from '../data/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 // Context が提供する値の型を定義
@@ -18,7 +19,7 @@ export interface BrailleContextType {
 
   character: string;      // ResultDisplay用
   braille: string;        // ResultDisplay用
-  dots: number[];         // ResultDisplay用
+  dots: BrailleDot[];         // ResultDisplay用
   outputString: string;   // 確定文字列用
 }
 

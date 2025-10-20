@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData } from '../data/types';
+import type { BrailleData, BrailleDot } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -17,7 +17,7 @@ import { brailleMappings } from '../data/brailleMappings';
 import { numberTable, alphabetTable } from '../data/table';
 
 // キーと点字の点の対応マップ
-const keyToDotMap: { [key: string]: number } = {
+const keyToDotMap: { [key: string]: BrailleDot } = {
   'f': 1, 'd': 2, 's': 3,
   'j': 4, 'k': 5, 'l': 6
 };
@@ -28,7 +28,7 @@ const dotToKeyMap: { [key: number]: string } = {
     4: 'j', 5: 'k', 6: 'l'
 };
 
-function arraysEqual(a: number[], b: number[]): boolean {
+function arraysEqual(a: BrailleDot[], b: BrailleDot[]): boolean {
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {
     if (a[i] !== b[i]) return false;
@@ -122,10 +122,10 @@ export function getAlphabetData(pressedKeys: Set<string>): BrailleData | null {
  * @param pressedKeys 押されているキーのSet
  * @returns ソートされた点の番号の配列
  */
-export function getCurrentDots(pressedKeys: Set<string>): number[] {
+export function getCurrentDots(pressedKeys: Set<string>): BrailleDot[] {
   return Array.from(pressedKeys)
     .map(key => keyToDotMap[key])
-    .filter((dot): dot is number => dot !== undefined) // 点に対応しないキーは除外
+    .filter((dot): dot is BrailleDot => dot !== undefined) // 点に対応しないキーは除外
     .sort((a, b) => a - b);
 }
 

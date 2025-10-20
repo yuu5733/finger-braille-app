@@ -1,25 +1,20 @@
 import React from 'react';
 
 import type { FC } from 'react';
+import type { BrailleData } from '../../data/types';
 
 import { dotsToHex } from '../../utils/dotsToHex';
 
 import styles from './ResultDisplay.module.css';
 
-interface ResultDisplayProps {
-  text: string;
-  brailleText: string;
-  dots: number[];
-}
-
-const ResultDisplay: FC<ResultDisplayProps> = ({ text, brailleText, dots }) => {
+const ResultDisplay: FC<BrailleData> = ({ character, braille, dots }) => {
   return (
     <div className={styles.resultDisplay}>
       <div>
         {/* ひらがなと点字を一行に表示 */}
         <p className={styles.resultTextGroup}> 
-          <span className={styles.resultText}>{text}</span> 
-          <span className={styles.resultBraille}>{brailleText}</span>
+          <span className={styles.resultText}>{character}</span> 
+          <span className={styles.resultBraille}>{braille}</span>
         </p>
         {/* 数字データをその下に表示 */}
         <p className={styles.resultDotsGroup}>

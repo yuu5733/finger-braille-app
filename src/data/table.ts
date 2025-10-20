@@ -54,9 +54,6 @@ export const hiraganaTable: { [key: string]: number } = {
   ー: 0x12,
 };
 
-// export const kyoutsuKigouTable: { [key: string]: number } = {
-// };
-
 export const hiraganaKigouTable: { [key: string]: number } = {
   // 空白 []。点字では、よく使われる。指点字では使わない
   "␣": 0x00,

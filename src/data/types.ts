@@ -17,7 +17,7 @@ export type BrailleCode = BrailleDot[];
 export type BrailleData = {
   character: string;
   braille: string;
-  dots: BrailleCode; /* BrailleDot[] */
+  dots: BrailleDot[];
 };
 
 export type InputMode =

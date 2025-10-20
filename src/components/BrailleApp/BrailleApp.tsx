@@ -3,7 +3,7 @@ import { useState, useCallback, useMemo } from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleData, InputMode } from '../../data/types';
+import type { BrailleData, InputMode, BrailleCode } from '../../data/types';
 import type { BrailleContextType } from '../../contexts/BrailleContext';
 
 // 3. サードパーティライブラリ (※ 無し)
@@ -38,7 +38,7 @@ const BrailleAppContent: FC = () => {
       <div style={{ padding: '10px', border: '1px solid #ccc', margin: '1rem 0' }}>
         確定済み: {outputString}
       </div> 
-      <ResultDisplay text={character} brailleText={braille} dots={dots} />
+      <ResultDisplay character={character} braille={braille} dots={dots} />
     </>
   );
 };
@@ -53,7 +53,7 @@ const BrailleApp: FC = () => {
 
     const [character, setCharacter] = useState('');
     const [braille, setBraille] = useState('');
-    const [dots, setDots] = useState<number[]>([]);
+    const [dots, setDots] = useState<BrailleCode>([]);
 
     const [outputString, setOutputString] = useState('');
     

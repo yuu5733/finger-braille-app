@@ -1,11 +1,11 @@
-// src/utils/dotsToHex.ts
+import type { BrailleDot } from '../data/types';
 
 /**
  * 指点字の点の番号（1から6の配列）を、対応する16進数の点字コードに変換する。
  * * @param dots 点の番号の配列 (例: [1, 2, 4])
  * @returns 16進数で表された点字コード (例: 0x0B)
  */
-export function dotsToHex(dots: number[]): number {
+export function dotsToHex(dots: BrailleDot[]): number {
   let hexCode = 0;
 
   // 点の番号と対応するビット値のマッピング

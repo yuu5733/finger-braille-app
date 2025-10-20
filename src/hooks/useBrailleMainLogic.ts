@@ -22,12 +22,6 @@ import { getBrailleData, getNumberData } from '../utils/brailleConverter'; // �
 // 5. 相対パスによるインポート
 
 // 6. スタイルシート / アセット
-import { brailleCodes } from '../data/table'; 
-
-const keyToDotMap: { [key: string]: number } = {
-  'f': 1, 'd': 2, 's': 3,
-  'j': 4, 'k': 5, 'l': 6
-};
 
 export function useBrailleLogic() {
   // 1. キー入力の監視
