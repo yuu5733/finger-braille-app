@@ -1,9 +1,12 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/layout/Header.astro";
+
 import BrailleApp from "../../components/BrailleApp/BrailleApp.tsx";
 ---
 
 <Layout title="指点字練習アプリ">
+  <Header current="practice" />
   <main>
     <BrailleApp client:only="react" />
   </main>

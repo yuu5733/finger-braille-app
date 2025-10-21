@@ -1,24 +1,38 @@
 ---
 import LoginButton from "../ui/LoginButton";
+
+interface Props {
+  current: string;
+}
+
+const { current } = Astro.props as Props;
 ---
 
 <header class="header">
   <nav class="header-links">
-    <a
-      href="/"
-      style={{ marginRight: "32px", textDecoration: "none", color: "#fff" }}
-    >
-      ホーム
-    </a>
-    <a
-      href="/practice"
-      style={{ marginRight: "32px", textDecoration: "none", color: "#fff" }}
-    >
-      練習
-    </a>
-    <a href="/braille-table" style={{ textDecoration: "none", color: "#fff" }}>
-      指点字表
-    </a>
+    <ul>
+      <li>
+        <a href="/" aria-current={current === "home" ? "page" : false}>
+          ホーム
+        </a>
+      </li>
+      <li>
+        <a
+          href="/practice"
+          aria-current={current === "practice" ? "page" : false}
+        >
+          練習
+        </a>
+      </li>
+      <li>
+        <a
+          href="/braille-table"
+          aria-current={current === "braille-table" ? "page" : false}
+        >
+          指点字表
+        </a>
+      </li>
+    </ul>
   </nav>
 
   <div>
@@ -41,5 +55,62 @@ import LoginButton from "../ui/LoginButton";
   .header h1 {
     margin: 0;
     font-size: 1.5rem;
+  }
+
+  .header-links ul {
+    /* リストのドットを削除 */
+    list-style: none;
+    /* リストアイテムを横並びにするためにFlexboxを使用 */
+    display: flex;
+    /* デフォルトで付いているpaddingやmarginをリセット */
+    padding: 0;
+    margin: 0;
+  }
+
+  .header-links li {
+    margin-right: 2rem;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    font-size: 1rem;
+    padding-bottom: .25rem;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .header-links a::after {
+    content: "";
+    position: absolute;
+    bottom: 0; /* aタグの下端に配置 */
+    left: 0;
+    height: 2px;
+    background-color: yellow;
+
+    /* 初期状態 */
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: bottom left; /* アニメーションの始点を左下にする */
+
+    /* アニメーションの設定 */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* aria-current="page" の場合、下線を表示 */
+  .header-links a[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  /* ホバー時にもアニメーションを適用したい場合は、以下のコメントを解除してください */
+  
+  .header-links a:hover::after {
+    transform: scaleX(1);
+  }
+ 
+
+  /* 現在のページリンクのテキスト色も変えたい場合 */
+  .header-links a[aria-current="page"] {
+    color: yellow;
   }
 </style>
