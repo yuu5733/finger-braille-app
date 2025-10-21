@@ -6,7 +6,10 @@ import { useEffect, useState } from 'react';
  * @returns { stabilizedKeys: Set<string> | null, isKeysReleased: boolean } 
  * stabilizedKeys: 100ms安定した入力（タイマー内で処理されるキー）
  */
-export function useBrailleInputTiming(pressedKeys: Set<string>) {
+export function useBrailleInputTiming(
+  pressedKeys: Set<string>,
+  isTouchInput: boolean
+) {
   // タイマー発火時に安定したキーの状態を保持
   const [stabilizedKeys, setStabilizedKeys] = useState<Set<string> | null>(null);
   const isKeysReleased = pressedKeys.size === 0;

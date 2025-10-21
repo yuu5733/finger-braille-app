@@ -5,9 +5,28 @@
   border-radius: 8px;
   background-color: #f0f0f0;
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  /* カーソルをポインターにする */
 }
 
-/* 押された時の状態 */
+/* ホバー時の状態 (マウス操作) */
+.fingerButton:hover {
+  background-color: #e0e0e0;
+  /* 少し暗い灰色 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* アクティブ時の状態 (クリック/タッチ中) */
+.fingerButton:active {
+  background-color: #3b82f6;
+  /* 押された状態と同じ青系の色 */
+  color: white;
+  transform: scale(1.05);
+  /* ホバーより少し控えめなスケール */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 押された時の状態 (ロジックによって制御される持続的な状態) */
 .pressed {
   background-color: #3b82f6;
   /* 青系の色 */

@@ -7,6 +7,7 @@ import type { FC } from 'react';
 // 3. サードパーティライブラリ (※ 無し)
 
 // 4. プロジェクト内のモジュール / エイリアスパス
+import { useFingerPressChange } from '../../hooks/useInputKeys';
 
 // 5. 相対パスによるインポート
 import FingerButton from './FingerButton';
@@ -22,19 +23,58 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
   const leftHandClassName = `${styles.fingerGroup} ${styles.leftHand}`;
   const rightHandClassName = `${styles.fingerGroup} ${styles.rightHand}`;
 
+  // useTouchListener.ts からコールバック関数を取得
+  const handlePressChange = useFingerPressChange();
+
   return (
     <div className={styles.brailleInputContainer}>
       {/* 左の指のボタン */}
       <div className={leftHandClassName}> 
-        <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} dot={3} />
-        <FingerButton id="leftMiddle" isPressed={pressedKeys.has('d')} dot={2} />
-        <FingerButton id="leftIndex" isPressed={pressedKeys.has('f')} dot={1} />
+        <FingerButton 
+          id="leftRing" 
+          keyMapping='s'
+          isPressed={pressedKeys.has('s')} 
+          dot={3} 
+          onPressChange={handlePressChange}
+        />
+        <FingerButton 
+          id="leftMiddle" 
+          keyMapping='d'
+          isPressed={pressedKeys.has('d')} 
+          dot={2} 
+          onPressChange={handlePressChange}
+        />
+        <FingerButton 
+          id="leftIndex" 
+          keyMapping='f'
+          isPressed={pressedKeys.has('f')} 
+          dot={1} 
+          onPressChange={handlePressChange}
+        />
       </div>
       {/* 右の指のボタン */}
       <div className={rightHandClassName}>
-        <FingerButton id="rightIndex" isPressed={pressedKeys.has('j')} dot={4} />
-        <FingerButton id="rightMiddle" isPressed={pressedKeys.has('k')} dot={5} />
-        <FingerButton id="rightRing" isPressed={pressedKeys.has('l')} dot={6} />
+        <FingerButton 
+          id="rightIndex" 
+          keyMapping='j'
+          isPressed={pressedKeys.has('j')} 
+          dot={4} 
+          onPressChange={handlePressChange}
+        />
+        <FingerButton 
+          id="rightMiddle" 
+          keyMapping='k'
+          isPressed={pressedKeys.has('k')} 
+          dot={5} 
+          onPressChange={handlePressChange}
+        />
+        <FingerButton 
+          id="rightRing" 
+          keyMapping='l'
+          isPressed={pressedKeys.has('l')} 
+          dot={6} 
+          onPressChange={handlePressChange}
+        />
       </div>
     </div>
   );

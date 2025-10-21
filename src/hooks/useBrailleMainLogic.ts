@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 // 4. プロジェクト内のモジュール / エイリアスパス
 // --- カスタムフック
 import { useBrailleContext } from '../contexts/BrailleContext';
-import { useKeyboardListener } from './useKeyboardListener';
+import { useInputKeys } from './useInputKeys';
 import { useBrailleInputTiming } from './useBrailleInputTiming';
 import { useBrailleOutputProcessor } from './useBrailleOutputProcessor';
 import { useBrailleInputMode } from './useBrailleInputMode';
@@ -25,7 +25,7 @@ import { getBrailleData, getNumberData } from '../utils/brailleConverter'; // �
 
 export function useBrailleLogic() {
   // 1. キー入力の監視
-  const pressedKeys = useKeyboardListener(); 
+  const { pressedKeys, isTouchInput } = useInputKeys(); 
 
   const { 
     currentMode, 
@@ -42,7 +42,7 @@ export function useBrailleLogic() {
   } = useBrailleContext();
 
   // 2. タイミング処理 (デバウンス)
-  const { stabilizedKeys, isKeysReleased } = useBrailleInputTiming(pressedKeys);
+  const { stabilizedKeys, isKeysReleased } = useBrailleInputTiming(pressedKeys, isTouchInput);
 
   // 3. 確定ロジック (Processorの初期化)
   const { processOutput } = useBrailleOutputProcessor(
@@ -55,7 +55,7 @@ export function useBrailleLogic() {
   // 4. モードキーの判定
   const stabilizedModeData = useBrailleInputMode(stabilizedKeys);
   
-  // 4. 通常の点字入力の判定
+  // 5. 通常の点字入力の判定
   const characterInput = useBrailleInputData(stabilizedKeys, currentMode);
 
   // -----------------------------------------------------
