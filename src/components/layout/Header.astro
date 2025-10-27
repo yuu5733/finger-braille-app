@@ -102,12 +102,14 @@ const { current } = Astro.props as Props;
     transform: scaleX(1);
   }
 
-  /* ホバー時にもアニメーションを適用したい場合は、以下のコメントを解除してください */
-  
+  .header-links a[aria-current="page"]:hover::after {
+    height:4px;
+    bottom: -2px;
+  }
+
   .header-links a:hover::after {
     transform: scaleX(1);
   }
- 
 
   /* 現在のページリンクのテキスト色も変えたい場合 */
   .header-links a[aria-current="page"] {
