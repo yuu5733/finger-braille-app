@@ -21,6 +21,10 @@ export interface BrailleContextType {
   braille: string;        // ResultDisplay用
   dots: BrailleDot[];         // ResultDisplay用
   outputString: string;   // 確定文字列用
+
+  // useTouchListenerの結果
+  touchPressedKeys: Set<string>; // タッチ専用のpressedKeys
+  handlePressChange: (key: string, isPressed: boolean) => void;
 }
 
 // 初期値を null に設定（Provider の使用を必須とする）

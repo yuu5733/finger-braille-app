@@ -7,9 +7,9 @@ import type { FC } from 'react';
 // 3. サードパーティライブラリ (※ 無し)
 
 // 4. プロジェクト内のモジュール / エイリアスパス
-import { useFingerPressChange } from '../../hooks/useInputKeys';
 
 // 5. 相対パスによるインポート
+import { useBrailleContext } from '../../contexts/BrailleContext';
 import FingerButton from './FingerButton';
 
 // 6. スタイルシート / アセット
@@ -23,8 +23,8 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
   const leftHandClassName = `${styles.fingerGroup} ${styles.leftHand}`;
   const rightHandClassName = `${styles.fingerGroup} ${styles.rightHand}`;
 
-  // useTouchListener.ts からコールバック関数を取得
-  const handlePressChange = useFingerPressChange();
+// useBrailleContext から handlePressChange を取得
+  const { handlePressChange } = useBrailleContext();
 
   return (
     <div className={styles.brailleInputContainer}>

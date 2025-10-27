@@ -10,19 +10,28 @@ export function useTouchListener() {
   // ボタンからの押下状態変更を受け付けるコールバック
   const handlePressChange = useCallback((key: string, isPressed: boolean) => {
     setPressedKeys(prevKeys => {
+      // 1. 変更の必要性を確認 (これが最も重要)
+      const shouldAdd = isPressed && !prevKeys.has(key);
+      const shouldDelete = !isPressed && prevKeys.has(key);
+
+      // 2. 変更が不要であれば、そのまま古いSetを返す
+      if (!shouldAdd && !shouldDelete) {
+        return prevKeys;
+      }
+      
+      // 3. 変更が必要であれば、新しいSetを作成し、操作を行う
       const newKeys = new Set(prevKeys);
-      if (isPressed) {
+      if (shouldAdd) {
         newKeys.add(key);
-      } else {
+      } else if (shouldDelete) {
         newKeys.delete(key);
       }
-      // Setが変更された場合にのみ新しいインスタンスを返す（ReactのState更新のベストプラクティス）
-      if (newKeys.size !== prevKeys.size || isPressed !== prevKeys.has(key)) {
-        return newKeys;
-      }
-      return prevKeys;
+      
+      // 💡 確実に新しいSetを返す（この時点で変更は保証されている）
+      return newKeys; 
     });
   }, []);
 
+  console.log(`pressedKeys: ${pressedKeys}, Current size: ${pressedKeys.size}`);
   return { pressedKeys, handlePressChange };
 }

@@ -1,5 +1,4 @@
 import { useKeyboardListener } from './useKeyboardListener';
-import { useTouchListener } from './useTouchListener';
 
 // 戻り値の型定義: 押されているキーのSetと、入力の発生源
 export interface InputKeysResult {
@@ -12,12 +11,11 @@ export interface InputKeysResult {
  * どちらか一方の入力のみがアクティブになることを前提とする。
  * @returns InputKeysResult: 押されているキーのSetと、入力がタッチによるものかどうかのフラグ
  */
-export function useInputKeys(): InputKeysResult {
+export function useInputKeys(touchKeys: Set<string>): InputKeysResult {
   // 1. キーボード入力の取得
   const keyboardKeys = useKeyboardListener();
   
-  // 2. タッチ入力の取得
-  const { pressedKeys: touchKeys, handlePressChange } = useTouchListener();
+  console.log(`[InputKeys] KBD Size: ${keyboardKeys.size}, Touch Size: ${touchKeys.size}`);
 
   // 3. 入力ソースの決定
   // どちらか一方の入力のみがアクティブであると仮定
@@ -26,12 +24,11 @@ export function useInputKeys(): InputKeysResult {
   // 4. 統合されたキーセットを返す
   if (keyboardKeys.size > 0) {
     // キーボードが押されている場合はキーボードの入力を優先
+    console.log("キーボードが押されている場合");
     return { pressedKeys: keyboardKeys, isTouchInput: false };
   } else {
     // キーボードが押されていない場合はタッチ入力を返す（タッチ操作がない場合は空のSetとisTouchInput: trueを返す）
+    console.log("タッチ入力の場合");
     return { pressedKeys: touchKeys, isTouchInput: true };
   }
 }
-
-// useTouchListenerのコールバックを外部（FingerButton）に提供
-export const useFingerPressChange = () => useTouchListener().handlePressChange;

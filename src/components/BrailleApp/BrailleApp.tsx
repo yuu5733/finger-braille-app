@@ -11,6 +11,7 @@ import type { BrailleContextType } from '../../contexts/BrailleContext';
 // 4. プロジェクト内のモジュール / エイリアスパス
 import { BrailleContext, useBrailleContext } from '../../contexts/BrailleContext'; 
 import { useBrailleLogic } from '../../hooks/useBrailleMainLogic';
+import { useTouchListener } from '../../hooks/useTouchListener';
 import BrailleInput from "./BrailleInput";
 import ResultDisplay from "./ResultDisplay";
 import ModeDisplay from './ModeDisplay'; 
@@ -23,9 +24,9 @@ import ModeDisplay from './ModeDisplay';
 // ★ 内部コンポーネント (Contextの消費者) を定義
 // -----------------------------------------------------
 const BrailleAppContent: FC = () => {
-  const { currentMode, character, braille, dots, outputString } = useBrailleContext();
+  const { currentMode, character, braille, dots, outputString, touchPressedKeys } = useBrailleContext();
 
-  const { pressedKeys } = useBrailleLogic();
+  const { pressedKeys } = useBrailleLogic(touchPressedKeys);
 
   return (
     <>
@@ -56,6 +57,9 @@ const BrailleApp: FC = () => {
     const [dots, setDots] = useState<BrailleCode>([]);
 
     const [outputString, setOutputString] = useState('');
+
+    // useTouchListener を実行
+    const { pressedKeys: touchPressedKeys, handlePressChange } = useTouchListener();
     
     // ロジック定義
 const handleOutput = useCallback((char: string) => {
@@ -92,7 +96,9 @@ const handleOutput = useCallback((char: string) => {
         braille,     // ResultDisplay表示用
         dots,        // ResultDisplay表示用
         outputString,// ResultDisplay表示用
-    }), [currentMode, pendingData, handleOutput, handleDisplayUpdate, character, braille, dots, outputString]);
+        touchPressedKeys,
+        handlePressChange,
+      }), [currentMode, pendingData, handleOutput, handleDisplayUpdate, character, braille, dots, outputString, touchPressedKeys, handlePressChange]);
 
     // Providerとして自分自身をラップし、コンテンツコンポーネントを描画
     return (

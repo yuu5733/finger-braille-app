@@ -23,9 +23,9 @@ import { getBrailleData, getNumberData } from '../utils/brailleConverter'; // �
 
 // 6. スタイルシート / アセット
 
-export function useBrailleLogic() {
+export function useBrailleLogic(touchPressedKeys: Set<string>) {
   // 1. キー入力の監視
-  const { pressedKeys, isTouchInput } = useInputKeys(); 
+  const { pressedKeys, isTouchInput } = useInputKeys(touchPressedKeys); 
 
   const { 
     currentMode, 

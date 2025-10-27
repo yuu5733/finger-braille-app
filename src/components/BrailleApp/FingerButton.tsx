@@ -28,13 +28,17 @@ const FingerButton: FC<FingerButtonProps> = ({ id, keyMapping, isPressed, dot, o
   const className = `${styles.fingerButton} ${isPressed ? styles.pressed : ''}`;
 
   // 押された時のイベントハンドラ (タッチ・マウス共通)
-  const handlePress = useCallback(() => {
+  const handlePress = useCallback((e: React.SyntheticEvent) => {
+    e.preventDefault(); // ブラウザのデフォルト動作（スクロール、ピンチズームなど）を抑制
+
     // 押下状態を true で通知
     onPressChange(keyMapping, true);
   }, [keyMapping, onPressChange]);
   
   // 離された時のイベントハンドラ (タッチ・マウス共通)
-  const handleRelease = useCallback(() => {
+  const handleRelease = useCallback((e: React.SyntheticEvent) => {
+    e.preventDefault(); // ブラウザのデフォルト動作を抑制
+
     // 押下状態を false で通知
     onPressChange(keyMapping, false);
   }, [keyMapping, onPressChange]);
@@ -49,6 +53,7 @@ const FingerButton: FC<FingerButtonProps> = ({ id, keyMapping, isPressed, dot, o
       // 💡 タッチ操作に対応 (スマートフォン)
       onTouchStart={handlePress}
       onTouchEnd={handleRelease}
+      onTouchCancel={handleRelease}
       // 💡 マウス操作に対応 (PCでのクリック)
       onMouseDown={handlePress}
       onMouseUp={handleRelease}
