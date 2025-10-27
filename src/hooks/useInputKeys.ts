@@ -14,8 +14,6 @@ export interface InputKeysResult {
 export function useInputKeys(touchKeys: Set<string>): InputKeysResult {
   // 1. キーボード入力の取得
   const keyboardKeys = useKeyboardListener();
-  
-  console.log(`[InputKeys] KBD Size: ${keyboardKeys.size}, Touch Size: ${touchKeys.size}`);
 
   // 3. 入力ソースの決定
   // どちらか一方の入力のみがアクティブであると仮定
@@ -24,11 +22,9 @@ export function useInputKeys(touchKeys: Set<string>): InputKeysResult {
   // 4. 統合されたキーセットを返す
   if (keyboardKeys.size > 0) {
     // キーボードが押されている場合はキーボードの入力を優先
-    console.log("キーボードが押されている場合");
     return { pressedKeys: keyboardKeys, isTouchInput: false };
   } else {
     // キーボードが押されていない場合はタッチ入力を返す（タッチ操作がない場合は空のSetとisTouchInput: trueを返す）
-    console.log("タッチ入力の場合");
     return { pressedKeys: touchKeys, isTouchInput: true };
   }
 }

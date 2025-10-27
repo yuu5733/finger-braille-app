@@ -32,6 +32,5 @@ export function useTouchListener() {
     });
   }, []);
 
-  console.log(`pressedKeys: ${pressedKeys}, Current size: ${pressedKeys.size}`);
   return { pressedKeys, handlePressChange };
 }
