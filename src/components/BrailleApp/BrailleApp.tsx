@@ -20,6 +20,9 @@ import ModeDisplay from './ModeDisplay';
 
 // 6. スタイルシート / アセット
 
+// 7. Debug用（仮のモジュール）
+import DebugOutput from './DebugOutput';
+
 // -----------------------------------------------------
 // ★ 内部コンポーネント (Contextの消費者) を定義
 // -----------------------------------------------------
@@ -103,6 +106,8 @@ const handleOutput = useCallback((char: string) => {
     return (
         <BrailleContext.Provider value={contextValue}>
             <BrailleAppContent />
+            {/* 💡 デバッグ情報を追加 */}
+            {process.env.NODE_ENV === 'development' && <DebugOutput />}
         </BrailleContext.Provider>
     );
 };
