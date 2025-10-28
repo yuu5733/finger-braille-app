@@ -35,11 +35,10 @@ const BrailleAppContent: FC = () => {
         <ModeDisplay currentMode={currentMode} /> 
         <BrailleInput pressedKeys={pressedKeys} />
       </div>
-      {/* 確定された文字を表示するための新しい領域 */}
+      <ResultDisplay character={character} braille={braille} dots={dots} />
       <div style={{ padding: '10px', border: '1px solid #ccc', margin: '1rem 0' }}>
         確定済み: {outputString}
       </div> 
-      <ResultDisplay character={character} braille={braille} dots={dots} />
     </>
   );
 };
