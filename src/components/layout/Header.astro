@@ -58,13 +58,8 @@ const { current } = Astro.props as Props;
   }
 
   .header-links ul {
-    /* リストのドットを削除 */
     list-style: none;
-    /* リストアイテムを横並びにするためにFlexboxを使用 */
     display: flex;
-    /* デフォルトで付いているpaddingやmarginをリセット */
-    padding: 0;
-    margin: 0;
   }
 
   .header-links li {
@@ -104,7 +99,7 @@ const { current } = Astro.props as Props;
   }
 
   .header-links a[aria-current="page"]:hover::after {
-    height:4px;
+    height: 4px;
     bottom: -2px;
   }
 
@@ -115,5 +110,11 @@ const { current } = Astro.props as Props;
   /* 現在のページリンクのテキスト色も変えたい場合 */
   .header-links a[aria-current="page"] {
     color: yellow;
+  }
+
+  @media (width<420px) {
+    .header-links li {
+      margin-right: 1rem;
+    }
   }
 </style>
