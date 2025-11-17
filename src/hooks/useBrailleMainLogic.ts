@@ -101,8 +101,8 @@ export function useBrailleLogic(touchPressedKeys: Set<string>) {
         const braille = hexToBraille(code);
         const displayData = { character: char, braille, dots: currentDots };
 
-        // 比較ロジック (元のコードからそのまま移植)
-        // currentMode, pendingDataの比較...
+        // 比較ロジック
+        // currentMode, pendingDataの比較
         const isModeSame = currentMode === mode;
         const isPendingDataSame = 
             pendingData !== null && 

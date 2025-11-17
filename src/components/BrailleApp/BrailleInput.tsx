@@ -13,7 +13,7 @@ import { useBrailleContext } from '../../contexts/BrailleContext';
 import FingerButton from './FingerButton';
 
 // 6. スタイルシート / アセット
-import styles from './BrailleInput.module.css'; // 新しいパスとファイル名に変更
+import styles from './BrailleInput.module.css';
 
 interface BrailleInputProps {
   pressedKeys: Set<string>; 
