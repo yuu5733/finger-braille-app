@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-bottom: 2rem;
+  touch-action: none;
 }
 
 @media (width<=630px) {
