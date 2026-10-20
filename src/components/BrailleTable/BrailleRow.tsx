@@ -39,6 +39,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
             character={data.character}
             brailleChar={data.braille}
             dots={data.dots}
+            comment={data.comment}
             flag={data.character.length > 4 ? true : false}
           />
         ))}

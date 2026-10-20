@@ -6,7 +6,7 @@
   list-style: none;
 }
 
-/* グリッドコンテナの設定 */
+/* 通常のセル（ひらがな等：コメントなし） */
 .contentWrapper {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -17,6 +17,13 @@
   padding: 10px;
   height: 220px;
   max-width: 640px;
+}
+
+/* コメント付きセル（数字・英語用） */
+:has(.comment) .contentWrapper {
+  /* .comment というクラスを持つ子要素が存在する場合のみ適用 */
+  grid-template-rows: 2fr 1fr 4fr auto;
+  height: 250px;
 }
 
 /* 文字（ひらがな/カタカナ） */
@@ -36,7 +43,6 @@
     font-size: clamp(1.25rem, calc(-0.9318rem + 0.6818vw), 2rem);
   }
 }
-
 
 /* SVG (指点字) の配置: 左上の領域 */
 .fingerBraille {
@@ -78,4 +84,17 @@
     #ffdd8888 15%,
     #ddff8888 85%,
     transparent 85%);
+}
+
+.comment {
+  grid-column: 1 / 3;
+  grid-row: 4 / 5;
+  font-size: 0.9rem;
+  color: #007bff;
+  margin: 0;
+  text-align: center;
+  line-height: 1.2;
+  min-height: 1.2em;
+  word-break: break-all;
+  white-space: pre-line;
 }

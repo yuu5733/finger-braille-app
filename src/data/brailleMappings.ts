@@ -78,6 +78,20 @@ const numberTableWithSuFu = {
   '位取り点(,)': 0x04,
 };
 
+// 文字（または数字）ごとのコメント（語呂合わせなど）を定義する辞書
+const commentMap: Record<string, string> = {
+  '1': 'ひらがなの「あ」に同じ\nい「あ」いあ！',
+  '2': 'ひらがなの「い」に同じ\n に「い」（兄々）',
+  '3': 'ひらがなの「う」に同じ\nさん「う」（山雨）',
+  '4': 'ひらがなの「る」に同じ\nし「る」（知る）',
+  '5': 'ひらがなの「ら」に同じ\nコー「ラ」',
+  '6': 'ひらがなの「え」に同じ\nろく「え」ん（6円）',
+  '7': 'ひらがなの「れ」に同じ\nな「れ」（慣れ）',
+  '8': 'ひらがなの「り」に同じ\nは「り」（針）',
+  '9': 'ひらがなの「お」に同じ\n ク「オ」カード',
+  '0': 'ひらがなの「ろ」に同じ\nぜ「ろ」（零）',
+};
+
 // 点字表用（数字用の記号のマッピング）
 export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu).map(
   ([character, hexCode]) => {
@@ -85,6 +99,7 @@ export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu)
       character: character, // 数符、数字
       dots: hexToDots(hexCode), // 点の配列
       braille: hexToBraille(hexCode), // Unicode点字文字
+      comment: commentMap[character], // コメント（覚えやすくするため）
     };
   }
 );
@@ -107,6 +122,7 @@ export const alphabetMappings: BrailleData[] = Object.entries(alphabetTableWithG
       character: character, // 英語
       dots: hexToDots(hexCode), // 点の配列
       braille: hexToBraille(hexCode), // Unicode点字文字
+      comment: commentMap[character], // コメント（覚えやすくするため）
     };
   }
 );
