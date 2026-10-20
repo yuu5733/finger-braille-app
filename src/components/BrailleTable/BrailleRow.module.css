@@ -23,7 +23,7 @@
   display: grid;
 
   /* 130pxの最小幅で、可能な限り多くの列を自動配置する */
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 
   list-style: none;
   padding: 0;
