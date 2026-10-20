@@ -17,7 +17,8 @@ export type BrailleCode = BrailleDot[];
 export type BrailleData = {
   character: string;
   braille: string;
-  dots: BrailleCode; /* BrailleDot[] */
+  dots: BrailleCode; // BrailleDot[]に同じ
+  comment?: string; // オプショナル（省略可能）なコメント
 };
 
 export type InputMode =
