@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData } from '../data/types';
+import type { BrailleData, BrailleCode, BrailleDot } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -122,10 +122,10 @@ export function getAlphabetData(pressedKeys: Set<string>): BrailleData | null {
  * @param pressedKeys 押されているキーのSet
  * @returns ソートされた点の番号の配列
  */
-export function getCurrentDots(pressedKeys: Set<string>): number[] {
+export function getCurrentDots(pressedKeys: Set<string>): BrailleCode {
   return Array.from(pressedKeys)
     .map(key => keyToDotMap[key])
-    .filter((dot): dot is number => dot !== undefined) // 点に対応しないキーは除外
+    .filter((dot): dot is BrailleDot => dot !== undefined) // 点に対応しないキーは除外
     .sort((a, b) => a - b);
 }
 

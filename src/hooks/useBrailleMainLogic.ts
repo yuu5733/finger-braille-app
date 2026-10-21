@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // 2. 型定義 (Type Imports)
+import type { BrailleCode } from '../data/types.ts';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -28,6 +29,9 @@ const keyToDotMap: { [key: string]: number } = {
   'f': 1, 'd': 2, 's': 3,
   'j': 4, 'k': 5, 'l': 6
 };
+
+// 空の点字データを表す定数（asを使わずに型を一致させるため）
+const EMPTY_DOTS: BrailleCode = [];
 
 export function useBrailleLogic() {
   // 1. キー入力の監視
@@ -84,14 +88,14 @@ export function useBrailleLogic() {
         // 継続モード（数字やアルファベット）で不明な文字の時、pendingDataをリセット
         if (shouldResetPendingData) {
           setPendingData(null); 
-          onDisplayUpdate({ character: '', braille: '', dots: [] });
+          onDisplayUpdate({ character: '', braille: '', dots: EMPTY_DOTS });
         }
 
       }
       else {
         // 無限ループ防止のため、表示がすでにクリアな場合は更新しない
         if (character !== '' || dots.length > 0) {
-            onDisplayUpdate({ character: '', braille: '', dots: [] });
+            onDisplayUpdate({ character: '', braille: '', dots: EMPTY_DOTS });
         }
       }
       return;
