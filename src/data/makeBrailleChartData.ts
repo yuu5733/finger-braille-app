@@ -77,18 +77,18 @@ alphabetMappings.forEach(data => alphabetMap.set(data.character, data));
  * @param charArray 行を構成する文字の配列
  * @returns BrailleData の配列
  */
-const getBrailleCells = (charArray: string[]): BrailleData[] => {
-    return charArray.map(char => {
-        const data = brailleMap.get(char);
-        // マッピングが見つからない場合は、エラーハンドリングまたは空データ
-        if (!data) {
-            console.warn(`Braille data not found for character: ${char}`);
-            // エラーを避けるため、ダミーデータを返す
-            return { character: char, braille: '', dots: [] }; 
-        }
-        return data;
-    });
-};
+// const getBrailleCells = (charArray: string[]): BrailleData[] => {
+//     return charArray.map(char => {
+//         const data = brailleMap.get(char);
+//         // マッピングが見つからない場合は、エラーハンドリングまたは空データ
+//         if (!data) {
+//             console.warn(`Braille data not found for character: ${char}`);
+//             // エラーを避けるため、ダミーデータを返す
+//             return { character: char, braille: '', dots: [] }; 
+//         }
+//         return data;
+//     });
+// };
 
 // 清音表のデータ生成
 export const seionTableData: BrailleRowData[] = Object.entries(SEION_ROW_CHARACTERS).map(([category, charArray]) => ({
