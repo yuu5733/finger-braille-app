@@ -42,6 +42,7 @@ const ALPHABET_ROW_CHARACTERS: Record<string, string[]> = {
 };
 
 // 全マッピングを文字（key）で検索しやすい Map に変換
+// 変換処理で使用する。展示表では、コメントを変えることがあるので統合したものは用いない
 // seionMappings をマップに追加
 const brailleMap = new Map<string, BrailleData>();
 for (const data of seionMappings) {
@@ -56,6 +57,18 @@ for (const data of numberMappings) {
 for (const data of alphabetMappings) {
     brailleMap.set(data.character, data);
 }
+
+// ----------------------------------------------------------------------
+
+// 指点字表用に独立した Map を作成する
+const seionMap = new Map<string, BrailleData>();
+seionMappings.forEach(data => seionMap.set(data.character, data));
+
+const numberMap = new Map<string, BrailleData>();
+numberMappings.forEach(data => numberMap.set(data.character, data));
+
+const alphabetMap = new Map<string, BrailleData>();
+alphabetMappings.forEach(data => alphabetMap.set(data.character, data));
 
 // ----------------------------------------------------------------------
 
@@ -80,17 +93,17 @@ const getBrailleCells = (charArray: string[]): BrailleData[] => {
 // 清音表のデータ生成
 export const seionTableData: BrailleRowData[] = Object.entries(SEION_ROW_CHARACTERS).map(([category, charArray]) => ({
     category: category,
-    cells: getBrailleCells(charArray),
+    cells: charArray.map(char => seionMap.get(char) || { character: char, braille: '', dots: [] }),
 }));
 
 // 数字表のデータ生成
 export const numberTableData: BrailleRowData[] = Object.entries(NUMBER_ROW_CHARACTERS).map(([category, charArray]) => ({
     category: category,
-    cells: getBrailleCells(charArray),
+    cells: charArray.map(char => numberMap.get(char) || { character: char, braille: '', dots: [] }),
 }));
 
 // アルファベット表のデータ生成
 export const alphabetTableData: BrailleRowData[] = Object.entries(ALPHABET_ROW_CHARACTERS).map(([category, charArray]) => ({
     category: category,
-    cells: getBrailleCells(charArray),
+    cells: charArray.map(char => alphabetMap.get(char) || { character: char, braille: '', dots: [] }),
 }));

@@ -74,6 +74,7 @@ const numberTableWithSuFu = {
   '数符': brailleCodes.suFu,
   // 元の数字テーブルを展開
   ...numberTable,
+  'つなぎ符': brailleCodes.tsunagiFu,
   '小数点(.)': 0x02,
   '位取り点(,)': 0x04,
 };
@@ -96,6 +97,18 @@ const commentMapSuji: Record<string, string> = {
   '9': 'ひらがなの「お」に同じ\n ク「オ」カード',
   '0': 'ひらがなの「ろ」に同じ\nぜ「ろ」（零）',
 };
+
+// 点字表用（数字用の記号のマッピング）
+export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu).map(
+  ([character, hexCode]) => {
+    return {
+      character: character, // 数符、数字
+      dots: hexToDots(hexCode), // 点の配列
+      braille: hexToBraille(hexCode), // Unicode点字文字
+      comment: commentMapSuji[character], // コメント（覚えやすくするため）
+    };
+  }
+);
 
 const commentMapAlphabet: Record<string, string> = {
   '外字符': '次に来る文字が、\nアルファベットであることを示す',
@@ -133,18 +146,6 @@ const commentMapAlphabet: Record<string, string> = {
   'y': 'ひらがなの「む」に同じ。\n「4」(=d) に3と6の点。',
   'z': 'ひらがなの「ま」に同じ。\n「5」(=e) に3と6の点。',
 };
-
-// 点字表用（数字用の記号のマッピング）
-export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu).map(
-  ([character, hexCode]) => {
-    return {
-      character: character, // 数符、数字
-      dots: hexToDots(hexCode), // 点の配列
-      braille: hexToBraille(hexCode), // Unicode点字文字
-      comment: commentMapSuji[character], // コメント（覚えやすくするため）
-    };
-  }
-);
 
 const alphabetTableWithGaijiFu = {
   // 外字符を先頭に追加（キーは識別のために '外字符' とする）
