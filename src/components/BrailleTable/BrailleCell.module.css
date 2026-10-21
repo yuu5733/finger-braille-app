@@ -23,7 +23,7 @@
 :has(.comment) .contentWrapper {
   /* .comment というクラスを持つ子要素が存在する場合のみ適用 */
   grid-template-rows: 2fr 1fr 4fr auto;
-  height: 250px;
+  height: 270px;
 }
 
 /* 文字（ひらがな/カタカナ） */
