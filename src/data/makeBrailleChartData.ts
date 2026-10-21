@@ -10,7 +10,7 @@ import type { BrailleData, BrailleRowData } from './types';
 // 5. 相対パスによるインポート
 
 // 6. スタイルシート / アセット
-import { seionMappings, numberMappings, alphabetMappings } from './brailleMappings'; // 点字表用の点字マッピング
+import { seionMappings, numberMappings, alphabetMappings, ryakugoMappings } from './brailleMappings'; // 点字表用の点字マッピング
 
 const SEION_ROW_CHARACTERS: Record<string, string[]> = {
     'あ行': ['あ', 'い', 'う', 'え', 'お'],
@@ -39,6 +39,10 @@ const ALPHABET_ROW_CHARACTERS: Record<string, string[]> = {
     'A〜J': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'], // 10文字
     'K〜T': ['k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't'], // 10文字
     'U〜Z': ['u', 'v', 'w', 'x', 'y', 'z'], // 6文字
+};
+
+const RYAKUGO_ROW_CHARACTERS: Record<string, string[]> = {
+    'よく使う略語': ['JR', 'ATM', 'NHK', 'AI', 'IT'],
 };
 
 // 全マッピングを文字（key）で検索しやすい Map に変換
@@ -107,3 +111,11 @@ export const alphabetTableData: BrailleRowData[] = Object.entries(ALPHABET_ROW_C
     category: category,
     cells: charArray.map(char => alphabetMap.get(char) || { character: char, braille: '', dots: [] }),
 }));
+
+// よく使う略語のデータ生成
+export const ryakugoTableData: BrailleRowData[] = [
+  {
+    category: 'よく使う略語',
+    cells: ryakugoMappings || [],
+  },
+];

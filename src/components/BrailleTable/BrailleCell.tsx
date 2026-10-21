@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { FC } from 'react';
-import type { BrailleDot } from '../../data/types'; 
+import type { BrailleDot, SubCellData } from '../../data/types'; 
 
 import FingerBrailleSVG from './FingerBrailleSVG'; // SVGコンポーネントをインポート
 
@@ -12,9 +12,13 @@ interface BrailleCellProps {
   /** 表示する文字（ひらがな、記号など） */
   character: string;
   /** 点字の点番号（1〜6）の配列 */
-  dots: BrailleDot[];
+  dots?: BrailleDot[];
   /** 対応する点字の Unicode 文字（例: '⠁'） */
-  brailleChar: string;
+  brailleChar?: string;
+  /** 複数セル用 */
+  subCells?: SubCellData[];
+  /** グリッド幅調整用 */
+  columnSpan?: number;
   /** コメント。覚えるためのアドバイスなど */
   comment?: string; 
   /** 文字の長さの関係で、classを追加する必要があるか */
@@ -23,28 +27,53 @@ interface BrailleCellProps {
   type?: 'hiragana' | 'alphabet' | 'number';
 }
 
-const BrailleCell: FC<BrailleCellProps> = ({ character, dots, brailleChar, comment, flag, type }) => {
-  // 点番号をカンマ区切りで表示 (例: [1, 2, 3])
-  const dotNumbersText = dots.length > 0 ? dots.join(', ') : 'なし';
+const BrailleCell: FC<BrailleCellProps> = ({ 
+  character, 
+  dots, 
+  brailleChar, 
+  subCells, 
+  columnSpan = 1, 
+  comment, 
+  flag, 
+  type }) => {
   const characterClassName = flag ? `${styles.character} ${styles.longCharacter}` : styles.character;
 
+  // subCellsがあるかどうかでラッパーのクラスを切り替える
+  const wrapperClassName = subCells 
+    ? `${styles.contentWrapper} ${styles.multiContentWrapper}` 
+    : styles.contentWrapper;
+
   return (
-    // liにモジュールクラスを適用
-    <li className={styles.cellContainer}>
-      {/* グリッドコンテナ */}
-      <div className={styles.contentWrapper}>
-        
-        {/* 1. 指点字の視覚表示（左半分） */}
-        <div className={styles.fingerBraille}>
-          <FingerBrailleSVG brailleDots={dots} type={type} />
-        </div>
-
-        {/* 2. 文字情報（右側） */}
-        <p className={styles.dotNumbers}>[{dotNumbersText}]</p>
+    <li className={styles.cellContainer} data-span={columnSpan}>
+      <div className={wrapperClassName}>
+        {/* 文字を上に配置 */}
         <p className={characterClassName}>{character}</p>
-        <p className={styles.brailleCharContainer}><span>{brailleChar}</span></p>
 
-        {/* 3. コメント（語呂合わせ等）の表示領域。コメントが存在するときだけ描画 */}
+        {subCells ? (
+          /* 複数セル（略語など）の場合の並び */
+          <div className={styles.multiSubCellsContainer}>
+            {subCells.map((sub, index) => (
+              <div key={index} className={styles.subCellItem}>
+                <div className={styles.subCellSvgWrapper}>
+                  <FingerBrailleSVG brailleDots={sub.dots} type={type} />
+                </div>
+                <span className={styles.subCellDots}>[{sub.dots.join(', ')}]</span>
+                <div className={styles.subCellBraille}>{sub.braille}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          /* 従来の単一セル形式 */
+          <>
+            <div className={styles.fingerBraille}>
+              <FingerBrailleSVG brailleDots={dots || []} type={type} />
+            </div>
+            <p className={styles.dotNumbers}>[{dots ? dots.join(', ') : 'なし'}]</p>
+            <p className={styles.brailleCharContainer}><span>{brailleChar}</span></p>
+          </>
+        )}
+
+        {/* コメント */}
         {comment && <p className={styles.comment}>{comment}</p>}
       </div>
     </li>

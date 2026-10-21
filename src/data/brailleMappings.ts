@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData } from './types';
+import type { BrailleData, BrailleRowData } from './types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -168,4 +168,44 @@ export const alphabetMappings: BrailleData[] = Object.entries(alphabetTableWithG
       comment: commentMapAlphabet[character], // コメント（覚えやすくするため）
     };
   }
+);
+
+// --- 略語・外来語データの自動生成関数 ---
+/**
+ * 略語の文字列（例: "ATM", "JR"）から、外字符＋各文字の点字データを自動生成する
+ */
+export const createRyakugoData = (word: string, comment?: string): BrailleData => {
+  // 1. 先頭に外字符を追加
+  const subCells = [
+    {
+      character: '外字符',
+      braille: hexToBraille(brailleCodes.gaijiFu),
+      dots: hexToDots(brailleCodes.gaijiFu),
+    },
+    // 2. 文字列の各文字をアルファベットテーブルから変換
+    ...word.split('').map(char => {
+      const lowerChar = char.toLowerCase();
+      const hexCode = alphabetTable[lowerChar] ?? 0x00;
+      return {
+        character: char,
+        braille: hexToBraille(hexCode),
+        dots: hexToDots(hexCode),
+      };
+    }),
+  ];
+
+  return {
+    character: word,
+    subCells,
+    columnSpan: subCells.length,
+    comment: comment || `外来語・略語: ${word}`,
+  };
+};
+
+// よく使う略語の一覧からマッピングを自動生成
+const ryakugoList = ['JR', 'ATM', 'NHK', 'AI', 'IT'];
+
+// 各略語ごとに独立した行（category）としてデータを生成する
+export const ryakugoMappings: BrailleData[] = ryakugoList.map(word =>
+  createRyakugoData(word)
 );

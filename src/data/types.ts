@@ -14,11 +14,19 @@ export type BrailleDot = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type BrailleCode = BrailleDot[];
 
+export type SubCellData = {
+  character: string;    // 例: 拗音符、あるいは各文字
+  braille: string;      // Unicode点字
+  dots: BrailleCode;    // 点番号の配列
+};
+
 export type BrailleData = {
-  character: string;
-  braille: string;
-  dots: BrailleCode; // BrailleDot[]に同じ
-  comment?: string; // オプショナル（省略可能）なコメント
+  character: string;          // 複数の場合セル全体が表す文字（例: "きゃ", "ATM"）
+  braille?: string;           // 単一の場合の点字
+  dots?: BrailleCode;         // 単一の場合の点
+  subCells?: SubCellData[];   // 複数の点字を並べる場合（拗音や略語）
+  columnSpan?: number;        // グリッドの占有列数（2倍、3倍の幅にするため）
+  comment?: string;           // コメント
 };
 
 export type InputMode =

@@ -21,12 +21,12 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
   const isNumberOrAlphabetRow = category === '数字' || category === 'A〜J' || category === 'K〜T' || category === 'U〜Z'; 
   const isLongCharacter = category === '記号など(数字)' || category === '外字符など'; 
 
-    const gridClassName = `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
+  const gridClassName = `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
 
-    // カテゴリから type を判定する関数
-    const getCellType = (cat: string): 'hiragana' | 'alphabet' | 'number' => {
+  // カテゴリから type を判定する関数
+  const getCellType = (cat: string): 'hiragana' | 'alphabet' | 'number' => {
     if (cat === '数字') return 'number';
-    if (cat === 'A〜J' || cat === 'K〜T' || cat === 'U〜Z') return 'alphabet';
+    if (cat === 'A〜J' || cat === 'K〜T' || cat === 'U〜Z' || cat === 'よく使う略語') return 'alphabet';
     return 'hiragana';
   };
 
@@ -47,6 +47,8 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
             character={data.character}
             brailleChar={data.braille}
             dots={data.dots}
+            subCells={data.subCells}
+            columnSpan={data.columnSpan}
             comment={data.comment}
             flag={data.character.length > 4 ? true : false}
             type={cellType}

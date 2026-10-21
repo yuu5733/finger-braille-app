@@ -6,6 +6,7 @@ import {
   seionTableData,
   numberTableData,
   alphabetTableData,
+  ryakugoTableData,
 } from "../../data/makeBrailleChartData";
 ---
 
@@ -20,6 +21,7 @@ import {
         <li><a href="#seion">清音</a></li>
         <li><a href="#number">数字</a></li>
         <li><a href="#alphabet">アルファベット</a></li>
+        <li><a href="#ryakugo">略語</a></li>
       </ol>
     </nav>
 
@@ -41,7 +43,12 @@ import {
       tableData={alphabetTableData}
       client:visible
     />
-
+    <BrailleTable
+      h2_text="略語"
+      id="ryakugo"
+      tableData={ryakugoTableData}
+      client:visible
+    />
     <style>
       body > main {
         max-width: 1000px;

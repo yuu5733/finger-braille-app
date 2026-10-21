@@ -6,6 +6,23 @@
   list-style: none;
 }
 
+/* カラムスパンの動的適用 */
+.cellContainer[data-span="2"] {
+  grid-column: span 2;
+}
+
+.cellContainer[data-span="3"] {
+  grid-column: span 3;
+}
+
+.cellContainer[data-span="4"] {
+  grid-column: span 4;
+}
+
+.cellContainer[data-span="5"] {
+  grid-column: span 5;
+}
+
 /* 通常のセル（ひらがな等：コメントなし） */
 .contentWrapper {
   display: grid;
@@ -97,4 +114,72 @@
   min-height: 1.2em;
   word-break: break-all;
   white-space: pre-line;
+}
+
+/* --- 複数セル（略語など）用のスタイル --- */
+ul:has(.multiContentWrapper) {
+  display: flex;
+  flex-direction: column;
+}
+
+.multiContentWrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 270px;
+  box-sizing: border-box;
+  grid-template-rows: unset;
+}
+
+/* グリッドの束縛を解除 */
+.multiContentWrapper .character {
+  grid-column: unset;
+  grid-row: unset;
+  margin-bottom: 5px;
+}
+
+.multiSubCellsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.subCellItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.subCellSvgWrapper {
+  width: 100%;
+  max-width: 65px;
+  height: auto;
+  margin-bottom: 2px;
+}
+
+.subCellDots {
+  font-size: 0.6rem;
+  color: #666;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.subCellBraille {
+  font-size: 1.2rem;
+  margin-top: 2px;
+}
+
+.multiContentWrapper .comment {
+  grid-column: unset;
+  grid-row: unset;
+  margin-top: 8px;
 }
