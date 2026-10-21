@@ -7,7 +7,7 @@ import type { BrailleDot } from '../../data/types';
 type LeftDot = 1 | 2 | 3;
 type RightDot = 4 | 5 | 6;
 
-const COLOR_MAP: Record<BrailleDot, string> = {
+const COLOR_MAP_HIRAGANA: Record<BrailleDot, string> = {
   // 黒点（1, 2, 4）
   1: '#000000', 
   2: '#000000', 
@@ -18,9 +18,28 @@ const COLOR_MAP: Record<BrailleDot, string> = {
   6: '#007bff',
 };
 
+const COLOR_MAP_ALPHABET: Record<BrailleDot, string> = {
+  // 黒点（1, 2, 4, 5）
+  1: '#000000',
+  2: '#000000',
+  4: '#000000',
+  5: '#000000',
+  // オレンジの点（3, 6）
+  3: '#ff6600',
+  6: '#ff6600',
+};
+
+// 数字用（アルファベットをベースに値コピーし、数字独自の変更にも対応しやすくする）
+const COLOR_MAP_NUMBER: Record<BrailleDot, string> = {
+  ...COLOR_MAP_ALPHABET,
+  // 追加で上書きも可能
+};
+
 interface FingerBrailleSVGProps {
   /** 押されている点（1〜6）の配列。空配列の場合は全て非表示。 */
   brailleDots: BrailleDot[];
+  /** 使用するカラーマップ（省略時はひらがな用） */
+  colorMap?: Record<BrailleDot, string>;
 }
 // ===========================================
 
@@ -74,7 +93,7 @@ const getRightHandSVG = (brailleDots: BrailleDot[]) => {
 };
 
 
-const FingerBrailleSVG: FC<FingerBrailleSVGProps> = ({ brailleDots = [] }) => {
+const FingerBrailleSVG: FC<FingerBrailleSVGProps> = ({ brailleDots = [], colorMap = COLOR_MAP_HIRAGANA }) => {
   // Set for quick lookup
   const dotSet = new Set(brailleDots);
   
@@ -94,7 +113,7 @@ const processSVG = (svgString: string, dotMap: Record<BrailleDot, string> | Reco
       const dotNum = parseInt(dotNumStr) as BrailleDot;
       const isPressed = dotSet.has(dotNum);
       
-      const fill = isPressed ? COLOR_MAP[dotNum] : 'none'; // 押されていれば色を、そうでなければ 'none' (透明)
+      const fill = isPressed ? colorMap[dotNum] : 'none'; // 押されていれば色を、そうでなければ 'none' (透明)
       const stroke = isPressed ? 'none' : '#ccc';         // 押されていれば枠線を非表示、そうでなければ薄いグレーの枠線
 
       // SVG文字列を直接操作して、circle要素の属性を更新
