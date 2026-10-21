@@ -113,7 +113,7 @@ export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu)
 const commentMapAlphabet: Record<string, string> = {
   '外字符': '次に来る文字が、\nアルファベットであることを示す',
   'つなぎ符': '複合語で用いる\n例）[外字符] SNS [つなぎ符] うんよう',
-  '大文字符': '大文字であることを示す。指点字では使わないことも多い。\n2回使うとそれ以降すべて大文字　例) [外][大][大]NHK',
+  '大文字符': '大文字だと示す。指点字では使わないことも多い。\n2回使うとすべて大文字　例) [外][大][大]NHK',
 
   'a': 'ひらがなの「あ」に同じ。\n数字の「1」と同じ',
   'b': 'ひらがなの「い」に同じ。\n数字の「2」と同じ',
