@@ -79,7 +79,12 @@ const numberTableWithSuFu = {
 };
 
 // 文字（または数字）ごとのコメント（語呂合わせなど）を定義する辞書
-const commentMap: Record<string, string> = {
+const commentMapSuji: Record<string, string> = {
+  '数符': '次に来る文字が、数字であることを示す',
+  //'小数点(.)': '',
+  'つなぎ符': '数字の後に、あ行・ら行が続く時に使用\n例）[数符] 50 [つなぎ符] えん',
+  '位取り点(,)': '万(千)を使うので、基本的に使わない\n[数符] 1まん [数符] 5000にん',
+
   '1': 'ひらがなの「あ」に同じ\nい「あ」いあ！',
   '2': 'ひらがなの「い」に同じ\n に「い」（兄々）',
   '3': 'ひらがなの「う」に同じ\nさん「う」（山雨）',
@@ -90,27 +95,37 @@ const commentMap: Record<string, string> = {
   '8': 'ひらがなの「り」に同じ\nは「り」（針）',
   '9': 'ひらがなの「お」に同じ\n ク「オ」カード',
   '0': 'ひらがなの「ろ」に同じ\nぜ「ろ」（零）',
+};
+
+const commentMapAlphabet: Record<string, string> = {
+  '外字符': '次に来る文字が、\nアルファベットであることを示す',
+  'つなぎ符': '複合語で用いる\n例）[外字符] SNS [つなぎ符] うんよう',
+  '大文字符': '大文字であることを示す。指点字では使わないことも多い。\n2回使うとそれ以降すべて大文字　例) [外][大][大]NHK',
 
   'a': 'ひらがなの「あ」に同じ。\n数字の「1」と同じ',
   'b': 'ひらがなの「い」に同じ。\n数字の「2」と同じ',
   'c': 'ひらがなの「う」に同じ。\n数字の「3」と同じ',
   'd': 'ひらがなの「る」に同じ。\n数字の「4」と同じ',
   'e': 'ひらがなの「ら」に同じ。\n数字の「5」と同じ',
+
   'f': 'ひらがなの「え」に同じ。\n数字の「6」と同じ',
   'g': 'ひらがなの「れ」に同じ。\n数字の「7」と同じ',
   'h': 'ひらがなの「り」に同じ。\n数字の「8」と同じ',
   'i': 'ひらがなの「お」に同じ。\n数字の「9」と同じ',
   'j': 'ひらがなの「ろ」に同じ。\n数字の「0」と同じ',
+
   'k': 'ひらがなの「な」に同じ。\n「1」(=a) に3点。',
   'l': 'ひらがなの「に」に同じ。\n「2」(=b) に3点。',
   'm': 'ひらがなの「ぬ」に同じ。\n「3」(=c) に3点。',
   'n': 'ひらがなの「つ」に同じ。\n「4」(=d) に3点。',
   'o': 'ひらがなの「た」に同じ。\n「5」(=e) に3点。',
+
   'p': 'ひらがなの「ね」に同じ。\n「6」(=f) に3点。',
   'q': 'ひらがなの「て」に同じ。\n「7」(=g) に3点。',
   'r': 'ひらがなの「ち」に同じ。\n「8」(=h) に3点。',
   's': 'ひらがなの「の」に同じ。\n「9」(=i) に3点。',
   't': 'ひらがなの「と」に同じ。\n「0」(=j) に3点。',
+
   'u': 'ひらがなの「は」に同じ。\n「1」(=a) に3と6の点。',
   'v': 'ひらがなの「ひ」に同じ。\n「2」(=b) に3と6の点。',
   'w': '特殊。ひらがなの「そ」に同じ。\n「J」に6の点。',
@@ -126,7 +141,7 @@ export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu)
       character: character, // 数符、数字
       dots: hexToDots(hexCode), // 点の配列
       braille: hexToBraille(hexCode), // Unicode点字文字
-      comment: commentMap[character], // コメント（覚えやすくするため）
+      comment: commentMapSuji[character], // コメント（覚えやすくするため）
     };
   }
 );
@@ -149,7 +164,7 @@ export const alphabetMappings: BrailleData[] = Object.entries(alphabetTableWithG
       character: character, // 英語
       dots: hexToDots(hexCode), // 点の配列
       braille: hexToBraille(hexCode), // Unicode点字文字
-      comment: commentMap[character], // コメント（覚えやすくするため）
+      comment: commentMapAlphabet[character], // コメント（覚えやすくするため）
     };
   }
 );
