@@ -23,6 +23,14 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
 
     const gridClassName = `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
 
+    // カテゴリから type を判定する関数
+    const getCellType = (cat: string): 'hiragana' | 'alphabet' | 'number' => {
+    if (cat === '数字') return 'number';
+    if (cat === 'A〜J' || cat === 'K〜T' || cat === 'U〜Z') return 'alphabet';
+    return 'hiragana';
+  };
+
+  const cellType = getCellType(category);
 
   return (
     <section className={styles.brailleRowSection}>
@@ -41,6 +49,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
             dots={data.dots}
             comment={data.comment}
             flag={data.character.length > 4 ? true : false}
+            type={cellType}
           />
         ))}
       </ul>

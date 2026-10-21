@@ -6,8 +6,10 @@ import type { BrailleDot } from '../../data/types';
 // === 型定義と定数 ===
 type LeftDot = 1 | 2 | 3;
 type RightDot = 4 | 5 | 6;
+type ColorType = 'hiragana' | 'alphabet' | 'number';
 
-const COLOR_MAP_HIRAGANA: Record<BrailleDot, string> = {
+const COLOR_MAPS: Record<ColorType, Record<BrailleDot, string>> = {
+  hiragana: {
   // 黒点（1, 2, 4）
   1: '#000000', 
   2: '#000000', 
@@ -16,9 +18,8 @@ const COLOR_MAP_HIRAGANA: Record<BrailleDot, string> = {
   3: '#007bff', 
   5: '#007bff', 
   6: '#007bff',
-};
-
-const COLOR_MAP_ALPHABET: Record<BrailleDot, string> = {
+  },
+  alphabet: {
   // 黒点（1, 2, 4, 5）
   1: '#000000',
   2: '#000000',
@@ -27,19 +28,24 @@ const COLOR_MAP_ALPHABET: Record<BrailleDot, string> = {
   // オレンジの点（3, 6）
   3: '#ff6600',
   6: '#ff6600',
-};
-
-// 数字用（アルファベットをベースに値コピーし、数字独自の変更にも対応しやすくする）
-const COLOR_MAP_NUMBER: Record<BrailleDot, string> = {
-  ...COLOR_MAP_ALPHABET,
-  // 追加で上書きも可能
+  },
+  number: {
+    // 黒点（1, 2, 4, 5）
+    1: '#000000',
+    2: '#000000',
+    4: '#000000',
+    5: '#000000',
+    // オレンジの点（3, 6）
+    3: '#ff6600',
+    6: '#ff6600',
+  },
 };
 
 interface FingerBrailleSVGProps {
   /** 押されている点（1〜6）の配列。空配列の場合は全て非表示。 */
   brailleDots: BrailleDot[];
   /** 使用するカラーマップ（省略時はひらがな用） */
-  colorMap?: Record<BrailleDot, string>;
+  type?: ColorType;
 }
 // ===========================================
 
@@ -93,9 +99,12 @@ const getRightHandSVG = (brailleDots: BrailleDot[]) => {
 };
 
 
-const FingerBrailleSVG: FC<FingerBrailleSVGProps> = ({ brailleDots = [], colorMap = COLOR_MAP_HIRAGANA }) => {
+const FingerBrailleSVG: FC<FingerBrailleSVGProps> = ({ brailleDots = [], type = 'hiragana' }) => {
   // Set for quick lookup
   const dotSet = new Set(brailleDots);
+
+  // typeに対応するカラーマップを取得
+  const colorMap = COLOR_MAPS[type];
   
   // 1. 左手と右手のSVGを分割
   // 型述語 (d is 1 | 2 | 3)を使うことで、leftDotsは (1 | 2 | 3)[] と推論される

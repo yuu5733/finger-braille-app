@@ -19,9 +19,11 @@ interface BrailleCellProps {
   comment?: string; 
   /** 文字の長さの関係で、classを追加する必要があるか */
   flag?: boolean;
+  /** 文字の種類 */
+  type?: 'hiragana' | 'alphabet' | 'number';
 }
 
-const BrailleCell: FC<BrailleCellProps> = ({ character, dots, brailleChar, comment, flag }) => {
+const BrailleCell: FC<BrailleCellProps> = ({ character, dots, brailleChar, comment, flag, type }) => {
   // 点番号をカンマ区切りで表示 (例: [1, 2, 3])
   const dotNumbersText = dots.length > 0 ? dots.join(', ') : 'なし';
   const characterClassName = flag ? `${styles.character} ${styles.longCharacter}` : styles.character;
@@ -34,7 +36,7 @@ const BrailleCell: FC<BrailleCellProps> = ({ character, dots, brailleChar, comme
         
         {/* 1. 指点字の視覚表示（左半分） */}
         <div className={styles.fingerBraille}>
-          <FingerBrailleSVG brailleDots={dots} /> 
+          <FingerBrailleSVG brailleDots={dots} type={type} />
         </div>
 
         {/* 2. 文字情報（右側） */}
