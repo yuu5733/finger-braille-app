@@ -202,10 +202,21 @@ export const createRyakugoData = (word: string, comment?: string): BrailleData =
   };
 };
 
+interface RyakugoItem {
+  word: string;
+  comment?: string;
+}
+
 // よく使う略語の一覧からマッピングを自動生成
-const ryakugoList = ['JR', 'ATM', 'NHK', 'AI', 'IT'];
+const ryakugoList: RyakugoItem[] = [
+  { word: 'JR', comment: 'ろち' },
+  { word: 'ATM', comment: 'あとぬ' },
+  { word: 'NHK', comment: 'つりな' },
+  { word: 'AI', comment: 'あお' },
+  { word: 'IT', comment: 'おと' },
+];
 
 // 各略語ごとに独立した行（category）としてデータを生成する
-export const ryakugoMappings: BrailleData[] = ryakugoList.map(word =>
-  createRyakugoData(word)
+export const ryakugoMappings: BrailleData[] = ryakugoList.map(item =>
+  createRyakugoData(item.word, `ひらがなでは「${item.comment}」`)
 );
