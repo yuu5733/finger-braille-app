@@ -117,69 +117,59 @@
 }
 
 /* --- 複数セル（略語など）用のスタイル --- */
-ul:has(.multiContentWrapper) {
+.multiBrailleCharContainer {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
   display: flex;
-  flex-direction: column;
-}
-
-.multiContentWrapper {
-  display: flex;
-  flex-direction: column;
-  min-width: 100%;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: space-between;
+  gap: 2px;
+  font-size: 1.5rem;
+  border: 1px solid #666;
+  border-radius: 16px;
+  padding: 0 6px;
+  height: 50px;
+  max-width: fit-content;
+  margin-left: auto;
+}
+
+.multiBrailleCharContainer>span {
+  display: inline-block;
+  background-image: linear-gradient(transparent 15%,
+      #ffdd8888 15%,
+      #ddff8888 85%,
+      transparent 85%);
+}
+
+/* 2行目全体：点番号群のコンテナ */
+.multiDotNumbers {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #666;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* 3行目全体：指点字SVG群のコンテナ */
+.multiFingerBraille {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
   height: 100%;
-  min-height: 270px;
-  box-sizing: border-box;
-  grid-template-rows: unset;
 }
 
-/* グリッドの束縛を解除 */
-.multiContentWrapper .character {
-  grid-column: unset;
-  grid-row: unset;
-  margin-bottom: 5px;
-}
-
-.multiSubCellsContainer {
+.subSvgItem {
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: 6px;
-  width: 100%;
-  flex-grow: 1;
-}
-
-.subCellItem {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  flex: 1;
-  min-width: 0;
-}
-
-.subCellSvgWrapper {
-  width: 100%;
-  max-width: 65px;
-  height: auto;
-  margin-bottom: 2px;
-}
-
-.subCellDots {
-  font-size: 0.6rem;
-  color: #666;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-.subCellBraille {
-  font-size: 1.2rem;
-  margin-top: 2px;
-}
-
-.multiContentWrapper .comment {
-  grid-column: unset;
-  grid-row: unset;
-  margin-top: 8px;
+  max-width: 90px;
 }

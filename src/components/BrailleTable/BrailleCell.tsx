@@ -50,18 +50,30 @@ const BrailleCell: FC<BrailleCellProps> = ({
         <p className={characterClassName}>{character}</p>
 
         {subCells ? (
-          /* 複数セル（略語など）の場合の並び */
-          <div className={styles.multiSubCellsContainer}>
-            {subCells.map((sub, index) => (
-              <div key={index} className={styles.subCellItem}>
-                <div className={styles.subCellSvgWrapper}>
+          <>
+            {/* 1行目・右側：点字文字のグループをまとめる */}
+            <div className={styles.multiBrailleCharContainer}>
+              {subCells.map((sub, index) => (
+                <span key={index}>{sub.braille}</span>
+              ))}
+            </div>
+
+            {/* 2行目全体：点番号のグループをまとめる */}
+            <div className={styles.multiDotNumbers}>
+              {subCells.map((sub, index) => (
+                <span key={index}>[{sub.dots.join(', ')}]</span>
+              ))}
+            </div>
+
+            {/* 3行目全体：指点字SVGのグループをまとめる */}
+            <div className={styles.multiFingerBraille}>
+              {subCells.map((sub, index) => (
+                <div key={index} className={styles.subSvgItem}>
                   <FingerBrailleSVG brailleDots={sub.dots} type={type} />
                 </div>
-                <span className={styles.subCellDots}>[{sub.dots.join(', ')}]</span>
-                <div className={styles.subCellBraille}>{sub.braille}</div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         ) : (
           /* 従来の単一セル形式 */
           <>
