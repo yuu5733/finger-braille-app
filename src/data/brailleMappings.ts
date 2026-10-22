@@ -378,40 +378,69 @@ interface SpecialBrailleConfig {
 
 // 特殊音の文字をキーにした設定マップ（オブジェクト）
 const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
-  // 特殊音（疑問符 [2,6] ＋ 母音など）
+  // w系特殊音（疑問符 [2,6] ＋ 母音）
   'うぃ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'い' },
   'うぇ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'え' },
   'うぉ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'お' },
   
-  // 有声唇摩擦音（濁音符）
+  // kw系特殊音（疑問符 [2,6] ＋ か行）
+  'くぁ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'か' },
+  'くぃ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'き' },
+  'くぇ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'け' },
+  'くぉ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'こ' },
+
+  // gw系特殊音（句点 [2,5,6] ＋ か行）
+  'ぐぁ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'か' },
+  'ぐぃ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'き' },
+  'ぐぇ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'け' },
+  'ぐぉ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'こ' },
+
+  // tw系特殊音（疑問符 [2,6] ＋ た行）
+  'つぁ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'た' },
+  'つぃ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'ち' },
+  'つぇ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'て' },
+  'つぉ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'と' },
+
+  // f系特殊音（疑問符 [2,6] ＋ は行）
+  'ふぁ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'は' },
+  'ふぃ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'ひ' },
+  'ふぇ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'へ' },
+  'ふぉ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'ほ' },
+
+  // v系特殊音、有声唇摩擦音（濁音符）
   'ゔ': { fuKey: '濁音符', fuHex: brailleCodes.dakuonFu, baseChar: 'う' },
-  // 有声唇摩擦音（句点）
+  // v系特殊音、有声唇摩擦音（句点 [2,5,6] ＋ あ行）
+  'ゔぁ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'あ' },
   'ゔぃ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'い' },
   'ゔぇ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'え' },
   'ゔぉ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'お' },
 
-  // 特殊音（拗音符 ＋ エ段）
+  // ye系特殊音（拗音符 ＋ エ段）
   'いぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'え' },
   'きぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'け' },
   'しぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'せ' },
+  'じぇ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'せ' },
   'ちぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'て' },
   'にぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'ね' },
   'ひぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'へ' },
 
-  
-  // 特殊音
+  // swi、thi系特殊。音子音の取り替えなど
+  'すぃ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'し' },
+  'てぃ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'ち' },
+  'ずぃ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'し' },
+  'でぃ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'ち' },
+
+  // twu系特殊音（疑問符 [2,6] ＋ つ）
+  'とぅ': { fuKey: '疑問符 [2,6]', fuHex: 0x22, baseChar: 'つ' },
+  'どぅ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'つ' },
+
+  // thu、fyu、fyo、dhu、系特殊音
   'てゅ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'つ' },
   'ふゅ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'ゆ' },
   'ふょ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'よ' },
   'でゅ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'つ' },
   'ぶゅ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'ゆ' },
   'ぶょ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'よ' },
-
-  // 子音の取り替えなど
-  'すぃ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'し' },
-  'てぃ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'ち' },
-  'ずぃ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'し' },
-  'でぃ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'ち' },
 };
 
 export const createSpecialData = (char: string): BrailleData => {
@@ -453,11 +482,16 @@ export const createSpecialData = (char: string): BrailleData => {
 
 // 一覧リストとマッピングの生成
 const specialList = [
-  'うぃ', 'うぇ', 'うぉ', 
-  'ゔぃ', 'ゔ', 'ゔぇ', 'ゔぉ',
-  'いぇ', 'きぇ', 'しぇ', 'ちぇ', 'にぇ', 'ひぇ',
-  'てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ',
-  'すぃ', 'てぃ', 'ずぃ', 'でぃ'
+  'うぃ', 'うぇ', 'うぉ',
+  'くぁ', 'くぃ', 'くぇ', 'くぉ',
+  'ぐぁ', 'ぐぃ', 'ぐぇ', 'ぐぉ',
+  'つぁ', 'つぃ', 'つぇ', 'つぉ',
+  'ふぁ', 'ふぃ', 'ふぇ', 'ふぉ',
+  'ゔ', 'ゔぁ', 'ゔぃ', 'ゔぇ', 'ゔぉ',
+  'いぇ', 'きぇ', 'しぇ', 'じぇ', 'ちぇ', 'にぇ', 'ひぇ',
+  'すぃ', 'てぃ', 'ずぃ', 'でぃ',
+  'とぅ', 'どぅ',
+  'てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ'
 ];
 
 export const specialMappings: BrailleData[] = specialList.map(char => createSpecialData(char));
