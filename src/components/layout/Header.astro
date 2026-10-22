@@ -4,21 +4,9 @@ import LoginButton from "../ui/LoginButton";
 
 <header class="header">
   <nav class="header-links">
-    <a
-      href="/"
-      style={{ marginRight: "32px", textDecoration: "none", color: "#fff" }}
-    >
-      ホーム
-    </a>
-    <a
-      href="/practice"
-      style={{ marginRight: "32px", textDecoration: "none", color: "#fff" }}
-    >
-      練習
-    </a>
-    <a href="/braille-table" style={{ textDecoration: "none", color: "#fff" }}>
-      指点字表
-    </a>
+    <a href="/">ホーム</a>
+    <a href="/practice">練習</a>
+    <a href="/braille-table">指点字表</a>
   </nav>
 
   <!-- <div>
@@ -35,10 +23,40 @@ import LoginButton from "../ui/LoginButton";
     background-color: #333;
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
-  .header h1 {
-    margin: 0;
-    font-size: 1.5rem;
+  .header-links {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-links a {
+    margin-right: 16px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    padding: 0.5rem 0.875rem;
+    border-radius: 9999px; /* ピル型の角丸 */
+    transition:
+      background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .header-links a:last-child {
+    margin-right: 0;
+  }
+
+  /* マテリアル3風のステートレイヤー（State Layer）ホバー */
+  .header-links a:hover {
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.08
+    ); /* ダーク背景に馴染む半透明の白 */
+    color: #f0f8ff; /* 指定された明るいトーンのアクセントカラー */
   }
 </style>
