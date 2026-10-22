@@ -46,10 +46,6 @@ const getModeConfig = (mode: InputMode) => {
       label = '拗半濁音 待機';
       classNameKey = 'wait'; // 黄色（待機モード共通）
       break;
-    case 'GouYouon':
-      label = '合拗音 待機';
-      classNameKey = 'wait'; // 黄色（待機モード共通）
-      break;
     default:
       label = 'モード情報なし';
       classNameKey = 'kana'; // フォールバック

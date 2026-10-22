@@ -55,7 +55,6 @@ export function getModeFromModeChar(modeChar: string): InputMode | null {
     '拗音符': 'Youon',
     '拗濁音符': 'YouDakuon',
     '拗半濁音符': 'YouHandakuon',
-    '合拗音符': 'GouYouon',
     '数符': 'Suuji',
     '外字符': 'Alphabet',
     // '大文字符'などの特殊な記号もここに追加可能

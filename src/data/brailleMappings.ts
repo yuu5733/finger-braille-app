@@ -376,29 +376,34 @@ interface SpecialBrailleConfig {
 
 // 特殊音の文字をキーにした設定マップ（オブジェクト）
 const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
-  // 合拗音（疑問符 [2,6] ＋ 母音など）
+  // 特殊音（疑問符 [2,6] ＋ 母音など）
   'うぃ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'い' },
   'うぇ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'え' },
   'うぉ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'お' },
   
-  // 濁音の特殊音
+  // 有声唇摩擦音（濁音符）
   'ゔ': { fuKey: '濁音符', fuHex: brailleCodes.dakuonFu, baseChar: 'う' },
-  
-  // エ段の開拗音（拗音符 ＋ エ段）
+  // 有声唇摩擦音（句点）
+  'ゔぃ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'い' },
+  'ゔぇ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'え' },
+  'ゔぉ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'お' },
+
+  // 特殊音（拗音符 ＋ エ段）
   'いぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'え' },
   'きぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'け' },
   'しぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'せ' },
   'ちぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'て' },
   'にぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'ね' },
   'ひぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'へ' },
+
   
   // 特殊音
   'てゅ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'つ' },
   'ふゅ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'ゆ' },
   'ふょ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'よ' },
-  'でゅ': { fuKey: '4,5,6点', fuHex: 0x38, baseChar: 'つ' },
-  'ぶゅ': { fuKey: '4,5,6点', fuHex: 0x38, baseChar: 'ゆ' },
-  'ぶょ': { fuKey: '4,5,6点', fuHex: 0x38, baseChar: 'よ' },
+  'でゅ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'つ' },
+  'ぶゅ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'ゆ' },
+  'ぶょ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'よ' },
 
   // 子音の取り替えなど
   'すぃ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'し' },
@@ -447,7 +452,7 @@ export const createSpecialData = (char: string): BrailleData => {
 // 一覧リストとマッピングの生成
 const specialList = [
   'うぃ', 'うぇ', 'うぉ', 
-  'ゔ',
+  'ゔぃ', 'ゔ', 'ゔぇ', 'ゔぉ',
   'いぇ', 'きぇ', 'しぇ', 'ちぇ', 'にぇ', 'ひぇ',
   'てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ',
   'すぃ', 'てぃ', 'ずぃ', 'でぃ'
