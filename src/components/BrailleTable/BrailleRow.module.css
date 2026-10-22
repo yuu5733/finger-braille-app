@@ -33,6 +33,39 @@
   border-left: 2px solid #333;
 }
 
+/* BrailleCell の li要素（.cellContainer）に適用されるスタイル */
+/* :global() を使用して、子コンポーネント内のクラスにアクセス */
+/* :globalは、CSS ModulesやScoped CSSなどの環境で使われる疑似クラス。そのスコープ化を一時的に解除し、カッコ内のセレクタがグローバルな名前として扱われるように指定できる */
+.brailleRowGrid :global(.cellContainer) {
+  /* --- ② 右と下の境界線のみを設定（隣接要素と共有する） --- */
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+
+  /* li要素のスタイルリセット */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* 略語などの行専用のulクラス（グリッドを解除して縦に並べる場合） */
+.ryakugoRowGrid {
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid #333;
+}
+
+.ryakugoRowGrid :global(.cellContainer) {
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
 @media (width>720px) {
   /* 最大5列固定のレイアウト（数字やアルファベット用） */
   .maxFiveColumnGrid {
@@ -54,22 +87,3 @@
 }
 
 
-
-/* BrailleCell の li要素（.cellContainer）に適用されるスタイル */
-/* :global() を使用して、子コンポーネント内のクラスにアクセス */
-/* :globalは、CSS ModulesやScoped CSSなどの環境で使われる疑似クラス。そのスコープ化を一時的に解除し、カッコ内のセレクタがグローバルな名前として扱われるように指定できる */
-.brailleRowGrid :global(.cellContainer) {
-  /* --- ② 右と下の境界線のみを設定（隣接要素と共有する） --- */
-  border-right: 2px solid #333;
-  border-bottom: 2px solid #333;
-
-  /* li要素のスタイルリセット */
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  box-sizing: border-box;
-
-  /* BrailleCell.module.css内のpaddingをここでリセット・再設定する場合は以下を追記 */
-  /* padding: 10px; */
-}

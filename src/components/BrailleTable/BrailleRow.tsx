@@ -20,8 +20,11 @@ interface BrailleRowProps extends BrailleRowData {}
 const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
   const isNumberOrAlphabetRow = category === '数字' || category === 'A〜J' || category === 'K〜T' || category === 'U〜Z'; 
   const isLongCharacter = category === '記号など(数字)' || category === '外字符など'; 
+  const isRyakugoRow = category === 'よく使う略語';
 
-  const gridClassName = `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
+  const gridClassName = isRyakugoRow
+    ? styles.ryakugoRowGrid
+    : `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
 
   // カテゴリから type を判定する関数
   const getCellType = (cat: string): 'hiragana' | 'alphabet' | 'number' => {
