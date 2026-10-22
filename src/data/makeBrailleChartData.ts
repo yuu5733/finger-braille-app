@@ -10,7 +10,7 @@ import type { BrailleData, BrailleRowData } from './types';
 // 5. 相対パスによるインポート
 
 // 6. スタイルシート / アセット
-import { seionMappings, numberMappings, alphabetMappings, ryakugoMappings } from './brailleMappings'; // 点字表用の点字マッピング
+import { seionMappings, hiraganaKigouMappings, numberMappings, alphabetMappings, ryakugoMappings } from './brailleMappings'; // 点字表用の点字マッピング
 
 const SEION_ROW_CHARACTERS: Record<string, string[]> = {
     'あ行': ['あ', 'い', 'う', 'え', 'お'],
@@ -24,6 +24,11 @@ const SEION_ROW_CHARACTERS: Record<string, string[]> = {
     'ら行': ['ら', 'り', 'る', 'れ', 'ろ'],
     'わ行': ['わ', 'ゐ', 'ゑ', 'を'], 
     '撥音、促音、長音': ['ん', 'っ', 'ー'], 
+  };
+
+const KIGOU_ROW_CHARACTERS: Record<string, string[]> = {
+    '記号': ['。(句点、終止符)', '？(疑問符)', '「（つなぎ符）', '状況説明',],
+    'かっこ': ['「」(第一カギ)', '丸カッコ',],
   };
 
 const NUMBER_ROW_CHARACTERS: Record<string, string[]> = {
@@ -68,6 +73,9 @@ for (const data of alphabetMappings) {
 const seionMap = new Map<string, BrailleData>();
 seionMappings.forEach(data => seionMap.set(data.character, data));
 
+const kigouMap = new Map<string, BrailleData>();
+hiraganaKigouMappings.forEach(data => kigouMap.set(data.character, data));
+
 const numberMap = new Map<string, BrailleData>();
 numberMappings.forEach(data => numberMap.set(data.character, data));
 
@@ -98,6 +106,12 @@ alphabetMappings.forEach(data => alphabetMap.set(data.character, data));
 export const seionTableData: BrailleRowData[] = Object.entries(SEION_ROW_CHARACTERS).map(([category, charArray]) => ({
     category: category,
     cells: charArray.map(char => seionMap.get(char) || { character: char, braille: '', dots: [] }),
+}));
+
+// 記号表のデータ生成を追加
+export const kigouTableData: BrailleRowData[] = Object.entries(KIGOU_ROW_CHARACTERS).map(([category, charArray]) => ({
+    category: category,
+    cells: charArray.map(char => kigouMap.get(char) || { character: char, braille: '', dots: [] }),
 }));
 
 // 数字表のデータ生成
