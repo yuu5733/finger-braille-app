@@ -12,7 +12,7 @@ import { hexToBraille } from '../utils/hexToBraille';
 // 5. 相対パスによるインポート (※ 無し)
 
 // 6. スタイルシート / アセット
-import { hiraganaTable, hiraganaKigouTable, numberTable, alphabetTable, brailleCodes } from './table';
+import { hiraganaTable, hiraganaKigouTable, kigouTable_yubitenjiChart, numberTable, alphabetTable, brailleCodes } from './table';
 
 // ----------------------------------------------------------------------
 // 1つの点字で表現できる基本となるキー（ひらがな、ひらがな用の記号）のマッピングの定義
@@ -58,13 +58,23 @@ export const seionMappings: BrailleData[] = Object.entries(hiraganaTable).map(
   }
 );
 
+const commentMapHiraganaKigou: Record<string, string> = {
+  '。(句点、終止符)': '指点字ではそんなに使わない\n話が終わったと明確に示したいときに使う',
+  '？(疑問符)': '疑問はモダリティ（確信、推量、許可など）\nに当たり大事',
+  '「（つなぎ符）': '話者を示すときに使う\n例）たなか「',
+  '通訳者引用符': '補足・状況説明\n誰に対しての質問なのか。相手の様子（笑っている）など',
+    '「」(第一カギ)': '3, 6点で最初と最後をくくる',
+  '丸カッコ': '2, 3, 5, 6点で最初と最後をくくる',
+};
+
 // 点字表用（かな用の記号のマッピング）
-export const hiraganaKigouMappings: BrailleData[] = Object.entries(hiraganaKigouTable).map(
+export const hiraganaKigouMappings: BrailleData[] = Object.entries(kigouTable_yubitenjiChart).map(
   ([character, hexCode]) => {
     return {
       character: character, // 記号
       dots: hexToDots(hexCode), // 点の配列
       braille: hexToBraille(hexCode), // Unicode点字文字
+      comment: commentMapHiraganaKigou[character], // コメント（覚えやすくするため）
     };
   }
 );

@@ -19,7 +19,7 @@ interface BrailleRowProps extends BrailleRowData {}
 
 const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
   const isNumberOrAlphabetRow = category === '数字' || category === 'A〜J' || category === 'K〜T' || category === 'U〜Z'; 
-  const isLongCharacter = category === '記号など(数字)' || category === '外字符など'; 
+  const isLongCharacter = category === '記号など(数字)' || category === '外字符など' || category === '記号' || category === 'かっこ'; 
   const isRyakugoRow = category === 'よく使う略語';
 
   const gridClassName = isRyakugoRow

@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import BrailleTable from "../../components/BrailleTable/BrailleTable";
 import {
   seionTableData,
+  kigouTableData,
   numberTableData,
   alphabetTableData,
   ryakugoTableData,
@@ -33,6 +34,12 @@ import {
       h2_text="清音"
       id="seion"
       tableData={seionTableData}
+      client:visible
+    />
+    <BrailleTable
+      h2_text="記号"
+      id="kigou"
+      tableData={kigouTableData}
       client:visible
     />
     <BrailleTable
