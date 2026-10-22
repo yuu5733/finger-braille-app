@@ -78,8 +78,8 @@ const handleOutput = useCallback((char: string) => {
     
     const handleDisplayUpdate = useCallback((data: BrailleData) => {
         setCharacter(data.character);
-        setBraille(data.braille);
-        setDots(data.dots);
+        setBraille(data.braille ?? '');
+        setDots(data.dots ?? []);
     }, []);
 
     // ContextValueはuseMemoで安定させる
