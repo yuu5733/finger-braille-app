@@ -38,9 +38,13 @@
 
 /* コメント付きセル（数字・英語用） */
 :has(.comment) .contentWrapper {
-  /* .comment というクラスを持つ子要素が存在する場合のみ適用 */
   grid-template-rows: 2fr 1fr 4fr auto;
   height: 270px;
+}
+
+:has(.comment) .multiContentWrapper {
+  grid-template-rows: 1fr 1fr 1fr 1fr auto;
+  height: clamp(220px, 32vw, 270px);
 }
 
 /* 文字（ひらがな/カタカナ） */
@@ -120,7 +124,6 @@
 .multiContentWrapper {
   align-items: center;
   height: 100%;
-  min-height: 270px;
   min-width: 100%;
   box-sizing: border-box;
 }
@@ -176,7 +179,7 @@
   grid-row: 3 / 4;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   width: 100%;
   height: 100%;

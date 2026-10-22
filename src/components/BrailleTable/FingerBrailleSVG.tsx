@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { FC } from 'react';
 import type { BrailleDot } from '../../data/types'; 
+import styles from './FingerBrailleSVG.module.css';
 
 // === 型定義と定数 ===
 type LeftDot = 1 | 2 | 3;
@@ -141,16 +142,16 @@ const processSVG = (svgString: string, dotMap: Record<BrailleDot, string> | Reco
 
 
   return (
-    <div className="finger-braille-svg-container" style={{ display: 'flex', justifyContent: 'center', gap: '20px', width: '100%', height: '100%', objectFit: 'contain' }}>
+    <div className={`finger-braille-svg-container ${styles.container}`} >
       {/* 左手 */}
       <div 
         dangerouslySetInnerHTML={{ __html: leftSVG }} 
-        style={{ width: '40%', maxWidth: '100px' }}
+        className={styles.hand}
       />
       {/* 右手 */}
       <div 
         dangerouslySetInnerHTML={{ __html: rightSVG }} 
-        style={{ width: '40%', maxWidth: '100px' }} 
+        className={styles.hand}
       />
     </div>
   );
