@@ -10,6 +10,7 @@ import {
   numberTableData,
   alphabetTableData,
   ryakugoTableData,
+  tokushuTableData,
 } from "../../data/makeBrailleChartData";
 ---
 
@@ -72,6 +73,12 @@ import {
       h2_text="アルファベットの略語"
       id="ryakugo"
       tableData={ryakugoTableData}
+      client:visible
+    />
+    <BrailleTable
+      h2_text="アルファベットの略語"
+      id="tokushu"
+      tableData={tokushuTableData}
       client:visible
     />
     <style>

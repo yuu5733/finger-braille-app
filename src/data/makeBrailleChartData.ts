@@ -108,6 +108,14 @@ const ALPHABET_ROW_CHARACTERS: Record<string, string[]> = {
     'U〜Z': ['u', 'v', 'w', 'x', 'y', 'z'], // 6文字
 };
 
+const TOKUSHU_ROW_CHARACTERS: Record<string, string[]> = {
+    '合拗音（疑問符 [2,6]、濁音の特殊音）': ['うぃ', 'うぇ', 'うぉ', 'ゔ'],
+    'エ段の開拗音（拗音符 ＋ エ段）': ['いぇ', 'きぇ', 'しぇ', 'ちぇ', 'にぇ', 'ひぇ'],
+    '特殊音（拗半濁音符、[456]点）': ['てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ'],
+    '子音の取り替え（拗[濁]音符）': ['すぃ', 'てぃ', 'ずぃ', 'でぃ'],
+};
+
+
 // 全マッピングを文字（key）で検索しやすい Map に変換
 // 変換処理で使用する。展示表では、コメントを変えることがあるので統合したものは用いない
 // seionMappings をマップに追加
@@ -194,3 +202,9 @@ export const ryakugoTableData: BrailleRowData[] = [
     cells: ryakugoMappings || [],
   },
 ];
+
+// 特殊音表のデータ生成
+export const tokushuTableData: BrailleRowData[] = Object.entries(TOKUSHU_ROW_CHARACTERS).map(([category, charArray]) => ({
+    category: category,
+    cells: charArray.map(char => specialMap.get(char) || { character: char, braille: '', dots: [] }),
+}));
