@@ -95,7 +95,7 @@ export const youonTableData: BrailleRowData[] = Object.entries(YOUON_ROW_CHARACT
 
 const NUMBER_ROW_CHARACTERS: Record<string, string[]> = {
     // 数符と数字 (0〜9) を1行にまとめる
-    '記号など(数字)': ['数符', '小数点(.)', '位取り点(,)', 'つなぎ符'], 
+    '記号など(数字)': ['数符', '小数点(.)', 'つなぎ符', '位取り点(,)'/*, 'ｱﾎﾟｽﾄﾛﾌｨ(\')'*/], 
     '数字': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], 
     // 必要に応じて別の行を追加
 };
