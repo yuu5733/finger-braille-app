@@ -60,7 +60,7 @@ export const seionMappings: BrailleData[] = Object.entries(hiraganaTable).map(
 
 const commentMapHiraganaKigou: Record<string, string> = {
   '。(終止符)': '指点字ではそんなに使わない\n話が終わったと明確に示したいときに使う',
-  '？(疑問符)': '疑問はモダリティ（確信、推量、許可など）\nに当たり大事',
+  '？(疑問符)': '疑問はモダリティ（確信、推量、許可など）\nなので大事',
   '「（つなぎ符）': '話者を示すときに使う\n例）たなか「',
   '通訳者引用符': '補足・状況説明\n誰に対しての質問なのか。相手の様子（笑っている）など',
     '「」(第一カギ)': '3, 6点で最初と最後をくくる',

@@ -19,12 +19,16 @@ interface BrailleTableProps {
     h2_text: string;
     id: string; // アンカーリンク用のID
     tableData: BrailleRowData[]; // 表示する表データを受け取る
+    description?: string; // 補足説明（オプショナル）
 } 
 
-const BrailleTable: FC<BrailleTableProps> = ({h2_text, id, tableData}) => {
+const BrailleTable: FC<BrailleTableProps> = ({h2_text, id, tableData, description}) => {
     return (
         <div id={id} className={styles.tableWrapper}>
             <h2 className={styles.tableHeader}>{h2_text}｜指点字表</h2>
+            {description && (
+                <p className={styles.tableDescription}>{description}</p>
+            )}
             
             <div className={styles.tableContent}>
                 {/* propsで渡された tableData をマップして表示 */}
