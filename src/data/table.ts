@@ -75,7 +75,7 @@ export const hiraganaKigouTable: { [key: string]: number } = {
 // 指点字表での表示用
 export const kigouTable_yubitenjiChart: { [key: string]: number } = {
   // 句点(終止符) [2,5,6]。点字では、スペースが2つ続く。指点字では使わない？
-  "。(句点、終止符)": 0x32,
+  "。(終止符)": 0x32,
   // 読点 [5,6]。点字では、スペースが続く。外字符と同じ。指点字では使わない？
   // "、": 0x30,
   // 疑問符 [2,6]

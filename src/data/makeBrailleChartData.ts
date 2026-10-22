@@ -27,7 +27,7 @@ const SEION_ROW_CHARACTERS: Record<string, string[]> = {
   };
 
 const KIGOU_ROW_CHARACTERS: Record<string, string[]> = {
-    '記号': ['。(句点、終止符)', '？(疑問符)', '「（つなぎ符）', '通訳者引用符',],
+    '記号': ['。(終止符)', '？(疑問符)', '「（つなぎ符）', '通訳者引用符',],
     'かっこ': ['「」(第一カギ)', '丸カッコ',],
   };
 
