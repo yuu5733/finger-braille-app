@@ -44,6 +44,10 @@
 
 :has(.comment) .multiContentWrapper {
   grid-template-rows: 1fr 1fr 1fr 1fr auto;
+  /* height: clamp(220px, 32vw, 270px); */
+}
+
+:has(.comment) .multiContentWrapper:has(.subSvgItem:nth-child(3)) {
   height: clamp(220px, 32vw, 270px);
 }
 

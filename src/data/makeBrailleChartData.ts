@@ -15,6 +15,9 @@ import {
     hiraganaKigouMappings, 
     dakuonMappings, 
     handakuonMappings, 
+    youonMappings,
+    youdakuonMappings,
+    youhandakuonMappings,
     numberMappings, 
     alphabetMappings, 
     ryakugoMappings 
@@ -60,6 +63,33 @@ const dakuonAndHandakuonMap = new Map<string, BrailleData>();
 export const dakuonAndHandakuonTableData: BrailleRowData[] = Object.entries({...DAKUON_ROW_CHARACTERS, ...HANDAKUON_ROW_CHARACTERS }).map(([category, charArray]) => ({
     category: category,
     cells: charArray.map(char => dakuonAndHandakuonMap.get(char) || { character: char, braille: '', dots: [] }),
+}));
+
+const YOUON_ROW_CHARACTERS: Record<string, string[]> = {
+    'きゃ行': ['きゃ', 'きゅ', 'きょ'],
+    'しゃ行': ['しゃ', 'しゅ', 'しょ'],
+    'ちゃ行': ['ちゃ', 'ちゅ', 'ちょ'],
+    'にゃ行': ['にゃ', 'にゅ', 'にょ'],
+    'ひゃ行': ['ひゃ', 'ひゅ', 'ひょ'],
+    'みゃ行': ['みゃ', 'みゅ', 'みょ'],
+    'りゃ行': ['りゃ', 'りゅ', 'りょ'],
+    'ぎゃ行': ['ぎゃ', 'ぎゅ', 'ぎょ'],
+    'じゃ行': ['じゃ', 'じゅ', 'じょ'],
+    'ぢゃ行': ['ぢゃ', 'ぢゅ', 'ぢょ'],
+    'びゃ行': ['びゃ', 'びゅ', 'びょ'],
+    'ぴゃ行': ['ぴゃ', 'ぴゅ', 'ぴょ'],
+};
+
+// 拗音・拗濁音・拗半濁音のマップ作成
+const youonMap = new Map<string, BrailleData>();
+[...youonMappings, ...youdakuonMappings, ...youhandakuonMappings].forEach(data => {
+    youonMap.set(data.character, data);
+});
+
+// 拗音表のデータ生成
+export const youonTableData: BrailleRowData[] = Object.entries(YOUON_ROW_CHARACTERS).map(([category, charArray]) => ({
+    category: category,
+    cells: charArray.map(char => youonMap.get(char) || { character: char, braille: '', dots: [] }),
 }));
 
 const NUMBER_ROW_CHARACTERS: Record<string, string[]> = {

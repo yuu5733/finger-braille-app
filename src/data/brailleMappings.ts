@@ -131,6 +131,87 @@ const handakuonList = [
 export const dakuonMappings: BrailleData[] = dakuonList.map(char => createDakuonData(char));
 export const handakuonMappings: BrailleData[] = handakuonList.map(char => createDakuonData(char));
 
+// --- 拗音・拗濁音・拗半濁音データの自動生成関数 ---
+const youonBaseHiraganaMap: Record<string, string> = {
+  // 拗音
+  きゃ: 'か', きゅ: 'く', きょ: 'こ',
+  しゃ: 'さ', しゅ: 'す', しょ: 'そ',
+  ちゃ: 'た', ちゅ: 'つ', ちょ: 'と',
+  にゃ: 'な', にゅ: 'ぬ', にょ: 'の',
+  ひゃ: 'は', ひゅ: 'ふ', ひょ: 'ほ',
+  みゃ: 'ま', みゅ: 'む', みょ: 'も',
+  りゃ: 'ら', りゅ: 'る', りょ: 'ろ',
+  // 拗濁音
+  ぎゃ: 'か', ぎゅ: 'く', ぎょ: 'こ',
+  じゃ: 'さ', じゅ: 'す', じょ: 'そ',
+  ぢゃ: 'た', ぢゅ: 'つ', ぢょ: 'と',
+  びゃ: 'は', びゅ: 'ふ', びょ: 'ほ',
+  // 拗半濁音
+  ぴゃ: 'は', ぴゅ: 'ふ', ぴょ: 'ほ',
+};
+
+export const createYouonData = (char: string): BrailleData => {
+  let fuKey = '拗音符';
+  let fuHex = brailleCodes.youonFu;
+
+  if (['ぎゃ', 'ぎゅ', 'ぎょ', 'じゃ', 'じゅ', 'じょ', 'ぢゃ', 'ぢゅ', 'ぢょ', 'びゃ', 'びゅ', 'びょ'].includes(char)) {
+    fuKey = '拗濁音符';
+    fuHex = brailleCodes.youdakuonFu;
+  } else if (['ぴゃ', 'ぴゅ', 'ぴょ'].includes(char)) {
+    fuKey = '拗半濁音符';
+    fuHex = brailleCodes.youhandakuonFu;
+  }
+
+  const baseChar = youonBaseHiraganaMap[char] || char;
+  const baseHex = hiraganaTable[baseChar] ?? 0x00;
+
+  const subCells = [
+    {
+      character: fuKey,
+      braille: hexToBraille(fuHex),
+      dots: hexToDots(fuHex),
+    },
+    {
+      character: baseChar,
+      braille: hexToBraille(baseHex),
+      dots: hexToDots(baseHex),
+    },
+  ];
+
+  return {
+    character: char,
+    subCells,
+    columnSpan: subCells.length,
+    comment: `「${fuKey} ＋ ${baseChar}」`,
+  };
+};
+
+const youonList = [
+  'きゃ', 'きゅ', 'きょ',
+  'しゃ', 'しゅ', 'しょ',
+  'ちゃ', 'ちゅ', 'ちょ',
+  'にゃ', 'にゅ', 'にょ',
+  'ひゃ', 'ひゅ', 'ひょ',
+  'みゃ', 'みゅ', 'みょ',
+  'りゃ', 'りゅ', 'りょ',
+];
+
+const youdakuonList = [
+  'ぎゃ', 'ぎゅ', 'ぎょ',
+  'じゃ', 'じゅ', 'じょ',
+  'ぢゃ', 'ぢゅ', 'ぢょ',
+  'びゃ', 'びゅ', 'びょ',
+];
+
+const youhandakuonList = [
+  'ぴゃ', 'ぴゅ', 'ぴょ',
+];
+
+export const youonMappings: BrailleData[] = youonList.map(char => createYouonData(char));
+export const youdakuonMappings: BrailleData[] = youdakuonList.map(char => createYouonData(char));
+export const youhandakuonMappings: BrailleData[] = youhandakuonList.map(char => createYouonData(char));
+
+// --- 数字関連 ---
 const numberTableWithSuFu = {
   // 数字符を先頭に追加（キーは識別のために '数符' とする）
   '数符': brailleCodes.suFu,

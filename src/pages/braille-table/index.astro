@@ -6,6 +6,7 @@ import {
   seionTableData,
   kigouTableData,
   dakuonAndHandakuonTableData,
+  youonTableData,
   numberTableData,
   alphabetTableData,
   ryakugoTableData,
@@ -47,6 +48,12 @@ import {
       h2_text="濁音・半濁音"
       id="dakuon"
       tableData={dakuonAndHandakuonTableData}
+      client:visible
+    />
+    <BrailleTable
+      h2_text="拗音"
+      id="youon"
+      tableData={youonTableData}
       client:visible
     />
     <BrailleTable
