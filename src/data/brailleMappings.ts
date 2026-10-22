@@ -481,17 +481,6 @@ export const createSpecialData = (char: string): BrailleData => {
 };
 
 // 一覧リストとマッピングの生成
-const specialList = [
-  'うぃ', 'うぇ', 'うぉ',
-  'くぁ', 'くぃ', 'くぇ', 'くぉ',
-  'ぐぁ', 'ぐぃ', 'ぐぇ', 'ぐぉ',
-  'つぁ', 'つぃ', 'つぇ', 'つぉ',
-  'ふぁ', 'ふぃ', 'ふぇ', 'ふぉ',
-  'ゔ', 'ゔぁ', 'ゔぃ', 'ゔぇ', 'ゔぉ',
-  'いぇ', 'きぇ', 'しぇ', 'じぇ', 'ちぇ', 'にぇ', 'ひぇ',
-  'すぃ', 'てぃ', 'ずぃ', 'でぃ',
-  'とぅ', 'どぅ',
-  'てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ'
-];
+const specialList = Object.keys(specialHiraganaMap);
 
 export const specialMappings: BrailleData[] = specialList.map(char => createSpecialData(char));
