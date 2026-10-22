@@ -5,6 +5,7 @@ import BrailleTable from "../../components/BrailleTable/BrailleTable";
 import {
   seionTableData,
   kigouTableData,
+  dakuonAndHandakuonTableData,
   numberTableData,
   alphabetTableData,
   ryakugoTableData,
@@ -40,6 +41,12 @@ import {
       h2_text="記号"
       id="kigou"
       tableData={kigouTableData}
+      client:visible
+    />
+    <BrailleTable
+      h2_text="濁音・半濁音"
+      id="dakuon"
+      tableData={dakuonAndHandakuonTableData}
       client:visible
     />
     <BrailleTable

@@ -10,7 +10,15 @@ import type { BrailleData, BrailleRowData } from './types';
 // 5. 相対パスによるインポート
 
 // 6. スタイルシート / アセット
-import { seionMappings, hiraganaKigouMappings, numberMappings, alphabetMappings, ryakugoMappings } from './brailleMappings'; // 点字表用の点字マッピング
+import { 
+    seionMappings, 
+    hiraganaKigouMappings, 
+    dakuonMappings, 
+    handakuonMappings, 
+    numberMappings, 
+    alphabetMappings, 
+    ryakugoMappings 
+} from './brailleMappings'; // 点字表用の点字マッピング
 
 const SEION_ROW_CHARACTERS: Record<string, string[]> = {
     'あ行': ['あ', 'い', 'う', 'え', 'お'],
@@ -24,12 +32,35 @@ const SEION_ROW_CHARACTERS: Record<string, string[]> = {
     'ら行': ['ら', 'り', 'る', 'れ', 'ろ'],
     'わ行': ['わ', 'ゐ', 'ゑ', 'を'], 
     '撥音、促音、長音': ['ん', 'っ', 'ー'], 
-  };
+};
 
 const KIGOU_ROW_CHARACTERS: Record<string, string[]> = {
     '記号': ['。(終止符)', '？(疑問符)', '「（つなぎ符）', '通訳者引用符',],
     'かっこ': ['「」(第一カギ)', '丸カッコ',],
-  };
+};
+
+const DAKUON_ROW_CHARACTERS: Record<string, string[]> = {
+    'が行': ['が', 'ぎ', 'ぐ', 'げ', 'ご'],
+    'ざ行': ['ざ', 'じ', 'ず', 'ぜ', 'ぞ'],
+    'だ行': ['だ', 'ぢ', 'づ', 'で', 'ど'],
+    'ば行': ['ば', 'び', 'ぶ', 'べ', 'ぼ'],
+};
+
+const HANDAKUON_ROW_CHARACTERS: Record<string, string[]> = {
+    'ぱ行': ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'],
+};
+
+// 濁音と半濁音のマップ作成
+const dakuonAndHandakuonMap = new Map<string, BrailleData>();
+[...dakuonMappings, ...handakuonMappings].forEach(data => {
+    dakuonAndHandakuonMap.set(data.character, data);
+});
+
+// 濁音・半濁音表のデータ生成
+export const dakuonAndHandakuonTableData: BrailleRowData[] = Object.entries({...DAKUON_ROW_CHARACTERS, ...HANDAKUON_ROW_CHARACTERS }).map(([category, charArray]) => ({
+    category: category,
+    cells: charArray.map(char => dakuonAndHandakuonMap.get(char) || { character: char, braille: '', dots: [] }),
+}));
 
 const NUMBER_ROW_CHARACTERS: Record<string, string[]> = {
     // 数符と数字 (0〜9) を1行にまとめる

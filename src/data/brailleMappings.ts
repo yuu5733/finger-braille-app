@@ -67,7 +67,7 @@ const commentMapHiraganaKigou: Record<string, string> = {
   '丸カッコ': '2, 3, 5, 6点で最初と最後をくくる',
 };
 
-// 点字表用（かな用の記号のマッピング）
+// 点字表用（記号のマッピング［ひらがな用］）
 export const hiraganaKigouMappings: BrailleData[] = Object.entries(kigouTable_yubitenjiChart).map(
   ([character, hexCode]) => {
     return {
@@ -78,6 +78,58 @@ export const hiraganaKigouMappings: BrailleData[] = Object.entries(kigouTable_yu
     };
   }
 );
+
+// --- 濁音・半濁音データの自動生成関数 ---
+const baseHiraganaMap: Record<string, string> = {
+  が: 'か', ぎ: 'き', ぐ: 'く', げ: 'け', ご: 'こ',
+  ざ: 'さ', じ: 'し', ず: 'す', ぜ: 'せ', ぞ: 'そ',
+  だ: 'た', ぢ: 'ち', づ: 'つ', で: 'て', ど: 'と',
+  ば: 'は', び: 'ひ', ぶ: 'ふ', べ: 'へ', ぼ: 'ぼ',
+  ぱ: 'は', ぴ: 'ひ', ぷ: 'ふ', ぺ: 'へ', ぽ: 'ほ',
+};
+
+export const createDakuonData = (char: string): BrailleData => {
+  const isHandakuon = ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'].includes(char);
+  const fuKey = isHandakuon ? '半濁音符' : '濁音符';
+  const fuHex = isHandakuon ? brailleCodes.handakuonFu : brailleCodes.dakuonFu;
+  
+  const baseChar = baseHiraganaMap[char] || char;
+  const baseHex = hiraganaTable[baseChar] ?? 0x00;
+
+  const subCells = [
+    {
+      character: fuKey,
+      braille: hexToBraille(fuHex),
+      dots: hexToDots(fuHex),
+    },
+    {
+      character: baseChar,
+      braille: hexToBraille(baseHex),
+      dots: hexToDots(baseHex),
+    },
+  ];
+
+  return {
+    character: char,
+    subCells,
+    columnSpan: subCells.length,
+    comment: `「${fuKey} ＋ ${baseChar}」`,
+  };
+};
+
+const dakuonList = [
+  'が', 'ぎ', 'ぐ', 'げ', 'ご',
+  'ざ', 'じ', 'ず', 'ぜ', 'ぞ',
+  'だ', 'ぢ', 'づ', 'で', 'ど',
+  'ば', 'び', 'ぶ', 'べ', 'ぼ',
+];
+
+const handakuonList = [
+  'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
+];
+
+export const dakuonMappings: BrailleData[] = dakuonList.map(char => createDakuonData(char));
+export const handakuonMappings: BrailleData[] = handakuonList.map(char => createDakuonData(char));
 
 const numberTableWithSuFu = {
   // 数字符を先頭に追加（キーは識別のために '数符' とする）
