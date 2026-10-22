@@ -108,10 +108,6 @@ const ALPHABET_ROW_CHARACTERS: Record<string, string[]> = {
     'U〜Z': ['u', 'v', 'w', 'x', 'y', 'z'], // 6文字
 };
 
-const RYAKUGO_ROW_CHARACTERS: Record<string, string[]> = {
-    'よく使う略語': ['JR', 'ATM', 'NHK', 'AI', 'IT'],
-};
-
 // 全マッピングを文字（key）で検索しやすい Map に変換
 // 変換処理で使用する。展示表では、コメントを変えることがあるので統合したものは用いない
 // seionMappings をマップに追加
