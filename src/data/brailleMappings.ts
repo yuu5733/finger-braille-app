@@ -365,3 +365,92 @@ const ryakugoList: RyakugoItem[] = [
 export const ryakugoMappings: BrailleData[] = ryakugoList.map(item =>
   createRyakugoData(item.word, `ひらがなでは「${item.comment}」`)
 );
+
+// --- 特殊音 ---
+// 特殊音の構成情報を定義する型
+interface SpecialBrailleConfig {
+  fuKey: string;      // 例: '疑問符', '濁音符', '拗音符' など
+  fuHex: number;      // 対応する点字コードのHEX
+  baseChar: string;   // ベースとなる文字
+}
+
+// 特殊音の文字をキーにした設定マップ（オブジェクト）
+const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
+  // 合拗音（疑問符 [2,6] ＋ 母音など）
+  'うぃ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'い' },
+  'うぇ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'え' },
+  'うぉ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'お' },
+  
+  // 濁音の特殊音
+  'ゔ': { fuKey: '濁音符', fuHex: brailleCodes.dakuonFu, baseChar: 'う' },
+  
+  // エ段の開拗音（拗音符 ＋ エ段）
+  'いぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'え' },
+  'きぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'け' },
+  'しぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'せ' },
+  'ちぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'て' },
+  'にぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'ね' },
+  'ひぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'へ' },
+  
+  // 特殊音
+  'てゅ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'つ' },
+  'ふゅ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'ゆ' },
+  'ふょ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'よ' },
+  'でゅ': { fuKey: '4,5,6点', fuHex: 0x38, baseChar: 'つ' },
+  'ぶゅ': { fuKey: '4,5,6点', fuHex: 0x38, baseChar: 'ゆ' },
+  'ぶょ': { fuKey: '4,5,6点', fuHex: 0x38, baseChar: 'よ' },
+
+  // 子音の取り替えなど
+  'すぃ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'し' },
+  'てぃ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'ち' },
+  'ずぃ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'し' },
+  'でぃ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'ち' },
+};
+
+export const createSpecialData = (char: string): BrailleData => {
+  const config = specialHiraganaMap[char];
+
+  // 定義されていない場合は通常の文字として処理
+  if (!config) {
+    const baseHex = hiraganaTable[char] ?? 0x00;
+    return {
+      character: char,
+      braille: hexToBraille(baseHex),
+      dots: hexToDots(baseHex),
+    };
+  }
+
+  const { fuKey, fuHex, baseChar } = config;
+  const baseHex = hiraganaTable[baseChar] ?? 0x00;
+
+  const subCells = [
+    {
+      character: fuKey,
+      braille: hexToBraille(fuHex),
+      dots: hexToDots(fuHex),
+    },
+    {
+      character: baseChar,
+      braille: hexToBraille(baseHex),
+      dots: hexToDots(baseHex),
+    },
+  ];
+
+  return {
+    character: char,
+    subCells,
+    columnSpan: subCells.length,
+    comment: `「${fuKey} ＋ ${baseChar}」`,
+  };
+};
+
+// 一覧リストとマッピングの生成
+const specialList = [
+  'うぃ', 'うぇ', 'うぉ', 
+  'ゔ',
+  'いぇ', 'きぇ', 'しぇ', 'ちぇ', 'にぇ', 'ひぇ',
+  'てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ',
+  'すぃ', 'てぃ', 'ずぃ', 'でぃ'
+];
+
+export const specialMappings: BrailleData[] = specialList.map(char => createSpecialData(char));

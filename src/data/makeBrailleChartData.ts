@@ -20,7 +20,8 @@ import {
     youhandakuonMappings,
     numberMappings, 
     alphabetMappings, 
-    ryakugoMappings 
+    ryakugoMappings,
+    specialMappings, 
 } from './brailleMappings'; // 点字表用の点字マッピング
 
 const SEION_ROW_CHARACTERS: Record<string, string[]> = {
@@ -142,6 +143,9 @@ numberMappings.forEach(data => numberMap.set(data.character, data));
 
 const alphabetMap = new Map<string, BrailleData>();
 alphabetMappings.forEach(data => alphabetMap.set(data.character, data));
+
+const specialMap = new Map<string, BrailleData>();
+specialMappings.forEach(data => specialMap.set(data.character, data));
 
 // ----------------------------------------------------------------------
 
