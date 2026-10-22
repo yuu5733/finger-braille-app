@@ -105,7 +105,7 @@ const ALPHABET_ROW_CHARACTERS: Record<string, string[]> = {
     '外字符など': ['外字符', '大文字符', 'つなぎ符', '外字引用符(開)', '外字引用符(閉)'],
     'A〜J': ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'], // 10文字
     'K〜T': ['k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't'], // 10文字
-    'U〜Z': ['u', 'v', 'w', 'x', 'y', 'z'], // 6文字
+    'U〜Z': ['u', 'v', 'x', 'y', 'z', 'w'], // 6文字
 };
 
 const TOKUSHU_ROW_CHARACTERS: Record<string, string[]> = {
