@@ -130,7 +130,7 @@ export function useBrailleOutputProcessor(
         
         // モードは 'Suuji' のまま維持するが、
         // 数字の確定後は pendingData をリセットする
-        return { shouldResetPendingData: false, nextMode: null };
+        return { shouldResetPendingData: true, nextMode: 'Suuji' };
     }
 
     // --- 6. Alphabetモードの処理 (数字の確定とモード継続) ---
@@ -146,7 +146,7 @@ export function useBrailleOutputProcessor(
         
         // モードは 'Alphabet' のまま維持するが、
         // アルファベット・記号の確定後は pendingData をリセットする
-        return { shouldResetPendingData: false, nextMode: null };
+        return { shouldResetPendingData: true, nextMode: 'Alphabet' };
     }
 
     // 上記以外の場合は pendingData をリセット
