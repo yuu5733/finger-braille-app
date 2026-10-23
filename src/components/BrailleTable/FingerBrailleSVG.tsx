@@ -47,6 +47,8 @@ interface FingerBrailleSVGProps {
   brailleDots: BrailleDot[];
   /** 使用するカラーマップ（省略時はひらがな用） */
   type?: ColorType;
+  /** 任意のカスタムカラーマップ（指定された場合、点の色を上書き・追加できます） */
+  customColorMap?: Partial<Record<BrailleDot, string>>;
 }
 // ===========================================
 
@@ -100,12 +102,15 @@ const getRightHandSVG = (brailleDots: BrailleDot[]) => {
 };
 
 
-const FingerBrailleSVG: FC<FingerBrailleSVGProps> = ({ brailleDots = [], type = 'hiragana' }) => {
+const FingerBrailleSVG: FC<FingerBrailleSVGProps> = ({ brailleDots = [], type = 'hiragana', customColorMap }) => {
   // Set for quick lookup
   const dotSet = new Set(brailleDots);
 
-  // typeに対応するカラーマップを取得
-  const colorMap = COLOR_MAPS[type];
+  // typeに対応するカラーマップを取得し、customColorMapが指定されていればマージする
+  const colorMap = {
+    ...COLOR_MAPS[type],
+    ...customColorMap,
+  };
   
   // 1. 左手と右手のSVGを分割
   // 型述語 (d is 1 | 2 | 3)を使うことで、leftDotsは (1 | 2 | 3)[] と推論される
