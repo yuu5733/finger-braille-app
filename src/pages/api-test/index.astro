@@ -1,0 +1,111 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="指点字アプリ - 表示・APIテスト">
+  <main class="test-container">
+    <h1>表示・APIテスト用ページ</h1>
+
+    <section class="test-section">
+      <h2>1. レイアウト確認</h2>
+      <p>共通レイアウトおよびスタイルが正しく適用されているかのテストです。</p>
+    </section>
+
+    <section class="test-section">
+      <h2>2. API通信・変換テスト</h2>
+      <p>テキストを入力し、変換処理の動作を確認します。</p>
+
+      <div class="api-control">
+        <input
+          type="text"
+          id="input-text"
+          placeholder="変換するテキスト（例：あいうえお）"
+          value="今日はいい天気ですね"
+        />
+        <button id="convert-btn" type="button">変換テスト</button>
+      </div>
+
+      <div id="result-area" class="result-box">ここに結果が表示されます。</div>
+    </section>
+  </main>
+
+  <script>
+    const convertBtn = document.getElementById("convert-btn");
+    const inputField = document.getElementById(
+      "input-text",
+    ) as HTMLInputElement | null;
+    const resultArea = document.getElementById("result-area");
+
+    convertBtn?.addEventListener("click", async () => {
+      // 要素が取得できていない場合は処理を中断
+      if (!inputField || !resultArea) return;
+
+      const text = inputField.value || "";
+      resultArea.textContent = "変換中...";
+
+      try {
+        const res = await fetch(
+          `/api/momo-convert-braille?text=${encodeURIComponent(text)}`,
+        );
+
+        const data = await res.json();
+
+        if (res.ok) {
+          // 抽出された点字データ（data.result）を表示
+          resultArea.textContent = data.result
+            ? `点字結果: ${data.result}`
+            : JSON.stringify(data, null, 2);
+        } else {
+          resultArea.textContent = `エラー: ${data.error || "不明なエラー"}`;
+        }
+      } catch (error) {
+        resultArea.textContent = `通信失敗: ${error}`;
+      }
+    });
+  </script>
+
+  <style>
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .test-section {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .api-control {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .api-control input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .api-control button {
+      padding: 0.5rem 1rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .api-control button:hover {
+      background: #0056b3;
+    }
+    .result-box {
+      padding: 1rem;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-height: 40px;
+      word-break: break-all;
+    }
+  </style>
+</Layout>
