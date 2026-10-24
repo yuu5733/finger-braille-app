@@ -24,17 +24,32 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
 
   return (
     <div className={styles.brailleInputContainer}>
-      {/* 左の指のボタン */}
-      <div className={leftHandClassName}> 
-        <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} dot={3} />
-        <FingerButton id="leftMiddle" isPressed={pressedKeys.has('d')} dot={2} />
-        <FingerButton id="leftIndex" isPressed={pressedKeys.has('f')} dot={1} />
-      </div>
-      {/* 右の指のボタン */}
-      <div className={rightHandClassName}>
-        <FingerButton id="rightIndex" isPressed={pressedKeys.has('j')} dot={4} />
-        <FingerButton id="rightMiddle" isPressed={pressedKeys.has('k')} dot={5} />
-        <FingerButton id="rightRing" isPressed={pressedKeys.has('l')} dot={6} />
+      {/* 6つのボタンとスペースボタンをまとめるwrapperのdiv */}
+      <div className={styles.inputWrapper}>
+        <div className={styles.buttonsGrid}>
+          {/* 左の指のボタン */}
+          <div className={leftHandClassName}> 
+            <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} dot={3} />
+            <FingerButton id="leftMiddle" isPressed={pressedKeys.has('d')} dot={2} />
+            <FingerButton id="leftIndex" isPressed={pressedKeys.has('f')} dot={1} />
+          </div>
+          {/* 右の指のボタン */}
+          <div className={rightHandClassName}>
+            <FingerButton id="rightIndex" isPressed={pressedKeys.has('j')} dot={4} />
+            <FingerButton id="rightMiddle" isPressed={pressedKeys.has('k')} dot={5} />
+            <FingerButton id="rightRing" isPressed={pressedKeys.has('l')} dot={6} />
+          </div>
+        </div>
+
+        {/* 6つのボタンの下に配置するスペースボタン */}
+        <div className={styles.spaceButtonWrapper}>
+          <FingerButton
+            id="spaceButton"
+            isPressed={pressedKeys.has(' ')}
+            label="スペース"
+            className={styles.spaceButton}
+          />
+        </div>
       </div>
     </div>
   );

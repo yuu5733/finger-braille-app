@@ -1,17 +1,29 @@
 .brailleInputContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 2rem;
 }
 
-@media (width<=630px) {
-  .brailleInputContainer {
-      grid-template-columns: 1fr;
+/* 6つのボタンとスペースボタンをまとめるwrapper */
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 2.5rem;
+}
 
-      /* justify-content: center; */
-      /* align-items: flex-end; */
-      margin-bottom: 2rem;
-    }
+.buttonsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+@media (width<=630px) {
+  .buttonsGrid {
+    grid-template-columns: 1fr;
+  }
 
   .leftHand {
     justify-content: start;
@@ -20,7 +32,6 @@
   .rightHand {
     justify-content: end;
   }
-
 }
 
 .fingerGroup {
@@ -32,5 +43,22 @@
 /* 中央のボタンを上にずらす */
 .fingerGroup button:nth-child(2) {
   transform: translateY(-2rem);
-  /* Y軸方向に上にずらす */
+}
+
+.spaceButtonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+/* スペースボタン（6つのボタンの色や押下時スタイルに準拠） */
+.spaceButton {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  width: 100%;
+  max-width: 350px;
+  height: 3.5rem;
+  font-size: 1rem;
 }
