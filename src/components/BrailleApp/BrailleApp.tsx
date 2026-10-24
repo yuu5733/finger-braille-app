@@ -41,7 +41,16 @@ const BrailleAppContent: FC = () => {
       // 1. pendingData があれば確定する
       if (pendingData) {
         if (pendingData.character && pendingData.character !== '不明') {
-          onOutput(pendingData.character);
+          let charToOutput = pendingData.character;
+          
+          // 特殊音待機モードでモード名（「疑問符」「句点」など）になっている場合は記号に変換
+          if (currentMode === 'Question' && charToOutput === '疑問符') {
+            charToOutput = '？';
+          } else if (currentMode === 'Kuten' && charToOutput === '句点') {
+            charToOutput = '。';
+          }
+          
+          onOutput(charToOutput);
         }
         setPendingData(null);
       }

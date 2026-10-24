@@ -47,12 +47,13 @@ export function getConvertedCharacter(mode: InputMode, character: string): strin
 
   // 6. 特殊音（疑問符 [2,6]）モードの処理
   if (mode === 'Question') {
-    return tokushuGimonfuMap[character] || character;
+    // 特殊音のマップに存在しない入力（スペース、空文字、'疑問符'、その他の文字など）はすべて '？' に変換する
+    return tokushuGimonfuMap[character] || '？';
   }
 
   // 7. 特殊音（句点 [2,5,6]）モードの処理
   if (mode === 'Kuten') {
-    return tokushuKutenMap[character] || character;
+    return tokushuKutenMap[character] || '、';
   }
 
   // 8. 特殊音（[4,5,6]点）モードの処理
