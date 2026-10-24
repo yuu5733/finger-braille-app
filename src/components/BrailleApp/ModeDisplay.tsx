@@ -39,7 +39,7 @@ const getModeConfig = (mode: InputMode) => {
       classNameKey = 'wait'; // 黄色（待機モード共通）
       break;
     case 'Youon':
-      label = '拗音 (ゃゅょ) 待機';
+      label = '拗音 (ゃゅょぃぇ) 待機';
       classNameKey = 'wait'; // 黄色（待機モード共通）
       break;
     case 'YouDakuon':
