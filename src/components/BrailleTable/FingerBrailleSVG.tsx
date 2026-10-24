@@ -125,9 +125,16 @@ const processSVG = (svgString: string, dotMap: Record<BrailleDot, string> | Reco
 
     // 3. 各点（円）を処理してスタイルを適用
     for (const [dotNumStr, circleId] of Object.entries(dotMap)) {
-      const dotNum = parseInt(dotNumStr) as BrailleDot;
-      const isPressed = dotSet.has(dotNum);
+      // 型ガード用の関数
+      const isBrailleDot = (num: number): num is BrailleDot => {
+        return num >= 1 && num <= 6;
+      };
       
+      const dotNum = parseInt(dotNumStr, 10);
+      if (!isBrailleDot(dotNum)) continue;
+
+      // ここから下は dotNum が BrailleDot 型として推論される
+      const isPressed = dotSet.has(dotNum);
       const fill = isPressed ? colorMap[dotNum] : 'none'; // 押されていれば色を、そうでなければ 'none' (透明)
       const stroke = isPressed ? 'none' : '#ccc';         // 押されていれば枠線を非表示、そうでなければ薄いグレーの枠線
 

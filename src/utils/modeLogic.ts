@@ -71,7 +71,7 @@ export function getConvertedCharacter(mode: InputMode, character: string): strin
  * * @param modeChar 確定された文字（ModeChar型または string）
  * @returns 対応する InputMode または null
  */
-export function getModeFromModeChar(modeChar: string): InputMode | null {
+export function getModeFromModeChar(modeChar: ModeChar): InputMode | null {
   // ModeChar型に限定されたマッピングテーブル
   const modeMap: { [key in ModeChar]?: InputMode } = {
     '濁音符': 'Dakuon',
@@ -88,5 +88,5 @@ export function getModeFromModeChar(modeChar: string): InputMode | null {
   };
 
   // modeCharが 'ModeChar' のユニオン型に含まれるかをチェックし、対応するモードを返す
-  return modeMap[modeChar as ModeChar] ?? null;
+  return modeMap[modeChar] ?? null;
 }
