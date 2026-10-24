@@ -46,28 +46,36 @@ export function useBrailleOutputProcessor(
     const isModeMaintained = 
         (currentMode === 'Suuji' && confirmedCharacter === '数符') ||
         (currentMode === 'Alphabet' && confirmedCharacter === '外字符') ||
-        (currentMode === 'GaijiQuote' && confirmedCharacter === '外字引用符') || // 追加
+        (currentMode === 'GaijiQuote' && confirmedCharacter === '外字引用符') ||
         (currentMode === 'Dakuon' && confirmedCharacter === '濁音符') ||
         (currentMode === 'Handakuon' && confirmedCharacter === '半濁音符') ||
         (currentMode === 'Youon' && confirmedCharacter === '拗音符') ||
         (currentMode === 'YouDakuon' && confirmedCharacter === '拗濁音符') ||
-        (currentMode === 'YouHandakuon' && confirmedCharacter === '拗半濁音符');
-
+        (currentMode === 'YouHandakuon' && confirmedCharacter === '拗半濁音符')||
+        (currentMode === 'Question' && confirmedCharacter === '疑問符') ||
+        (currentMode === 'Kuten' && confirmedCharacter === '句点') ||
+        (currentMode === 'Tokushu456' && confirmedCharacter === '[4,5,6]点');
     if (isModeMaintained) {
         return { shouldResetPendingData: false, nextMode: currentMode }; // モードを維持
     }
 
     // --- 2. 待機モードの処理 ---
-    const isWaitingMode = currentMode === 'Dakuon' || currentMode === 'Handakuon' ||
-                        currentMode === 'Youon' || currentMode === 'YouDakuon' ||
-                        currentMode === 'YouHandakuon';
+    const isWaitingMode = currentMode === 'Dakuon' || 
+        currentMode === 'Handakuon' ||
+        currentMode === 'Youon' || 
+        currentMode === 'YouDakuon' ||
+        currentMode === 'YouHandakuon' || 
+        currentMode === 'Question' ||
+        currentMode === 'Kuten' || 
+        currentMode === 'Tokushu456';
 
     if (isWaitingMode) {
         // モード符ではない確定文字が入力された場合
         if (confirmedCharacter !== '数符' && confirmedCharacter !== '外字符' && 
             confirmedCharacter !== '濁音符' && confirmedCharacter !== '半濁音符' && 
-            confirmedCharacter !== '拗音符' && 
-            confirmedCharacter !== '拗濁音符' && confirmedCharacter !== '拗半濁音符' ) {
+            confirmedCharacter !== '拗音符' && confirmedCharacter !== '拗濁音符' && 
+            confirmedCharacter !== '拗半濁音符'&& confirmedCharacter !== '疑問符' &&
+            confirmedCharacter !== '句点' && confirmedCharacter !== '[4,5,6]点' ) {
             
             // 変換ロジックはユーティリティ関数に一任
             const convertedChar = getConvertedCharacter(currentMode, confirmedCharacter);
@@ -102,6 +110,12 @@ export function useBrailleOutputProcessor(
         nextMode = 'Alphabet';
     } else if (confirmedCharacter === '外字引用符') { 
         nextMode = 'GaijiQuote';
+    } else if (confirmedCharacter === '疑問符') {
+        nextMode = 'Question';
+    } else if (confirmedCharacter === '句点') {
+        nextMode = 'Kuten';
+    } else if (confirmedCharacter === '[4,5,6]点') {
+        nextMode = 'Tokushu456';
     }
 
     if (nextMode !== null) {

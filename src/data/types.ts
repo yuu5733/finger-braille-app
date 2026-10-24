@@ -39,6 +39,9 @@ export type InputMode =
   | 'Youon'        // 拗音待機モード
   | 'YouDakuon'    // 拗濁音待機モード
   | 'YouHandakuon' // 拗半濁音待機モード
+  | 'Question'     // 特殊音（疑問符 [2,6]）待機モード
+  | 'Kuten'        // 特殊音（句点 [2,5,6]）待機モード
+  | 'Tokushu456';  // 特殊音（[4,5,6]点）待機モード
 
   export type ModeChar =
   | '濁音符'
@@ -48,7 +51,10 @@ export type InputMode =
   | '拗半濁音符'
   | '数符'
   | '外字符'
-  | '外字引用符';
+  | '外字引用符'
+  | '疑問符'
+  | '句点'
+  | '[4,5,6]点';
 
 /** 表をカテゴリ（行）ごとにまとめるための型 */
 export interface BrailleRowData {

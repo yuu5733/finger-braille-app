@@ -1,6 +1,15 @@
 import type { InputMode, ModeChar } from '../data/types';
 
-import { dakuonMap, handakuonMap, youonMap, youdakuonMap, youhandakuonMap } from '../data/table';
+import { 
+  dakuonMap, 
+  handakuonMap, 
+  youonMap, 
+  youdakuonMap, 
+  youhandakuonMap,
+  tokushuGimonfuMap,
+  tokushuKutenMap,
+  tokushu456Map
+} from '../data/table';
 
 /**
  * モードと清音文字に基づき、最終的な確定文字を返す
@@ -36,6 +45,21 @@ export function getConvertedCharacter(mode: InputMode, character: string): strin
     return youhandakuonMap[character] || character; 
   }
 
+  // 6. 特殊音（疑問符 [2,6]）モードの処理
+  if (mode === 'Question') {
+    return tokushuGimonfuMap[character] || character;
+  }
+
+  // 7. 特殊音（句点 [2,5,6]）モードの処理
+  if (mode === 'Kuten') {
+    return tokushuKutenMap[character] || character;
+  }
+
+  // 8. 特殊音（[4,5,6]点）モードの処理
+  if (mode === 'Tokushu456') {
+    return tokushu456Map[character] || character;
+  }
+
   // 'Kana'モードなどの場合はそのまま返す
   return character;
 }
@@ -57,7 +81,10 @@ export function getModeFromModeChar(modeChar: string): InputMode | null {
     '拗半濁音符': 'YouHandakuon',
     '数符': 'Suuji',
     '外字符': 'Alphabet',
-    // '大文字符'などの特殊な記号もここに追加可能
+    // '大文字符'をここに追加するかも
+    '疑問符': 'Question',
+    '句点': 'Kuten',
+    '[4,5,6]点': 'Tokushu456',
   };
 
   // modeCharが 'ModeChar' のユニオン型に含まれるかをチェックし、対応するモードを返す

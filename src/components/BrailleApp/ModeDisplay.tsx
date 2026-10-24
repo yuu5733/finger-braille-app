@@ -50,6 +50,18 @@ const getModeConfig = (mode: InputMode) => {
       label = '拗半濁音 待機';
       classNameKey = 'wait'; // 黄色（待機モード共通）
       break;
+    case 'Question':
+      label = '特殊音 (疑問符) 待機';
+      classNameKey = 'wait';
+      break;
+    case 'Kuten':
+      label = '特殊音 (句点) 待機';
+      classNameKey = 'wait';
+      break;
+    case 'Tokushu456':
+      label = '特殊音 ([4,5,6]点) 待機';
+      classNameKey = 'wait';
+      break;
     default:
       label = 'モード情報なし';
       classNameKey = 'kana'; // フォールバック
