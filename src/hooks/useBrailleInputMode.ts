@@ -35,6 +35,10 @@ export function useBrailleInputMode(stabilizedKeys: Set<string> | null): ModeKey
   const isYouonOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.youonFu);
   const isYouDakuon = isBrailleCodeMatch(stabilizedKeys, brailleCodes.youdakuonFu); 
   const isYouHandakuon = isBrailleCodeMatch(stabilizedKeys, brailleCodes.youhandakuonFu); 
+  // 【特殊音】疑問符[2,6] (0x22), 句点[2,5,6] (0x32), [4,5,6]点 (0x38)
+  const isQuestionOnly = isBrailleCodeMatch(stabilizedKeys, 0x22);
+  const isKutenOnly = isBrailleCodeMatch(stabilizedKeys, 0x32);
+  const isTokushu456Only = isBrailleCodeMatch(stabilizedKeys, 0x38);
 
   // 2. モードデータの設定
   if (isSufuOnly) { 
@@ -61,6 +65,14 @@ export function useBrailleInputMode(stabilizedKeys: Set<string> | null): ModeKey
   if (isYouHandakuon) {
     return { mode: 'YouHandakuon', char: '拗半濁音符', code: brailleCodes.youhandakuonFu };
   }
-  
+  if (isQuestionOnly) {
+    return { mode: 'Question', char: '疑問符', code: 0x22 };
+  }
+  if (isKutenOnly) {
+    return { mode: 'Kuten', char: '句点', code: 0x32 };
+  }
+  if (isTokushu456Only) {
+    return { mode: 'Tokushu456', char: '[4,5,6]点', code: 0x38 };
+  }
   return null;
 }
