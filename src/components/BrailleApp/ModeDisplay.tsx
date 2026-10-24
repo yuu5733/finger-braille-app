@@ -26,6 +26,10 @@ const getModeConfig = (mode: InputMode) => {
       label = '英字モード';
       classNameKey = 'alphabet'; // 緑系統
       break;
+    case 'GaijiQuote':
+      label = '外字引用符';
+      classNameKey = 'alphabet'; // 英字モードと同様の色味を適用
+      break;
     case 'Dakuon':
       label = '濁音 (ﾞ) 待機';
       classNameKey = 'wait'; // 黄色（待機モード共通）

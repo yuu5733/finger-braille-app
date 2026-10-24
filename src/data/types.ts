@@ -33,6 +33,7 @@ export type InputMode =
   | 'Kana'         // 基本のがな入力モード
   | 'Suuji'        // 数字モード
   | 'Alphabet'     // 外来語 (英字モード)
+  | 'GaijiQuote'   // 外字引用符モード
   | 'Dakuon'       // 濁音待機モード
   | 'Handakuon'    // 半濁音待機モード
   | 'Youon'        // 拗音待機モード
@@ -46,7 +47,8 @@ export type InputMode =
   | '拗濁音符'
   | '拗半濁音符'
   | '数符'
-  | '外字符';
+  | '外字符'
+  | '外字引用符';
 
 /** 表をカテゴリ（行）ごとにまとめるための型 */
 export interface BrailleRowData {

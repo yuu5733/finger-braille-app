@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 const monitoredKeys: { [key: string]: boolean } = {
   'f': true, 'd': true, 's': true,
   'j': true, 'k': true, 'l': true,
+  ' ': true, // スペースキーを追加
 };
 
 /**
@@ -19,11 +20,15 @@ export function useKeyboardListener() {
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase();
 
-    // 指点字として設定しているキーが押されたとき
-    // 同じキーを繰り返し押す場合に何度も登録されないように、すでに押されているキーは無視
-      if (monitoredKeys[key] && !pressedKeys.has(key)) {
-        // 新しいSetインスタンスを作成してStateを更新
-        setPressedKeys(prev => new Set(prev).add(key));
+      if (monitoredKeys[key]) {
+        if (key === ' ') {
+          event.preventDefault(); // スペースキーによる画面スクロールを防止
+        }
+        // 指点字として設定しているキーが押されたとき
+        // 同じキーを繰り返し押す場合に何度も登録されないように、すでに押されているキーは無視
+        if (!pressedKeys.has(key)) {
+          setPressedKeys(prev => new Set(prev).add(key));
+        }
       }
     };
 
@@ -33,6 +38,9 @@ export function useKeyboardListener() {
     // 押されたキーが、指点字のキーマップ（f, d, s, j, k, l）の中に存在する場合
     // （アルファベットに対応する数字があるかどうか）
       if (monitoredKeys[key]) {
+        if (key === ' ') {
+          event.preventDefault();
+        }
         // StateのSetから離されたキーを削除（数字ではなく、キーボードの文字で管理）
         setPressedKeys(prev => {
           const newSet = new Set(prev);

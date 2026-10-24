@@ -1,5 +1,5 @@
 // 1. コアライブラリ
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
@@ -20,12 +20,47 @@ import ModeDisplay from './ModeDisplay';
 // 6. スタイルシート / アセット
 
 // -----------------------------------------------------
-// ★ 内部コンポーネント (Contextの消費者) を定義
+// 内部コンポーネント (Contextの消費者) を定義
 // -----------------------------------------------------
 const BrailleAppContent: FC = () => {
-  const { currentMode, character, braille, dots, outputString } = useBrailleContext();
+  const { currentMode, setCurrentMode, pendingData, setPendingData, character, braille, dots, outputString, onOutput } = useBrailleContext();
 
   const { pressedKeys } = useBrailleLogic();
+
+  // スペースキーの二重発火を防ぐための参照
+  // useStateではなく、useRefを使うことで、コンポーネントは再描画されない
+  // コンポーネントが再描画されても、値がリセットされず保持される
+  const prevSpacePressedRef = useRef(false);
+
+  // スペースキー押下時のハンドリング
+  useEffect(() => {
+    const isSpacePressed = pressedKeys.has(' ');
+
+    // 押された瞬間（立ち上がり）を検知
+    if (isSpacePressed && !prevSpacePressedRef.current) {
+      // 1. pendingData があれば確定する
+      if (pendingData) {
+        if (pendingData.character && pendingData.character !== '不明') {
+          onOutput(pendingData.character);
+        }
+        setPendingData(null);
+      }
+
+      // 2. モードに応じた処理の分岐
+      if (currentMode === 'Alphabet') {
+        // Alphabet モードではモードをリセット
+        setCurrentMode('Kana');
+      } else if (currentMode === 'GaijiQuote') {
+        // 外字引用符モードの時は半角スペースを追加
+        onOutput(' ');
+      } else {
+        // その他の通常モードでは全角スペースを追加
+        onOutput('　');
+      }
+    }
+
+    prevSpacePressedRef.current = isSpacePressed;
+  }, [pressedKeys, currentMode, pendingData, setCurrentMode, setPendingData, onOutput]);
 
   return (
     <>
@@ -44,7 +79,7 @@ const BrailleAppContent: FC = () => {
 };
 
 // -----------------------------------------------------
-// ★ BrailleAppがProviderの役割を果たす (State管理をここに移植)
+// BrailleAppがProviderの役割を果たす
 // -----------------------------------------------------
 const BrailleApp: FC = () => {
     const [currentMode, setCurrentMode] = useState<InputMode>('Kana');

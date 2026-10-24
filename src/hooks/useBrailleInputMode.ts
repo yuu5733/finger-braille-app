@@ -29,6 +29,7 @@ export function useBrailleInputMode(stabilizedKeys: Set<string> | null): ModeKey
   // 1. キーのパターンマッチング
   const isSufuOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.suFu);
   const isGaijiOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.gaijiFu);
+  const isGaijiQuoteOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.gaijiinyoFu_kaishi);
   const isDakuonOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.dakuonFu);
   const isHandakuonOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.handakuonFu);
   const isYouonOnly = isBrailleCodeMatch(stabilizedKeys, brailleCodes.youonFu);
@@ -42,6 +43,9 @@ export function useBrailleInputMode(stabilizedKeys: Set<string> | null): ModeKey
   if (isGaijiOnly) { 
     return { mode: 'Alphabet', char: '外字符', code: brailleCodes.gaijiFu };
   } 
+  if (isGaijiQuoteOnly) {
+    return { mode: 'GaijiQuote', char: '外字引用符', code: brailleCodes.gaijiinyoFu_kaishi };
+  }
   if (isDakuonOnly) { 
     return { mode: 'Dakuon', char: '濁音符', code: brailleCodes.dakuonFu };
   } 
