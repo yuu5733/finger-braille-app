@@ -46,6 +46,7 @@ export function useBrailleOutputProcessor(
     const isModeMaintained = 
         (currentMode === 'Suuji' && confirmedCharacter === '数符') ||
         (currentMode === 'Alphabet' && confirmedCharacter === '外字符') ||
+        (currentMode === 'GaijiQuote' && confirmedCharacter === '外字引用符') || // 追加
         (currentMode === 'Dakuon' && confirmedCharacter === '濁音符') ||
         (currentMode === 'Handakuon' && confirmedCharacter === '半濁音符') ||
         (currentMode === 'Youon' && confirmedCharacter === '拗音符') ||
@@ -99,6 +100,8 @@ export function useBrailleOutputProcessor(
         nextMode = 'Suuji';
     } else if (confirmedCharacter === '外字符') {
         nextMode = 'Alphabet';
+    } else if (confirmedCharacter === '外字引用符') { 
+        nextMode = 'GaijiQuote';
     }
 
     if (nextMode !== null) {
@@ -133,8 +136,8 @@ export function useBrailleOutputProcessor(
         return { shouldResetPendingData: true, nextMode: 'Suuji' };
     }
 
-    // --- 6. Alphabetモードの処理 (数字の確定とモード継続) ---
-    else if (currentMode === 'Alphabet') {
+    // --- 6. Alphabet および GaijiQuote モードの処理 ---
+    else if (currentMode === 'Alphabet'|| currentMode === 'GaijiQuote') {
         if (confirmedCharacter === '不明') {
             return { shouldResetPendingData: true, nextMode: 'Kana' };
         // '外字符'自体は出力しない
@@ -146,7 +149,7 @@ export function useBrailleOutputProcessor(
         
         // モードは 'Alphabet' のまま維持するが、
         // アルファベット・記号の確定後は pendingData をリセットする
-        return { shouldResetPendingData: true, nextMode: 'Alphabet' };
+        return { shouldResetPendingData: true, nextMode: currentMode };
     }
 
     // 上記以外の場合は pendingData をリセット

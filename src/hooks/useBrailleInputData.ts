@@ -27,6 +27,12 @@ export function useBrailleInputData(
     return null;
   }
   
+  // 点字キー（f, d, s, j, k, l）が1つも含まれていない場合（スペースキー単体など）は点字データとして処理しない
+  const hasDotKeys = ['f', 'd', 's', 'j', 'k', 'l'].some(key => stabilizedKeys.has(key));
+  if (!hasDotKeys) {
+    return null;
+  }
+
   const currentDots = getCurrentDots(stabilizedKeys);
 
   // --- Suujiモードの処理 ---
@@ -65,7 +71,7 @@ export function useBrailleInputData(
   }
 
   // --- Alphabetモードの処理 ---
-  if (currentMode === 'Alphabet') {
+  if (currentMode === 'Alphabet' || currentMode === 'GaijiQuote') {
     // 1. 外字符が押された場合 (0x30)
     if (isBrailleCodeMatch(stabilizedKeys, brailleCodes.gaijiFu)) {
       // 外字符自体はここではモードデータではないが、Alphabetモードの特殊入力として扱う
