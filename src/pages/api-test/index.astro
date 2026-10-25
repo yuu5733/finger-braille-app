@@ -18,14 +18,17 @@ import ApiTestClient from "../../components/api-test/ApiTestClient.tsx";
 
   <script>
     const convertBtn = document.getElementById("convert-btn");
-    const inputField = document.getElementById(
-      "input-text",
-    ) as HTMLInputElement | null;
+    const inputField = document.getElementById("input-text");
     const resultArea = document.getElementById("result-area");
 
     convertBtn?.addEventListener("click", async () => {
       // 要素が取得できていない場合は処理を中断
       if (!inputField || !resultArea) return;
+
+      // 入力要素でない、または存在しない場合も処理を中断
+      if (!(inputField instanceof HTMLInputElement)) {
+        return;
+      }
 
       const text = inputField.value || "";
       resultArea.textContent = "変換中...";
