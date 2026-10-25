@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ApiTestClient from "../../components/api-test/ApiTestClient.tsx";
 ---
 
 <Layout title="指点字アプリ - 表示・APIテスト">
@@ -11,22 +12,8 @@ import Layout from "../../layouts/Layout.astro";
       <p>共通レイアウトおよびスタイルが正しく適用されているかのテストです。</p>
     </section>
 
-    <section class="test-section">
-      <h2>2. API通信・変換テスト</h2>
-      <p>テキストを入力し、変換処理の動作を確認します。</p>
-
-      <div class="api-control">
-        <input
-          type="text"
-          id="input-text"
-          placeholder="変換するテキスト（例：あいうえお）"
-          value="今日はいい天気ですね"
-        />
-        <button id="convert-btn" type="button">変換テスト</button>
-      </div>
-
-      <div id="result-area" class="result-box">ここに結果が表示されます。</div>
-    </section>
+    <!-- Reactコンポーネントをクライアントサイドで実行・マウント -->
+    <ApiTestClient client:load />
   </main>
 
   <script>
