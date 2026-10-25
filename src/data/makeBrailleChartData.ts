@@ -94,7 +94,6 @@ const TOKUSHU_ROW_CHARACTERS: Record<string, string[]> = {
     'thu、fyu、fyo系特殊音（拗半濁音符、[4,5,6]点）': ['てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ'], // thu、fyu、fyo、dhu
 };
 
-// ----------------------------------------------------------------------
 
 /**
  * 共通のテーブル生成ヘルパー関数
@@ -102,6 +101,17 @@ const TOKUSHU_ROW_CHARACTERS: Record<string, string[]> = {
  * @param rowCharacters 行を構成するカテゴリと文字配列のマッピング
  * @param map 文字に対応する BrailleData が格納されたマップ
  * @returns BrailleRowData の配列
+ * 【出力結果例】
+ * [
+ *   {
+ *     category: 'あ行',
+ *     cells: [
+ *       { character: 'あ', braille: '⠁', dots: [1] },
+ *       { character: 'い', braille: '⠃', dots: [1, 2] },
+ *       ……
+ *     ]
+ *   },
+ * ]
  */
 const createTableData = (
   rowCharacters: Record<string, string[]>, 
@@ -112,17 +122,6 @@ const createTableData = (
     cells: charArray.map(char => map.get(char) || { character: char, braille: '', dots: [] }),
   }));
 };
-// 【出力結果】
-// [
-//   {
-//     category: 'あ行',
-//     cells: [
-//       { character: 'あ', braille: '⠁', dots: [1] },
-//       { character: 'い', braille: '⠃', dots: [1, 2] },
-//       // ... ウ、エ、オ が続く
-//     ]
-//   },
-// ]
 
 // 清音表のデータ生成
 export const seionTableData = createTableData(SEION_ROW_CHARACTERS, seionMap);
