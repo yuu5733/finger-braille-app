@@ -11,17 +11,14 @@ import type { BrailleData, BrailleRowData } from './types';
 
 // 6. スタイルシート / アセット
 import { 
-    seionMappings, 
-    hiraganaKigouMappings, 
-    dakuonMappings, 
-    handakuonMappings, 
-    youonMappings,
-    youdakuonMappings,
-    youhandakuonMappings,
-    numberMappings, 
-    alphabetMappings, 
+    seionMap, 
+    kigouMap, 
+    numberMap, 
+    alphabetMap, 
+    specialMap,
+    dakuonAndHandakuonMap,
+    youonMap,
     ryakugoMappings,
-    specialMappings, 
 } from './brailleMappings'; // 点字表用の点字マッピング
 
 const SEION_ROW_CHARACTERS: Record<string, string[]> = {
@@ -54,12 +51,6 @@ const HANDAKUON_ROW_CHARACTERS: Record<string, string[]> = {
     'ぱ行': ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'],
 };
 
-// 濁音と半濁音のマップ作成
-const dakuonAndHandakuonMap = new Map<string, BrailleData>();
-[...dakuonMappings, ...handakuonMappings].forEach(data => {
-    dakuonAndHandakuonMap.set(data.character, data);
-});
-
 // 濁音・半濁音表のデータ生成
 export const dakuonAndHandakuonTableData: BrailleRowData[] = Object.entries({...DAKUON_ROW_CHARACTERS, ...HANDAKUON_ROW_CHARACTERS }).map(([category, charArray]) => ({
     category: category,
@@ -80,12 +71,6 @@ const YOUON_ROW_CHARACTERS: Record<string, string[]> = {
     'びゃ行': ['びゃ', 'びゅ', 'びょ'],
     'ぴゃ行': ['ぴゃ', 'ぴゅ', 'ぴょ'],
 };
-
-// 拗音・拗濁音・拗半濁音のマップ作成
-const youonMap = new Map<string, BrailleData>();
-[...youonMappings, ...youdakuonMappings, ...youhandakuonMappings].forEach(data => {
-    youonMap.set(data.character, data);
-});
 
 // 拗音表のデータ生成
 export const youonTableData: BrailleRowData[] = Object.entries(YOUON_ROW_CHARACTERS).map(([category, charArray]) => ({
@@ -120,48 +105,6 @@ const TOKUSHU_ROW_CHARACTERS: Record<string, string[]> = {
     'twu (dwu)系特殊音（疑問符/句点 ＋ つ）': ['とぅ', 'どぅ'],
     'thu、fyu、fyo系特殊音（拗半濁音符、[4,5,6]点）': ['てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ'], // thu、fyu、fyo、dhu
 };
-
-
-// 全マッピングを文字（key）で検索しやすい Map に変換
-// 変換処理で使用する。展示表では、コメントを変えることがあるので統合したものは用いない
-// seionMappings をマップに追加
-const brailleMap = new Map<string, BrailleData>();
-for (const data of seionMappings) {
-    brailleMap.set(data.character, data);
-}
-// numberMappings をマップに追加
-for (const data of numberMappings) {
-    brailleMap.set(data.character, data);
-}
-
-// alphabetMappings をマップに追加 (大文字キーを使用)
-for (const data of alphabetMappings) {
-    brailleMap.set(data.character, data);
-}
-
-// ----------------------------------------------------------------------
-
-// 指点字表用に独立した Map を作成する
-// Map {
-//   'あ' => { character: 'あ', dots: [1], braille: '⠁' },
-//   'い' => { character: 'い', dots: [1, 2], braille: '⠃' },
-//   'う' => { character: 'う', dots: [1, 4], braille: '⠉' },
-//   // ...
-// }
-const seionMap = new Map<string, BrailleData>();
-seionMappings.forEach(data => seionMap.set(data.character, data));
-
-const kigouMap = new Map<string, BrailleData>();
-hiraganaKigouMappings.forEach(data => kigouMap.set(data.character, data));
-
-const numberMap = new Map<string, BrailleData>();
-numberMappings.forEach(data => numberMap.set(data.character, data));
-
-const alphabetMap = new Map<string, BrailleData>();
-alphabetMappings.forEach(data => alphabetMap.set(data.character, data));
-
-const specialMap = new Map<string, BrailleData>();
-specialMappings.forEach(data => specialMap.set(data.character, data));
 
 // ----------------------------------------------------------------------
 
