@@ -12,7 +12,7 @@ import { hexToBraille } from '../utils/hexToBraille';
 // 5. 相対パスによるインポート (※ 無し)
 
 // 6. スタイルシート / アセット
-import { hiraganaTable, hiraganaKigouTable, kigouTable_yubitenjiChart, numberTable, alphabetTable, brailleCodes } from './table';
+import { dakuonMap, handakuonMap, hiraganaTable, hiraganaKigouTable, kigouTable_yubitenjiChart, numberTable, alphabetTable, brailleCodes } from './table';
 
 // ----------------------------------------------------------------------
 // 1つの点字で表現できる基本となるキー（ひらがな、ひらがな用の記号）のマッピングの定義
@@ -79,13 +79,10 @@ export const hiraganaKigouMappings: BrailleData[] = Object.entries(kigouTable_yu
   }
 );
 
-// --- 濁音・半濁音データの自動生成関数 ---
+// dakuonMap (か -> が) から逆引きマップ 濁音・半濁音データ(が -> か、ぽ -> ほ) を自動生成
 const baseHiraganaMap: Record<string, string> = {
-  が: 'か', ぎ: 'き', ぐ: 'く', げ: 'け', ご: 'こ',
-  ざ: 'さ', じ: 'し', ず: 'す', ぜ: 'せ', ぞ: 'そ',
-  だ: 'た', ぢ: 'ち', づ: 'つ', で: 'て', ど: 'と',
-  ば: 'は', び: 'ひ', ぶ: 'ふ', べ: 'へ', ぼ: 'ぼ',
-  ぱ: 'は', ぴ: 'ひ', ぷ: 'ふ', ぺ: 'へ', ぽ: 'ほ',
+  ...Object.fromEntries(Object.entries(dakuonMap).map(([k, v]) => [v, k])),
+  ...Object.fromEntries(Object.entries(handakuonMap).map(([k, v]) => [v, k])),
 };
 
 export const createDakuonData = (char: string): BrailleData => {
@@ -117,16 +114,11 @@ export const createDakuonData = (char: string): BrailleData => {
   };
 };
 
-const dakuonList = [
-  'が', 'ぎ', 'ぐ', 'げ', 'ご',
-  'ざ', 'じ', 'ず', 'ぜ', 'ぞ',
-  'だ', 'ぢ', 'づ', 'で', 'ど',
-  'ば', 'び', 'ぶ', 'べ', 'ぼ',
-];
+// 濁音リスト（が〜ぼ。ゔを除く）
+const dakuonList = Object.values(dakuonMap).filter(char => char !== 'ゔ');
 
-const handakuonList = [
-  'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
-];
+// 半濁音リスト（ぱ〜ぽ）
+const handakuonList = Object.values(handakuonMap);
 
 export const dakuonMappings: BrailleData[] = dakuonList.map(char => createDakuonData(char));
 export const handakuonMappings: BrailleData[] = handakuonList.map(char => createDakuonData(char));

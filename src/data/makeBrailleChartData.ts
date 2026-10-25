@@ -142,6 +142,12 @@ for (const data of alphabetMappings) {
 // ----------------------------------------------------------------------
 
 // 指点字表用に独立した Map を作成する
+// Map {
+//   'あ' => { character: 'あ', dots: [1], braille: '⠁' },
+//   'い' => { character: 'い', dots: [1, 2], braille: '⠃' },
+//   'う' => { character: 'う', dots: [1, 4], braille: '⠉' },
+//   // ...
+// }
 const seionMap = new Map<string, BrailleData>();
 seionMappings.forEach(data => seionMap.set(data.character, data));
 
