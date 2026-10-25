@@ -56,7 +56,7 @@ export default function ApiTestClient() {
         <div style={{ padding: '1rem', background: '#fff', border: '1px solid #ddd', borderRadius: '4px' }}>
           <p><strong>原文:</strong> {data.original}</p>
           <p><strong>仮名:</strong> {data.kana}</p>
-          <p><strong>点字（テキスト）:</strong> {data.result}</p>
+          <p><strong>点字:</strong> {data.result}</p>
           
           <div style={{ marginTop: '1rem' }}>
             <p><strong>指点字セル表示:</strong></p>

@@ -45,7 +45,7 @@ export function parseHiraganaToBrailleCells(text: string): BrailleData[] {
     const char = normalizedText[i];
     if (char === ' ' || char === ' ') {
       results.push({
-        character: ' ',
+        character: '␣（間を取る）',
         braille: '⠀',
         dots: [],
       });
