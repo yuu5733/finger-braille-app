@@ -32,9 +32,9 @@ const hiraganaAndKigouTable = {
   ...hiraganaKigouTable,
 };
 
-// hiraganaTableCopyをもとにbrailleMappingsを生成（タイピング用）
+// hiraganaTableCopyをもとにhiraganaAndKigouMappingsを生成（タイピング用）
 // オブジェクトをキーと値のペアの配列に変換する（Object.entries）
-export const brailleMappings: BrailleData[] = Object.entries(hiraganaAndKigouTable).map(
+export const hiraganaAndKigouMappings: BrailleData[] = Object.entries(hiraganaAndKigouTable).map(
   ([character, hexCode]) => {
     return {
       character: character, // ひらがな
@@ -44,9 +44,9 @@ export const brailleMappings: BrailleData[] = Object.entries(hiraganaAndKigouTab
   }
 );
 
-// brailleMappingsから逆引きのマッピングを作成
+// hiraganaAndKigouMappingsから逆引きのマッピングを作成
 export const brailleToCharacterMap: { [key: string]: string } = {};
-brailleMappings.forEach(mapping => {
+hiraganaAndKigouMappings.forEach(mapping => {
   if (mapping.braille) {
     brailleToCharacterMap[mapping.braille] = mapping.character;
   }

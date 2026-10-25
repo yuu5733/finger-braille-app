@@ -13,7 +13,7 @@ import { hexToBraille } from '../utils/hexToBraille';
 import { dotsToHex } from './dotsToHex';
 
 // 6. スタイルシート / アセット
-import { brailleMappings } from '../data/brailleMappings';
+import { hiraganaAndKigouMappings } from '../data/brailleMappings';
 import { numberTable, alphabetTable } from '../data/table';
 
 // キーと点字の点の対応マップ
@@ -47,7 +47,7 @@ export function getBrailleData(pressedKeys: Set<string>): BrailleData | null {
     .map(key => keyToDotMap[key])
     .sort((a, b) => a - b);
 
-  const foundMapping = brailleMappings.find(
+  const foundMapping = hiraganaAndKigouMappings.find(
     (mapping: BrailleData) =>
       mapping.dots && arraysEqual(mapping.dots, currentDots)
   );
