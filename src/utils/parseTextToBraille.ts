@@ -46,8 +46,11 @@ export function parseHiraganaToBrailleCells(text: string): BrailleData[] {
     if (char === ' ' || char === ' ') {
       results.push({
         character: '␣（間を取る）',
-        braille: '⠀',
-        dots: [],
+        subCells: [{
+          character: '',
+          braille: '⠀',
+          dots: [],
+        }]
       });
       i++;
       continue;
@@ -83,15 +86,21 @@ export function parseHiraganaToBrailleCells(text: string): BrailleData[] {
     if (hexCode !== undefined) {
       results.push({
         character: char,
-        braille: hexToBraille(hexCode),
-        dots: hexToDots(hexCode),
+        subCells: [{
+          character: char,
+          braille: hexToBraille(hexCode),
+          dots: hexToDots(hexCode),
+        }]
       });
     } else {
       // 未知の文字のフォールバック
       results.push({
         character: char,
-        braille: '',
-        dots: [],
+        subCells: [{
+          character: char,
+          braille: '',
+          dots: [],
+        }]
       });
     }
     i++;
