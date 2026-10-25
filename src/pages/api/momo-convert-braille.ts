@@ -1,13 +1,10 @@
+// @ts-check
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ url }) => {
-  console.log('[API] リクエストURL全体:', url.toString());
-  
   const sourceText = url.searchParams.get('text');
-  console.log('[API] 取得したtextパラメータ:', sourceText);
 
   if (!sourceText) {
-    console.log('[API] エラー: textパラメータが空または存在しません');
     return new Response(JSON.stringify({ error: 'テキストがありません' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
@@ -16,20 +13,23 @@ export const GET: APIRoute = async ({ url }) => {
 
   try {
     const targetUrl = `https://neomomo-193894550340.asia-northeast1.run.app/predict?source=${encodeURIComponent(sourceText)}&model=large`;
-    console.log('[API] 外部Momo APIへリクエスト送信:', targetUrl);
-    
     const response = await fetch(targetUrl);
     const htmlText = await response.text();
-    console.log('[API] 外部APIからHTML取得成功 (文字数:', htmlText.length, ')');
 
+    // 原文、仮名、点字をそれぞれ正規表現で抽出
+    const originalMatch = htmlText.match(/<p>原文:\s*(.*?)<\/p>/);
+    const kanaMatch = htmlText.match(/<p>仮名:\s*(.*?)<\/p>/);
     const brailleMatch = htmlText.match(/([⠀-⠿]+(?:\s+[⠀-⠿]+)*)/);
+
+    const originalResult = originalMatch ? originalMatch[1].trim() : '';
+    const kanaResult = kanaMatch ? kanaMatch[1].trim() : '';
     const brailleResult = brailleMatch ? brailleMatch[1].trim() : '';
-    console.log('[API] 抽出された点字結果:', brailleResult);
 
     return new Response(
       JSON.stringify({
         success: true,
-        source: sourceText,
+        original: originalResult,
+        kana: kanaResult,
         result: brailleResult,
       }),
       {

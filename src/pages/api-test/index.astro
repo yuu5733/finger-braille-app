@@ -51,10 +51,11 @@ import Layout from "../../layouts/Layout.astro";
         const data = await res.json();
 
         if (res.ok) {
-          // 抽出された点字データ（data.result）を表示
-          resultArea.textContent = data.result
-            ? `点字結果: ${data.result}`
-            : JSON.stringify(data, null, 2);
+          resultArea.innerHTML = `
+            <p><strong>原文:</strong> ${data.original || "-"}</p>
+            <p><strong>仮名:</strong> ${data.kana || "-"}</p>
+            <p><strong>点字:</strong> ${data.result || "-"}</p>
+          `;
         } else {
           resultArea.textContent = `エラー: ${data.error || "不明なエラー"}`;
         }
