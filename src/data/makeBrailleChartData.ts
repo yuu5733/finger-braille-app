@@ -51,12 +51,6 @@ const HANDAKUON_ROW_CHARACTERS: Record<string, string[]> = {
     'ぱ行': ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'],
 };
 
-// 濁音・半濁音表のデータ生成
-export const dakuonAndHandakuonTableData: BrailleRowData[] = Object.entries({...DAKUON_ROW_CHARACTERS, ...HANDAKUON_ROW_CHARACTERS }).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => dakuonAndHandakuonMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
-
 const YOUON_ROW_CHARACTERS: Record<string, string[]> = {
     'きゃ行': ['きゃ', 'きゅ', 'きょ'],
     'しゃ行': ['しゃ', 'しゅ', 'しょ'],
@@ -71,12 +65,6 @@ const YOUON_ROW_CHARACTERS: Record<string, string[]> = {
     'びゃ行': ['びゃ', 'びゅ', 'びょ'],
     'ぴゃ行': ['ぴゃ', 'ぴゅ', 'ぴょ'],
 };
-
-// 拗音表のデータ生成
-export const youonTableData: BrailleRowData[] = Object.entries(YOUON_ROW_CHARACTERS).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => youonMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
 
 const NUMBER_ROW_CHARACTERS: Record<string, string[]> = {
     // 数符と数字 (0〜9) を1行にまとめる
@@ -124,6 +112,7 @@ const createTableData = (
     cells: charArray.map(char => map.get(char) || { character: char, braille: '', dots: [] }),
   }));
 };
+// 【出力結果】
 // [
 //   {
 //     category: 'あ行',
@@ -134,11 +123,21 @@ const createTableData = (
 //     ]
 //   },
 // ]
+
 // 清音表のデータ生成
 export const seionTableData = createTableData(SEION_ROW_CHARACTERS, seionMap);
 
 // 記号表のデータ生成を追加
 export const kigouTableData = createTableData(KIGOU_ROW_CHARACTERS, kigouMap);
+
+// 濁音・半濁音表のデータ生成
+export const dakuonAndHandakuonTableData = createTableData(
+    { ...DAKUON_ROW_CHARACTERS, ...HANDAKUON_ROW_CHARACTERS }, 
+    dakuonAndHandakuonMap
+);
+
+// 拗音表のデータ生成を追加
+export const youonTableData = createTableData(YOUON_ROW_CHARACTERS, youonMap);
 
 // 数字表のデータ生成
 export const numberTableData = createTableData(NUMBER_ROW_CHARACTERS, numberMap);
