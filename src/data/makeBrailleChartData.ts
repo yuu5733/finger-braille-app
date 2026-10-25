@@ -11,17 +11,14 @@ import type { BrailleData, BrailleRowData } from './types';
 
 // 6. スタイルシート / アセット
 import { 
-    seionMappings, 
-    hiraganaKigouMappings, 
-    dakuonMappings, 
-    handakuonMappings, 
-    youonMappings,
-    youdakuonMappings,
-    youhandakuonMappings,
-    numberMappings, 
-    alphabetMappings, 
+    seionMap, 
+    kigouMap, 
+    numberMap, 
+    alphabetMap, 
+    specialMap,
+    dakuonAndHandakuonMap,
+    youonMap,
     ryakugoMappings,
-    specialMappings, 
 } from './brailleMappings'; // 点字表用の点字マッピング
 
 const SEION_ROW_CHARACTERS: Record<string, string[]> = {
@@ -54,18 +51,6 @@ const HANDAKUON_ROW_CHARACTERS: Record<string, string[]> = {
     'ぱ行': ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'],
 };
 
-// 濁音と半濁音のマップ作成
-const dakuonAndHandakuonMap = new Map<string, BrailleData>();
-[...dakuonMappings, ...handakuonMappings].forEach(data => {
-    dakuonAndHandakuonMap.set(data.character, data);
-});
-
-// 濁音・半濁音表のデータ生成
-export const dakuonAndHandakuonTableData: BrailleRowData[] = Object.entries({...DAKUON_ROW_CHARACTERS, ...HANDAKUON_ROW_CHARACTERS }).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => dakuonAndHandakuonMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
-
 const YOUON_ROW_CHARACTERS: Record<string, string[]> = {
     'きゃ行': ['きゃ', 'きゅ', 'きょ'],
     'しゃ行': ['しゃ', 'しゅ', 'しょ'],
@@ -80,18 +65,6 @@ const YOUON_ROW_CHARACTERS: Record<string, string[]> = {
     'びゃ行': ['びゃ', 'びゅ', 'びょ'],
     'ぴゃ行': ['ぴゃ', 'ぴゅ', 'ぴょ'],
 };
-
-// 拗音・拗濁音・拗半濁音のマップ作成
-const youonMap = new Map<string, BrailleData>();
-[...youonMappings, ...youdakuonMappings, ...youhandakuonMappings].forEach(data => {
-    youonMap.set(data.character, data);
-});
-
-// 拗音表のデータ生成
-export const youonTableData: BrailleRowData[] = Object.entries(YOUON_ROW_CHARACTERS).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => youonMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
 
 const NUMBER_ROW_CHARACTERS: Record<string, string[]> = {
     // 数符と数字 (0〜9) を1行にまとめる
@@ -122,84 +95,57 @@ const TOKUSHU_ROW_CHARACTERS: Record<string, string[]> = {
 };
 
 
-// 全マッピングを文字（key）で検索しやすい Map に変換
-// 変換処理で使用する。展示表では、コメントを変えることがあるので統合したものは用いない
-// seionMappings をマップに追加
-const brailleMap = new Map<string, BrailleData>();
-for (const data of seionMappings) {
-    brailleMap.set(data.character, data);
-}
-// numberMappings をマップに追加
-for (const data of numberMappings) {
-    brailleMap.set(data.character, data);
-}
-
-// alphabetMappings をマップに追加 (大文字キーを使用)
-for (const data of alphabetMappings) {
-    brailleMap.set(data.character, data);
-}
-
-// ----------------------------------------------------------------------
-
-// 指点字表用に独立した Map を作成する
-const seionMap = new Map<string, BrailleData>();
-seionMappings.forEach(data => seionMap.set(data.character, data));
-
-const kigouMap = new Map<string, BrailleData>();
-hiraganaKigouMappings.forEach(data => kigouMap.set(data.character, data));
-
-const numberMap = new Map<string, BrailleData>();
-numberMappings.forEach(data => numberMap.set(data.character, data));
-
-const alphabetMap = new Map<string, BrailleData>();
-alphabetMappings.forEach(data => alphabetMap.set(data.character, data));
-
-const specialMap = new Map<string, BrailleData>();
-specialMappings.forEach(data => specialMap.set(data.character, data));
-
-// ----------------------------------------------------------------------
-
 /**
- * 指定された行の文字配列に対応する BrailleData の配列を取得する
- * @param charArray 行を構成する文字の配列
- * @returns BrailleData の配列
+ * 共通のテーブル生成ヘルパー関数
+ * カテゴリごとの文字配列に対応する BrailleRowData の配列を生成する
+ * @param rowCharacters 行を構成するカテゴリと文字配列のマッピング
+ * @param map 文字に対応する BrailleData が格納されたマップ
+ * @returns BrailleRowData の配列
+ * 【出力結果例】
+ * [
+ *   {
+ *     category: 'あ行',
+ *     cells: [
+ *       { character: 'あ', braille: '⠁', dots: [1] },
+ *       { character: 'い', braille: '⠃', dots: [1, 2] },
+ *       ……
+ *     ]
+ *   },
+ * ]
  */
-// const getBrailleCells = (charArray: string[]): BrailleData[] => {
-//     return charArray.map(char => {
-//         const data = brailleMap.get(char);
-//         // マッピングが見つからない場合は、エラーハンドリングまたは空データ
-//         if (!data) {
-//             console.warn(`Braille data not found for character: ${char}`);
-//             // エラーを避けるため、ダミーデータを返す
-//             return { character: char, braille: '', dots: [] }; 
-//         }
-//         return data;
-//     });
-// };
+const createTableData = (
+  rowCharacters: Record<string, string[]>, 
+  map: Map<string, BrailleData>
+): BrailleRowData[] => {
+  return Object.entries(rowCharacters).map(([category, charArray]) => ({
+    category,
+    cells: charArray.map(char => map.get(char) || { character: char, braille: '', dots: [] }),
+  }));
+};
 
 // 清音表のデータ生成
-export const seionTableData: BrailleRowData[] = Object.entries(SEION_ROW_CHARACTERS).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => seionMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
+export const seionTableData = createTableData(SEION_ROW_CHARACTERS, seionMap);
 
 // 記号表のデータ生成を追加
-export const kigouTableData: BrailleRowData[] = Object.entries(KIGOU_ROW_CHARACTERS).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => kigouMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
+export const kigouTableData = createTableData(KIGOU_ROW_CHARACTERS, kigouMap);
+
+// 濁音・半濁音表のデータ生成
+export const dakuonAndHandakuonTableData = createTableData(
+    { ...DAKUON_ROW_CHARACTERS, ...HANDAKUON_ROW_CHARACTERS }, 
+    dakuonAndHandakuonMap
+);
+
+// 拗音表のデータ生成を追加
+export const youonTableData = createTableData(YOUON_ROW_CHARACTERS, youonMap);
 
 // 数字表のデータ生成
-export const numberTableData: BrailleRowData[] = Object.entries(NUMBER_ROW_CHARACTERS).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => numberMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
+export const numberTableData = createTableData(NUMBER_ROW_CHARACTERS, numberMap);
 
 // アルファベット表のデータ生成
-export const alphabetTableData: BrailleRowData[] = Object.entries(ALPHABET_ROW_CHARACTERS).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => alphabetMap.get(char) || { character: char, braille: '', dots: [] }),
-}));
+export const alphabetTableData = createTableData(ALPHABET_ROW_CHARACTERS, alphabetMap);
+
+// 特殊音表のデータ生成
+export const tokushuTableData = createTableData(TOKUSHU_ROW_CHARACTERS, specialMap);
 
 // よく使う略語のデータ生成
 export const ryakugoTableData: BrailleRowData[] = [
@@ -209,8 +155,3 @@ export const ryakugoTableData: BrailleRowData[] = [
   },
 ];
 
-// 特殊音表のデータ生成
-export const tokushuTableData: BrailleRowData[] = Object.entries(TOKUSHU_ROW_CHARACTERS).map(([category, charArray]) => ({
-    category: category,
-    cells: charArray.map(char => specialMap.get(char) || { character: char, braille: '', dots: [] }),
-}));

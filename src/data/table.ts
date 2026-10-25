@@ -293,8 +293,6 @@ export const tokushuKutenMap: { [key: string]: string } = {
   'つ': 'どぅ',
 };
 
-
-
 //数値
 export const numberTable: { [key: string]: number } = {
   // 1:ひらがなの「あ」、アルファベットのに「a」同じ [1]

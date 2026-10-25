@@ -12,24 +12,29 @@ import { hexToBraille } from '../utils/hexToBraille';
 // 5. 相対パスによるインポート (※ 無し)
 
 // 6. スタイルシート / アセット
-import { hiraganaTable, hiraganaKigouTable, kigouTable_yubitenjiChart, numberTable, alphabetTable, brailleCodes } from './table';
+import { dakuonMap, handakuonMap, hiraganaTable, hiraganaKigouTable, kigouTable_yubitenjiChart, numberTable, alphabetTable, brailleCodes } from './table';
 
 // ----------------------------------------------------------------------
 // 1つの点字で表現できる基本となるキー（ひらがな、ひらがな用の記号）のマッピングの定義
 // ----------------------------------------------------------------------
 
+// {
+//   あ: 0x01,
+//   い: 0x03,
+//   …
+// }
 // スプレッド構文を使って二つのテーブルを結合する（ゑを除く）
 const hiraganaTableCopy = { ...hiraganaTable };
 delete hiraganaTableCopy['ゑ'];
 
-const combinedTable = {
+const hiraganaAndKigouTable = {
   ...hiraganaTableCopy,
   ...hiraganaKigouTable,
 };
 
-// hiraganaTableCopyをもとにbrailleMappingsを生成（タイピング用）
+// hiraganaTableCopyをもとにhiraganaAndKigouMappingsを生成（タイピング用）
 // オブジェクトをキーと値のペアの配列に変換する（Object.entries）
-export const brailleMappings: BrailleData[] = Object.entries(combinedTable).map(
+export const hiraganaAndKigouMappings: BrailleData[] = Object.entries(hiraganaAndKigouTable).map(
   ([character, hexCode]) => {
     return {
       character: character, // ひらがな
@@ -39,9 +44,9 @@ export const brailleMappings: BrailleData[] = Object.entries(combinedTable).map(
   }
 );
 
-// brailleMappingsから逆引きのマッピングを作成
+// hiraganaAndKigouMappingsから逆引きのマッピングを作成
 export const brailleToCharacterMap: { [key: string]: string } = {};
-brailleMappings.forEach(mapping => {
+hiraganaAndKigouMappings.forEach(mapping => {
   if (mapping.braille) {
     brailleToCharacterMap[mapping.braille] = mapping.character;
   }
@@ -79,13 +84,10 @@ export const hiraganaKigouMappings: BrailleData[] = Object.entries(kigouTable_yu
   }
 );
 
-// --- 濁音・半濁音データの自動生成関数 ---
+// dakuonMap (か -> が) から逆引きマップ 濁音・半濁音データ(が -> か、ぽ -> ほ) を自動生成
 const baseHiraganaMap: Record<string, string> = {
-  が: 'か', ぎ: 'き', ぐ: 'く', げ: 'け', ご: 'こ',
-  ざ: 'さ', じ: 'し', ず: 'す', ぜ: 'せ', ぞ: 'そ',
-  だ: 'た', ぢ: 'ち', づ: 'つ', で: 'て', ど: 'と',
-  ば: 'は', び: 'ひ', ぶ: 'ふ', べ: 'へ', ぼ: 'ぼ',
-  ぱ: 'は', ぴ: 'ひ', ぷ: 'ふ', ぺ: 'へ', ぽ: 'ほ',
+  ...Object.fromEntries(Object.entries(dakuonMap).map(([k, v]) => [v, k])),
+  ...Object.fromEntries(Object.entries(handakuonMap).map(([k, v]) => [v, k])),
 };
 
 export const createDakuonData = (char: string): BrailleData => {
@@ -117,16 +119,11 @@ export const createDakuonData = (char: string): BrailleData => {
   };
 };
 
-const dakuonList = [
-  'が', 'ぎ', 'ぐ', 'げ', 'ご',
-  'ざ', 'じ', 'ず', 'ぜ', 'ぞ',
-  'だ', 'ぢ', 'づ', 'で', 'ど',
-  'ば', 'び', 'ぶ', 'べ', 'ぼ',
-];
+// 濁音リスト（が〜ぼ。ゔを除く）
+const dakuonList = Object.values(dakuonMap).filter(char => char !== 'ゔ');
 
-const handakuonList = [
-  'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
-];
+// 半濁音リスト（ぱ〜ぽ）
+const handakuonList = Object.values(handakuonMap);
 
 export const dakuonMappings: BrailleData[] = dakuonList.map(char => createDakuonData(char));
 export const handakuonMappings: BrailleData[] = handakuonList.map(char => createDakuonData(char));
@@ -150,14 +147,17 @@ const youonBaseHiraganaMap: Record<string, string> = {
   ぴゃ: 'は', ぴゅ: 'ふ', ぴょ: 'ほ',
 };
 
+const youdakuonSet = new Set(['ぎゃ', 'ぎゅ', 'ぎょ', 'じゃ', 'じゅ', 'じょ', 'ぢゃ', 'ぢゅ', 'ぢょ', 'びゃ', 'びゅ', 'びょ']);
+const youhandakuonSet = new Set(['ぴゃ', 'ぴゅ', 'ぴょ']);
+
 export const createYouonData = (char: string): BrailleData => {
   let fuKey = '拗音符';
   let fuHex = brailleCodes.youonFu;
 
-  if (['ぎゃ', 'ぎゅ', 'ぎょ', 'じゃ', 'じゅ', 'じょ', 'ぢゃ', 'ぢゅ', 'ぢょ', 'びゃ', 'びゅ', 'びょ'].includes(char)) {
+  if (youdakuonSet.has(char)) {
     fuKey = '拗濁音符';
     fuHex = brailleCodes.youdakuonFu;
-  } else if (['ぴゃ', 'ぴゅ', 'ぴょ'].includes(char)) {
+  } else if (youhandakuonSet.has(char)) {
     fuKey = '拗半濁音符';
     fuHex = brailleCodes.youhandakuonFu;
   }
@@ -166,16 +166,8 @@ export const createYouonData = (char: string): BrailleData => {
   const baseHex = hiraganaTable[baseChar] ?? 0x00;
 
   const subCells = [
-    {
-      character: fuKey,
-      braille: hexToBraille(fuHex),
-      dots: hexToDots(fuHex),
-    },
-    {
-      character: baseChar,
-      braille: hexToBraille(baseHex),
-      dots: hexToDots(baseHex),
-    },
+    { character: fuKey, braille: hexToBraille(fuHex), dots: hexToDots(fuHex) },
+    { character: baseChar, braille: hexToBraille(baseHex), dots: hexToDots(baseHex) },
   ];
 
   return {
@@ -186,26 +178,9 @@ export const createYouonData = (char: string): BrailleData => {
   };
 };
 
-const youonList = [
-  'きゃ', 'きゅ', 'きょ',
-  'しゃ', 'しゅ', 'しょ',
-  'ちゃ', 'ちゅ', 'ちょ',
-  'にゃ', 'にゅ', 'にょ',
-  'ひゃ', 'ひゅ', 'ひょ',
-  'みゃ', 'みゅ', 'みょ',
-  'りゃ', 'りゅ', 'りょ',
-];
-
-const youdakuonList = [
-  'ぎゃ', 'ぎゅ', 'ぎょ',
-  'じゃ', 'じゅ', 'じょ',
-  'ぢゃ', 'ぢゅ', 'ぢょ',
-  'びゃ', 'びゅ', 'びょ',
-];
-
-const youhandakuonList = [
-  'ぴゃ', 'ぴゅ', 'ぴょ',
-];
+const youonList = ['きゃ', 'きゅ', 'きょ', 'しゃ', 'しゅ', 'しょ', 'ちゃ', 'ちゅ', 'ちょ', 'にゃ', 'にゅ', 'にょ', 'ひゃ', 'ひゅ', 'ひょ', 'みゃ', 'みゅ', 'みょ', 'りゃ', 'りゅ', 'りょ'];
+const youdakuonList = ['ぎゃ', 'ぎゅ', 'ぎょ', 'じゃ', 'じゅ', 'じょ', 'ぢゃ', 'ぢゅ', 'ぢょ', 'びゃ', 'びゅ', 'びょ'];
+const youhandakuonList = ['ぴゃ', 'ぴゅ', 'ぴょ'];
 
 export const youonMappings: BrailleData[] = youonList.map(char => createYouonData(char));
 export const youdakuonMappings: BrailleData[] = youdakuonList.map(char => createYouonData(char));
@@ -484,3 +459,27 @@ export const createSpecialData = (char: string): BrailleData => {
 const specialList = Object.keys(specialHiraganaMap);
 
 export const specialMappings: BrailleData[] = specialList.map(char => createSpecialData(char));
+
+// ----------------------------------------------------------------------
+// 各種 Map
+// ----------------------------------------------------------------------
+// 指点字表用に独立した Map を作成する
+// Map {
+//   'あ' => { character: 'あ', dots: [1], braille: '⠁' },
+//   'い' => { character: 'い', dots: [1, 2], braille: '⠃' },
+//   'う' => { character: 'う', dots: [1, 4], braille: '⠉' },
+//   // ...
+// }
+export const seionMap = new Map(seionMappings.map(data => [data.character, data]));
+export const kigouMap = new Map(hiraganaKigouMappings.map(data => [data.character, data]));
+export const numberMap = new Map(numberMappings.map(data => [data.character, data]));
+export const alphabetMap = new Map(alphabetMappings.map(data => [data.character, data]));
+export const specialMap = new Map(specialMappings.map(data => [data.character, data]));
+
+export const dakuonAndHandakuonMap = new Map(
+  [...dakuonMappings, ...handakuonMappings].map(data => [data.character, data])
+);
+
+export const youonMap = new Map(
+  [...youonMappings, ...youdakuonMappings, ...youhandakuonMappings].map(data => [data.character, data])
+);
