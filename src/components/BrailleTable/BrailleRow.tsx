@@ -48,7 +48,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
           <BrailleCell
             key={data.character} // characterをkeyに使用
             character={data.character}
-            brailleChar={data.braille}
+            braille={data.braille}
             dots={data.dots}
             subCells={data.subCells}
             columnSpan={data.columnSpan}

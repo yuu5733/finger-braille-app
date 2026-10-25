@@ -1,26 +1,15 @@
 import React from 'react';
 
 import type { FC } from 'react';
-import type { BrailleDot, SubCellData } from '../../data/types'; 
+import type { BrailleDot, SubCellData, BrailleData } from '../../data/types'; 
 
 import FingerBrailleSVG from './FingerBrailleSVG'; // SVGコンポーネントをインポート
 
 // CSSモジュールをインポート
 import styles from './BrailleCell.module.css';
 
-interface BrailleCellProps {
-  /** 表示する文字（ひらがな、記号など） */
-  character: string;
-  /** 点字の点番号（1〜6）の配列 */
-  dots?: BrailleDot[];
-  /** 対応する点字の Unicode 文字（例: '⠁'） */
-  brailleChar?: string;
-  /** 複数セル用 */
-  subCells?: SubCellData[];
-  /** グリッド幅調整用 */
-  columnSpan?: number;
-  /** コメント。覚えるためのアドバイスなど */
-  comment?: string; 
+
+interface BrailleCellProps extends BrailleData {
   /** 文字の長さの関係で、classを追加する必要があるか */
   flag?: boolean;
   /** 文字の種類 */
@@ -30,7 +19,7 @@ interface BrailleCellProps {
 const BrailleCell: FC<BrailleCellProps> = ({ 
   character, 
   dots, 
-  brailleChar, 
+  braille, 
   subCells, 
   columnSpan = 1, 
   comment, 
@@ -81,7 +70,7 @@ const BrailleCell: FC<BrailleCellProps> = ({
               <FingerBrailleSVG brailleDots={dots || []} type={type} />
             </div>
             <p className={styles.dotNumbers}>[{dots ? dots.join(', ') : 'なし'}]</p>
-            <p className={styles.brailleCharContainer}><span>{brailleChar}</span></p>
+            <p className={styles.brailleCharContainer}><span>{braille}</span></p>
           </>
         )}
 
