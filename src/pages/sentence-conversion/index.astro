@@ -1,15 +1,31 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import ApiTestClient from "../../components/api-test/ApiTestClient.tsx";
+import ApiTestClient from "../../components/momo-api/MomoApiClient";
 ---
 
-<Layout title="指点字アプリ - 表示・APIテスト">
+<Layout title="指点字アプリ - 文の表示">
   <main class="test-container">
-    <h1>表示・APIテスト用ページ</h1>
+    <h1>文を指点字に変換して表示</h1>
 
-    <section class="test-section">
-      <h2>1. レイアウト確認</h2>
-      <p>共通レイアウトおよびスタイルが正しく適用されているかのテストです。</p>
+    <section class="what-this-page">
+      <h2>1. このページについて</h2>
+      <p>
+        ひらがなやカタカナだけではなく、漢字かな混じりの文でも、指点字に変換できます。<br
+        />
+        日本語テキストを点字に変換するライブラリ「MOMO」を使用しています。
+      </p>
+      <ul>
+        <li>
+          <a href="https://momo.seiken-lab.com/"
+            >Japanese Braille Translation Software: MOMO Project</a
+          >
+        </li>
+        <li>
+          <a href="https://neomomo-193894550340.asia-northeast1.run.app/"
+            >自動点訳システムMomo</a
+          >
+        </li>
+      </ul>
     </section>
 
     <!-- Reactコンポーネントをクライアントサイドで実行・マウント -->
@@ -56,12 +72,24 @@ import ApiTestClient from "../../components/api-test/ApiTestClient.tsx";
   </script>
 
   <style>
+    h1 {
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      margin-left: 1rem;
+    }
+
+    p {
+      margin-bottom: .5rem;
+    }
+
     .test-container {
       max-width: 800px;
       margin: 0 auto;
       padding: 2rem 1rem;
     }
-    .test-section {
+    .what-this-page {
       margin-bottom: 2rem;
       padding: 1.5rem;
       background: #f9f9f9;

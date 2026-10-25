@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DynamicBrailleView } from './api-test.tsx';
+import { DynamicBrailleView } from './momo-api.tsx';
 
 export default function ApiTestClient() {
   const [input, setInput] = useState('今日はいい天気ですね');
@@ -30,8 +30,8 @@ export default function ApiTestClient() {
 
   return (
     <div className="test-section" style={{ marginBottom: '2rem', padding: '1.5rem', background: '#f9f9f9', borderRadius: '8px' }}>
-      <h2>2. API通信・変換テスト（React）</h2>
-      <p>テキストを入力し、変換処理の動作を確認します。</p>
+      <h2>2. API通信</h2>
+      <p style={{paddingBottom: '0.5rem'}}>テキストを入力し、変換処理の動作を確認します。</p>
 
       <form onSubmit={handleConvert} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         <input
@@ -46,7 +46,7 @@ export default function ApiTestClient() {
           disabled={loading}
           style={{ padding: '0.5rem 1rem', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
         >
-          {loading ? '変換中...' : '変換テスト'}
+          {loading ? '変換中...' : '変換する'}
         </button>
       </form>
 

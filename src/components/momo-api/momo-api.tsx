@@ -1,5 +1,5 @@
 import { parseHiraganaToBrailleCells } from '../../utils/parseTextToBraille.ts';
-import BrailleCell from '../../components/BrailleTable/BrailleCell.tsx';
+import BrailleCell from '../BrailleTable/BrailleCell.tsx';
 
 export function DynamicBrailleView({ kanaText }: { kanaText: string }) {
   const brailleCells = parseHiraganaToBrailleCells(kanaText);
