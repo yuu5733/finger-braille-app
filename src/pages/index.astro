@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import keyboardPlacement from "../assets/keyboard-placement.svg";
 ---
 
 <Layout title="ホーム｜指点字練習アプリ">
@@ -14,7 +15,7 @@ import Layout from "../layouts/Layout.astro";
       指をホームポジションに置いた時の、人差し指、中指、薬指を使います。<br />
       左の人差し指をFキー、右手の人差し指をJキーに置きます。
     </p>
-    <img src="src/assets/keyboard-placement.svg" alt="イラスト。指の配置" />
+    <img src={keyboardPlacement.src} alt="イラスト。指の配置" />
 
     <nav class="main-nav">
       <a href="/practice" class="start-button"> 練習を始める → </a>
