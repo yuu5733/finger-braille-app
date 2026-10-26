@@ -16,7 +16,7 @@ import styles from './BrailleRow.module.css';
 
 interface BrailleRowProps extends BrailleRowData {}
 
-const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
+const BrailleRow: FC<BrailleRowProps> = ({ category, cells, colorType: rowColorTypeProp }) => {
   const isNumberOrAlphabetRow = category === '数字' || category === 'A〜J' || category === 'K〜T' || category === 'U〜Z'; 
   const isLongCharacter = category === '記号など(数字)' || category === '外字符など' || category === '記号' || category === 'かっこ'; 
   const isRyakugoRow = category === 'よく使う略語';
@@ -25,7 +25,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
     ? styles.ryakugoRowGrid
     : `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
 
-  // カテゴリから type を判定する関数
+  // カテゴリから デフォルトの colorType を判定する関数
   const getRowType = (cat: string): BrailleColorType => {
     if (cat === 'や行') return 'yagyou';
     if (cat === 'わ行') return 'wagyou';
@@ -34,6 +34,10 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
     if (cat === '記号' || cat === 'かっこ') return 'kigou';
     return 'hiragana';
   };
+
+  // Rowプロパティから渡された色、またはカテゴリから算出した色を行全体のデフォルトとする
+  const defaultRowType = getRowType(category);
+  const rowColorType = rowColorTypeProp || defaultRowType;
 
   const cellType = getRowType(category);
 
@@ -46,19 +50,24 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
 
       {/* 2. セルを並べるグリッドコンテナ (ul) */}
       <ul className={gridClassName}>
-        {cells.map((data) => (
-          <BrailleCell
-            key={data.character} // characterをkeyに使用
-            character={data.character}
-            braille={data.braille}
-            dots={data.dots}
-            subCells={data.subCells}
-            columnSpan={data.columnSpan}
-            comment={data.comment}
-            flag={data.character.length > 4 ? true : false}
-            type={cellType}
-          />
-        ))}
+        {cells.map((data) => {
+          // Cellレベルの指定があればそれを優先し、なければRowレベルのデフォルトを適用
+          const finalColorType = data.colorType || rowColorType;
+
+          return (
+            <BrailleCell
+              key={data.character}
+              character={data.character}
+              braille={data.braille}
+              dots={data.dots}
+              subCells={data.subCells}
+              columnSpan={data.columnSpan}
+              comment={data.comment}
+              flag={data.character.length > 4 ? true : false}
+              colorType={finalColorType}
+            />
+          );
+        })}
       </ul>
     </section>
   );

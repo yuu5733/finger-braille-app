@@ -18,19 +18,21 @@ export type BrailleCode = BrailleDot[];
 
 // 表用の点字データ（複数文字用）
 export type SubCellData = {
-  character: string;    // 例: 拗音符、あるいは各文字
-  braille: string;      // Unicode点字
-  dots: BrailleCode;    // 点番号の配列
+  character: string;            // 例: 拗音符などの符号、あるいは各文字
+  braille: string;              // Unicode点字
+  dots: BrailleCode;            // 点番号の配列
+  colorType?: BrailleColorType; // サブセルごとの個別色指定（必要に応じて）
 };
 
 // 表用の点字データ
 export type BrailleData = {
-  character: string;          // 複数の場合セル全体が表す文字（例: "きゃ", "ATM"）、単数の場合は表示する文字（ひらがな、記号など）
-  braille?: string;           // 単一の場合、対応する点字の Unicode 文字（例: '⠁'）
-  dots?: BrailleCode;         // 単一の場合、点字の点番号（1〜6）の配列
-  subCells?: SubCellData[];   // 複数の点字（セル）を並べる場合（拗音や略語など）
-  columnSpan?: number;        // グリッドの占有列数（2倍、3倍の幅にするため）
-  comment?: string;           // コメント
+  character: string;            // 複数の場合セル全体が表す文字（例: "きゃ", "ATM"）、単数の場合は表示する文字（ひらがな、記号など）
+  braille?: string;             // 単一の場合、対応する点字の Unicode 文字（例: '⠁'）
+  dots?: BrailleCode;           // 単一の場合、点字の点番号（1〜6）の配列
+  subCells?: SubCellData[];     // 複数の点字（セル）を並べる場合（拗音や略語など）
+  columnSpan?: number;          // グリッドの占有列数（2倍、3倍の幅にするため）
+  comment?: string;             // コメント
+  colorType?: BrailleColorType; // Cellレベルでの個別色指定（指定がある場合はRowより優先）
 };
 
 export type InputMode =
@@ -62,8 +64,9 @@ export type InputMode =
 
 /** 表をカテゴリ（行）ごとにまとめるための型 */
 export interface BrailleRowData {
-    category: string; // 例: 'あ行'
-    cells: BrailleData[];
+  category: string;             // 例: 'あ行'
+  cells: BrailleData[];
+  colorType?: BrailleColorType; // Rowレベルでの一括色指定
 }
 
 /**

@@ -18,8 +18,6 @@ import styles from './BrailleCell.module.css';
 interface BrailleCellProps extends BrailleData {
   /** 文字の長さの関係で、classを追加する必要があるか */
   flag?: boolean;
-  /** 文字の種類 */
-  type?: BrailleColorType;
 }
 
 const BrailleCell: FC<BrailleCellProps> = ({ 
@@ -30,7 +28,7 @@ const BrailleCell: FC<BrailleCellProps> = ({
   columnSpan = 1, 
   comment, 
   flag, 
-  type }) => {
+  colorType }) => {
   const characterClassName = flag ? `${styles.character} ${styles.longCharacter}` : styles.character;
 
   // subCellsがあるかどうかでラッパーのクラスを切り替える
@@ -64,7 +62,11 @@ const BrailleCell: FC<BrailleCellProps> = ({
             <div className={styles.multiFingerBraille}>
               {subCells.map((sub, index) => (
                 <div key={index} className={styles.subSvgItem}>
-                  <FingerBrailleSVG brailleDots={sub.dots} type={type} />
+                  {/* sub側で個別指定があれば優先、なければセルのcolorType */}
+                  <FingerBrailleSVG 
+                    brailleDots={sub.dots} 
+                    colorType={sub.colorType || colorType} 
+                  />
                 </div>
               ))}
             </div>
@@ -73,7 +75,7 @@ const BrailleCell: FC<BrailleCellProps> = ({
           /* 従来の単一セル形式 */
           <>
             <div className={styles.fingerBraille}>
-              <FingerBrailleSVG brailleDots={dots || []} type={type} />
+              <FingerBrailleSVG brailleDots={dots || []} colorType={colorType} />
             </div>
             <p className={styles.dotNumbers}>[{dots ? dots.join(', ') : 'なし'}]</p>
             <p className={styles.brailleCharContainer}><span>{braille}</span></p>
