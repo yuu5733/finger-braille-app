@@ -78,6 +78,7 @@ export function useBrailleLogic() {
       // 2. モードに応じた処理の分岐（AlphabetおよびSuujiでリセット）
       if (currentMode === 'Alphabet' || currentMode === 'Suuji') {
         setCurrentMode('Kana');
+        onOutput(' '); // 半角スペースを追加
       } else if (currentMode === 'GaijiQuote') {
         onOutput(' ');
       } else {
