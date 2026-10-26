@@ -56,7 +56,7 @@ const BrailleAppContent: FC = () => {
       }
 
       // 2. モードに応じた処理の分岐
-      if (currentMode === 'Alphabet') {
+      if (currentMode === 'Alphabet'|| currentMode === 'Suuji') {
         // Alphabet モードではモードをリセット
         setCurrentMode('Kana');
       } else if (currentMode === 'GaijiQuote') {
