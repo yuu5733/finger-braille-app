@@ -2,10 +2,6 @@
 
 /* BrailleCell 全体のコンテナ */
 /* li要素に適用されるクラス */
-.cellContainer {
-  list-style: none;
-}
-
 /* カラムスパンの動的適用 */
 .cellContainer[data-span="2"] {
   grid-column: span 2;
