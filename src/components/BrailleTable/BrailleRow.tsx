@@ -26,7 +26,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
     : `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
 
   // カテゴリから type を判定する関数
-  const getCellType = (cat: string): BrailleColorType => {
+  const getRowType = (cat: string): BrailleColorType => {
     if (cat === 'や行') return 'yagyou';
     if (cat === 'わ行') return 'wagyou';
     if (cat === '数字') return 'number';
@@ -35,7 +35,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
     return 'hiragana';
   };
 
-  const cellType = getCellType(category);
+  const cellType = getRowType(category);
 
   return (
     <section className={styles.brailleRowSection}>
