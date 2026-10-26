@@ -10,16 +10,20 @@ export type FingerStates = {
 /**
  * 点字の点の番号を表現する型 (1 から 6 のいずれか)
  */
-export type BrailleDot = 1 | 2 | 3 | 4 | 5 | 6; 
+export type BrailleDot = 1 | 2 | 3 | 4 | 5 | 6;
+export type LeftDot = 1 | 2 | 3;
+export type RightDot = 4 | 5 | 6;
 
 export type BrailleCode = BrailleDot[];
 
+// 表用の点字データ（複数文字用）
 export type SubCellData = {
   character: string;    // 例: 拗音符、あるいは各文字
   braille: string;      // Unicode点字
   dots: BrailleCode;    // 点番号の配列
 };
 
+// 表用の点字データ
 export type BrailleData = {
   character: string;          // 複数の場合セル全体が表す文字（例: "きゃ", "ATM"）、単数の場合は表示する文字（ひらがな、記号など）
   braille?: string;           // 単一の場合、対応する点字の Unicode 文字（例: '⠁'）

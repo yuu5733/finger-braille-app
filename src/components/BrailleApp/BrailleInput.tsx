@@ -14,6 +14,7 @@ import FingerButton from './FingerButton';
 import styles from './BrailleInput.module.css';
 
 interface BrailleInputProps {
+  // 重複のない文字列のコレクション
   pressedKeys: Set<string>; 
 }
 

@@ -2,7 +2,7 @@
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleDot, BrailleColorType } from '../../data/types'; 
+import type { BrailleDot, LeftDot, RightDot, BrailleColorType } from '../../data/types'; 
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -12,10 +12,6 @@ import type { BrailleDot, BrailleColorType } from '../../data/types';
 
 // 6. スタイルシート / アセット
 import styles from './FingerBrailleSVG.module.css';
-
-// === 型定義と定数 ===
-type LeftDot = 1 | 2 | 3;
-type RightDot = 4 | 5 | 6;
 
 const COLOR_MAPS: Record<BrailleColorType, Record<BrailleDot, string>> = {
   hiragana: {
@@ -93,7 +89,7 @@ interface FingerBrailleSVGProps {
 
 // SVGのIDと点番号のマッピング
 const LEFT_DOT_MAP: Record<LeftDot, string> = {
-  1: 'hitosashi_yubi_left', // 点1 (人差し指)
+  1: 'hitosashi_yubi_left',  // 点1 (人差し指)
   2: 'naka_yubi_left',       // 点2 (中指)
   3: 'kusuri_yubi_left',     // 点3 (薬指)
 };
