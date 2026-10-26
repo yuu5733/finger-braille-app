@@ -63,6 +63,6 @@ export interface BrailleRowData {
 }
 
 /**
- * svgで色設定するための点字の種別（ひらがな、英字、数字、記号）
+ * svgで色設定するための点字の種別（ひらがな、や行、英字、数字、記号）
  */
-export type BrailleColorType = 'hiragana' | 'alphabet' | 'number' | 'kigou';
+export type BrailleColorType = 'hiragana' | 'yagyou' | 'wagyou' | 'alphabet' | 'number' | 'kigou';

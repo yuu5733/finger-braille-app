@@ -27,6 +27,8 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
 
   // カテゴリから type を判定する関数
   const getCellType = (cat: string): BrailleColorType => {
+    if (cat === 'や行') return 'yagyou';
+    if (cat === 'わ行') return 'wagyou';
     if (cat === '数字') return 'number';
     if (cat === 'A〜J' || cat === 'K〜T' || cat === 'U〜Z' || cat === 'よく使う略語') return 'alphabet';
     if (cat === '記号' || cat === 'かっこ') return 'kigou';

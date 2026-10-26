@@ -28,6 +28,26 @@ const COLOR_MAPS: Record<BrailleColorType, Record<BrailleDot, string>> = {
   5: '#007bff', 
   6: '#007bff',
   },
+yagyou: {
+  // 黒点（1, 2, 3, 4）
+  1: '#000000', 
+  2: '#000000', 
+  3: '#000000', 
+  4: '#000000', 
+  // 紫点（5, 6）
+  5: '#ad5bfa', 
+  6: '#ad5bfa',
+  },
+wagyou: {
+  // 黒点（1, 3, 4）
+  1: '#000000', 
+  3: '#000000', 
+  4: '#000000', 
+  // 紫点（2, 5, 6）
+  2: '#ad5bfa', 
+  5: '#ad5bfa', 
+  6: '#ad5bfa',
+  },
   alphabet: {
   // 黒点（1, 2, 4, 5）
   1: '#000000',
@@ -58,6 +78,7 @@ const COLOR_MAPS: Record<BrailleColorType, Record<BrailleDot, string>> = {
     3: '#00e639',
     6: '#00e639',
   },
+  
 };
 
 interface FingerBrailleSVGProps {
