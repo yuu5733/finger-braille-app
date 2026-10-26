@@ -1,5 +1,5 @@
 // 1. コアライブラリ
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
@@ -26,50 +26,6 @@ const BrailleAppContent: FC = () => {
   const { currentMode, setCurrentMode, pendingData, setPendingData, character, braille, dots, outputString, onOutput } = useBrailleContext();
 
   const { pressedKeys } = useBrailleLogic();
-
-  // スペースキーの二重発火を防ぐための参照
-  // useStateではなく、useRefを使うことで、コンポーネントは再描画されない
-  // コンポーネントが再描画されても、値がリセットされず保持される
-  const prevSpacePressedRef = useRef(false);
-
-  // スペースキー押下時のハンドリング
-  useEffect(() => {
-    const isSpacePressed = pressedKeys.has(' ');
-
-    // 押された瞬間（立ち上がり）を検知
-    if (isSpacePressed && !prevSpacePressedRef.current) {
-      // 1. pendingData があれば確定する
-      if (pendingData) {
-        if (pendingData.character && pendingData.character !== '不明') {
-          let charToOutput = pendingData.character;
-          
-          // 特殊音待機モードでモード名（「疑問符」「句点」など）になっている場合は記号に変換
-          if (currentMode === 'Question' && charToOutput === '疑問符') {
-            charToOutput = '？';
-          } else if (currentMode === 'Kuten' && charToOutput === '句点') {
-            charToOutput = '。';
-          }
-          
-          onOutput(charToOutput);
-        }
-        setPendingData(null);
-      }
-
-      // 2. モードに応じた処理の分岐
-      if (currentMode === 'Alphabet'|| currentMode === 'Suuji') {
-        // Alphabet モードではモードをリセット
-        setCurrentMode('Kana');
-      } else if (currentMode === 'GaijiQuote') {
-        // 外字引用符モードの時は半角スペースを追加
-        onOutput(' ');
-      } else {
-        // その他の通常モードでは全角スペースを追加
-        onOutput('　');
-      }
-    }
-
-    prevSpacePressedRef.current = isSpacePressed;
-  }, [pressedKeys, currentMode, pendingData, setCurrentMode, setPendingData, onOutput]);
 
   return (
     <>

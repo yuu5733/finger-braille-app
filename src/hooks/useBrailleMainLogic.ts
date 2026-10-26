@@ -1,5 +1,5 @@
 // 1. コアライブラリ
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { BrailleCode } from '../data/types.ts';
@@ -15,10 +15,8 @@ import { useBrailleOutputProcessor } from './useBrailleOutputProcessor';
 import { useBrailleInputMode } from './useBrailleInputMode';
 import { useBrailleInputData } from './useBrailleInputData';
 // --- utility関数
-import { isBrailleCodeMatch, getCurrentDots } from '../utils/brailleConverter'; 
-import { dotsToHex } from '../utils/dotsToHex';
+import { getCurrentDots } from '../utils/brailleConverter'; 
 import { hexToBraille } from '../utils/hexToBraille';
-import { getBrailleData, getNumberData } from '../utils/brailleConverter'; // 通常の点字データを取得
 
 // 5. 相対パスによるインポート
 
@@ -50,6 +48,45 @@ export function useBrailleLogic() {
     character, 
     dots,   
   } = useBrailleContext();
+
+  // --- スペースキーの二重発火を防ぐための参照 ---
+  const prevSpacePressedRef = useRef(false);
+
+  // --- スペースキー押下時のハンドリング処理を追加 ---
+  useEffect(() => {
+    const isSpacePressed = pressedKeys.has(' ');
+
+    // 押された瞬間（立ち上がり）を検知
+    if (isSpacePressed && !prevSpacePressedRef.current) {
+      // 1. pendingData があれば確定する
+      if (pendingData) {
+        if (pendingData.character && pendingData.character !== '不明') {
+          let charToOutput = pendingData.character;
+          
+          // 特殊音待機モードでモード名（「疑問符」「句点」など）になっている場合は記号に変換
+          if (currentMode === 'Question' && charToOutput === '疑問符') {
+            charToOutput = '？';
+          } else if (currentMode === 'Kuten' && charToOutput === '句点') {
+            charToOutput = '。';
+          }
+          
+          onOutput(charToOutput);
+        }
+        setPendingData(null);
+      }
+
+      // 2. モードに応じた処理の分岐（AlphabetおよびSuujiでリセット）
+      if (currentMode === 'Alphabet' || currentMode === 'Suuji') {
+        setCurrentMode('Kana');
+      } else if (currentMode === 'GaijiQuote') {
+        onOutput(' ');
+      } else {
+        onOutput(' ');
+      }
+    }
+
+    prevSpacePressedRef.current = isSpacePressed;
+  }, [pressedKeys, currentMode, pendingData, setCurrentMode, setPendingData, onOutput]);
 
   // 2. タイミング処理 (デバウンス)
   const { stabilizedKeys, isKeysReleased } = useBrailleInputTiming(pressedKeys);
