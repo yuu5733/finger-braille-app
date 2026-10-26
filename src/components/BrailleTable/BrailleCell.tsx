@@ -2,13 +2,14 @@
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleData, BrailleColorType } from '../../data/types'; 
+import type { BrailleData, BrailleColorType, SubCellData } from '../../data/types'; 
 
 // 3. サードパーティライブラリ (※ 無し)
 
 // 4. プロジェクト内のモジュール / エイリアスパス
 
 // 5. 相対パスによるインポート
+import { KIGOU_CHAR_SET } from './../../data/table.ts';
 import FingerBrailleSVG from './FingerBrailleSVG'; // SVGコンポーネントをインポート
 
 // 6. スタイルシート / アセット
@@ -19,6 +20,25 @@ interface BrailleCellProps extends BrailleData {
   /** 文字の長さの関係で、classを追加する必要があるか */
   flag?: boolean;
 }
+
+/**
+ * サブセルの最適な colorType を判定する関数
+ */
+const getSubCellColorType = (
+  sub: SubCellData,
+  parentColorType?: BrailleColorType
+): BrailleColorType => {
+  // 1. サブセルに直接指定があれば最優先
+  if (sub.colorType) return sub.colorType;
+
+  // 2. 文字名が濁音符や符号系であれば "kigou" に設定
+  if (KIGOU_CHAR_SET.has(sub.character)) {
+    return 'kigou';
+  }
+
+  // 3. それ以外は親（セル/行）の colorType を継承
+  return parentColorType || 'hiragana';
+};
 
 const BrailleCell: FC<BrailleCellProps> = ({ 
   character, 
@@ -44,31 +64,35 @@ const BrailleCell: FC<BrailleCellProps> = ({
 
         {subCells ? (
           <>
-            {/* 1行目・右側：点字文字のグループをまとめる */}
+            {/* 1行目・右側：点字文字のグループ */}
             <div className={styles.multiBrailleCharContainer}>
               {subCells.map((sub, index) => (
                 <span key={index}>{sub.braille}</span>
               ))}
             </div>
 
-            {/* 2行目全体：点番号のグループをまとめる */}
+            {/* 2行目全体：点番号のグループ */}
             <div className={styles.multiDotNumbers}>
               {subCells.map((sub, index) => (
                 <span key={index}>[{sub.dots.join(', ')}]</span>
               ))}
             </div>
 
-            {/* 3行目全体：指点字SVGのグループをまとめる */}
+            {/* 3行目全体：指点字SVGのグループ */}
             <div className={styles.multiFingerBraille}>
-              {subCells.map((sub, index) => (
-                <div key={index} className={styles.subSvgItem}>
-                  {/* sub側で個別指定があれば優先、なければセルのcolorType */}
-                  <FingerBrailleSVG 
-                    brailleDots={sub.dots} 
-                    colorType={sub.colorType || colorType} 
-                  />
-                </div>
-              ))}
+              {subCells.map((sub, index) => {
+                // サブセルごとの colorType を算出（濁音符等なら "kigou"）
+                const finalSubColorType = getSubCellColorType(sub, colorType);
+
+                return (
+                  <div key={index} className={styles.subSvgItem}>
+                    <FingerBrailleSVG 
+                      brailleDots={sub.dots} 
+                      colorType={finalSubColorType} 
+                    />
+                  </div>
+                );
+              })}
             </div>
           </>
         ) : (

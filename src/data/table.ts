@@ -94,6 +94,21 @@ export const kigouTable_yubitenjiChart: { [key: string]: number } = {
   "丸カッコ": 0x36,
 };
 
+// 符号系のセット
+export const KIGOU_CHAR_SET = new Set([
+  '濁音符',
+  '半濁音符',
+  '拗音符',
+  '拗濁音符',
+  '拗半濁音符',
+  '数符',
+  '外字符',
+  '外字引用符',
+  '疑問符',
+  '句点',
+  '[4,5,6点]',
+]);
+
 export const brailleCodes: { [key: string]: number } = {
   // 濁音符　例）ぎ。中黒と同じ。[5]
   dakuonFu: 0x10,

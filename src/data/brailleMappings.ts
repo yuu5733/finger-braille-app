@@ -365,10 +365,10 @@ const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
   'くぉ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'こ' },
 
   // gw系特殊音（句点 [2,5,6] ＋ か行）
-  'ぐぁ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'か' },
-  'ぐぃ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'き' },
-  'ぐぇ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'け' },
-  'ぐぉ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'こ' },
+  'ぐぁ': { fuKey: '句点', fuHex: 0x32, baseChar: 'か' },
+  'ぐぃ': { fuKey: '句点', fuHex: 0x32, baseChar: 'き' },
+  'ぐぇ': { fuKey: '句点', fuHex: 0x32, baseChar: 'け' },
+  'ぐぉ': { fuKey: '句点', fuHex: 0x32, baseChar: 'こ' },
 
   // tw系特殊音（疑問符 [2,6] ＋ た行）
   'つぁ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'た' },
@@ -385,10 +385,10 @@ const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
   // v系特殊音、有声唇摩擦音（濁音符）
   'ゔ': { fuKey: '濁音符', fuHex: brailleCodes.dakuonFu, baseChar: 'う' },
   // v系特殊音、有声唇摩擦音（句点 [2,5,6] ＋ あ行）
-  'ゔぁ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'あ' },
-  'ゔぃ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'い' },
-  'ゔぇ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'え' },
-  'ゔぉ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'お' },
+  'ゔぁ': { fuKey: '句点', fuHex: 0x32, baseChar: 'あ' },
+  'ゔぃ': { fuKey: '句点', fuHex: 0x32, baseChar: 'い' },
+  'ゔぇ': { fuKey: '句点', fuHex: 0x32, baseChar: 'え' },
+  'ゔぉ': { fuKey: '句点', fuHex: 0x32, baseChar: 'お' },
 
   // ye系特殊音（拗音符 ＋ エ段）
   'いぇ': { fuKey: '拗音符', fuHex: brailleCodes.youonFu, baseChar: 'え' },
@@ -406,8 +406,8 @@ const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
   'でぃ': { fuKey: '拗濁音符', fuHex: brailleCodes.youdakuonFu, baseChar: 'ち' },
 
   // twu系特殊音（疑問符 [2,6] ＋ つ）
-  'とぅ': { fuKey: '疑問符 [2,6]', fuHex: 0x22, baseChar: 'つ' },
-  'どぅ': { fuKey: '句点 [2,5,6]点', fuHex: 0x32, baseChar: 'つ' },
+  'とぅ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'つ' },
+  'どぅ': { fuKey: '句点', fuHex: 0x32, baseChar: 'つ' },
 
   // thu、fyu、fyo、dhu、系特殊音
   'てゅ': { fuKey: '拗半濁音符', fuHex: brailleCodes.youhandakuonFu, baseChar: 'つ' },
