@@ -13,13 +13,16 @@ interface ResultDisplayProps {
 }
 
 const ResultDisplay: FC<ResultDisplayProps> = ({ text, brailleText, dots }) => {
+  const displayText = text ? text : '␣';
+  const displayBraille = brailleText ? brailleText : '⠀';
+
   return (
     <div className={styles.resultDisplay}>
       <div>
         {/* ひらがなと点字を一行に表示 */}
         <p className={styles.resultTextGroup}> 
-          <span className={styles.resultText}>{text}</span> 
-          <span className={styles.resultBraille}>{brailleText}</span>
+          <span className={styles.resultText}>{displayText}</span> 
+          <span className={styles.resultBraille}>{displayBraille}</span>
         </p>
         {/* 数字データをその下に表示 */}
         <p className={styles.resultDotsGroup}>
