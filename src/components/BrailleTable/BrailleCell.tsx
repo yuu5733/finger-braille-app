@@ -2,7 +2,7 @@
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleData } from '../../data/types'; 
+import type { BrailleData, BrailleColorType } from '../../data/types'; 
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -19,7 +19,7 @@ interface BrailleCellProps extends BrailleData {
   /** 文字の長さの関係で、classを追加する必要があるか */
   flag?: boolean;
   /** 文字の種類 */
-  type?: 'hiragana' | 'alphabet' | 'number';
+  type?: BrailleColorType;
 }
 
 const BrailleCell: FC<BrailleCellProps> = ({ 

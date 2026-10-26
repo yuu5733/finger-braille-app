@@ -61,3 +61,8 @@ export interface BrailleRowData {
     category: string; // 例: 'あ行'
     cells: BrailleData[];
 }
+
+/**
+ * svgで色設定するための点字の種別（ひらがな、英字、数字、記号）
+ */
+export type BrailleColorType = 'hiragana' | 'alphabet' | 'number' | 'kigou';

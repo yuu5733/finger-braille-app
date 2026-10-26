@@ -2,7 +2,7 @@
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleDot } from '../../data/types'; 
+import type { BrailleDot, BrailleColorType } from '../../data/types'; 
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -16,9 +16,8 @@ import styles from './FingerBrailleSVG.module.css';
 // === 型定義と定数 ===
 type LeftDot = 1 | 2 | 3;
 type RightDot = 4 | 5 | 6;
-type ColorType = 'hiragana' | 'alphabet' | 'number';
 
-const COLOR_MAPS: Record<ColorType, Record<BrailleDot, string>> = {
+const COLOR_MAPS: Record<BrailleColorType, Record<BrailleDot, string>> = {
   hiragana: {
   // 黒点（1, 2, 4）
   1: '#000000', 
@@ -49,13 +48,23 @@ const COLOR_MAPS: Record<ColorType, Record<BrailleDot, string>> = {
     3: '#ff6600',
     6: '#ff6600',
   },
+  kigou: {
+    // 黒点（1）
+    1: '#000000',
+    // 緑の点（2,3, 4, 5, 6）
+    2: '#00e639',
+    4: '#00e639',
+    5: '#00e639',
+    3: '#00e639',
+    6: '#00e639',
+  },
 };
 
 interface FingerBrailleSVGProps {
   /** 押されている点（1〜6）の配列。空配列の場合は全て非表示。 */
   brailleDots: BrailleDot[];
   /** 使用するカラーマップ（省略時はひらがな用） */
-  type?: ColorType;
+  type?: BrailleColorType;
   /** 任意のカスタムカラーマップ（指定された場合、点の色を上書き・追加できます） */
   customColorMap?: Partial<Record<BrailleDot, string>>;
 }

@@ -2,7 +2,7 @@
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleRowData } from '../../data/types'; 
+import type { BrailleRowData, BrailleColorType } from '../../data/types'; 
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -26,9 +26,10 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells }) => {
     : `${styles.brailleRowGrid} ${isNumberOrAlphabetRow ? styles.maxFiveColumnGrid : ''} ${isLongCharacter ? styles.gaijiFuGrid : ''}`;
 
   // カテゴリから type を判定する関数
-  const getCellType = (cat: string): 'hiragana' | 'alphabet' | 'number' => {
+  const getCellType = (cat: string): BrailleColorType => {
     if (cat === '数字') return 'number';
     if (cat === 'A〜J' || cat === 'K〜T' || cat === 'U〜Z' || cat === 'よく使う略語') return 'alphabet';
+    if (cat === '記号' || cat === 'かっこ') return 'kigou';
     return 'hiragana';
   };
 
