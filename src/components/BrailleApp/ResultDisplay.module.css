@@ -29,6 +29,8 @@
 .resultText {
   font-size: 2rem;
   font-weight: bold;
+  display: inline-block;
+  min-width: 4rem;
 }
 
 .resultBraille {
