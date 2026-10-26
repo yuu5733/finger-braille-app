@@ -1,6 +1,7 @@
 import type { BrailleData, InputMode } from '../data/types';
 
 import { getBrailleData, getNumberData, getAlphabetData, getCurrentDots, isBrailleCodeMatch } from '../utils/brailleConverter';
+import { getConvertedCharacter } from '../utils/modeLogic';
 import { dotsToHex } from '../utils/dotsToHex';
 import { hexToBraille } from '../utils/hexToBraille';
 import { brailleCodes } from '../data/table'; 
@@ -109,6 +110,25 @@ export function useBrailleInputData(
   else {
     const characterData = getBrailleData(stabilizedKeys);
     if (characterData !== null) {
+      // 濁音・半濁音・拗音などの待機モード時のリアルタイム変換処理
+      if (
+        currentMode === 'Dakuon' ||
+        currentMode === 'Handakuon' ||
+        currentMode === 'Youon' ||
+        currentMode === 'YouDakuon' ||
+        currentMode === 'YouHandakuon'
+      ) {
+        const convertedChar = getConvertedCharacter(currentMode, characterData.character);
+        if (convertedChar !== '不明') {
+          return {
+            data: {
+              ...characterData,
+              character: convertedChar,
+            },
+          };
+        }
+      }
+
       return { data: characterData };
     }
   }
