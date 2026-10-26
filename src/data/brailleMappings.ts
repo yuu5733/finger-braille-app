@@ -300,11 +300,34 @@ export const alphabetMappings: BrailleData[] = Object.entries(alphabetTableWithG
   }
 );
 
-// --- 略語・外来語データの自動生成関数 ---
+
+// --- 略語・外来語データの自動生成関連 ---
+
+// ひらがなテーブルのHEXコードから文字を逆引きするマップを作成
+const hexToHiraganaMap: Record<number, string> = Object.fromEntries(
+  Object.entries(hiraganaTable).map(([char, hex]) => [hex, char])
+);
+
+/**
+ * アルファベットの文字列から、対応する点字のひらがな読みを自動生成する関数
+ */
+export const generateRyakugoComment = (word: string): string => {
+  const hiraganaStr = word
+    .split('')
+    .map(char => {
+      const lowerChar = char.toLowerCase();
+      const hexCode = alphabetTable[lowerChar];
+      return hexCode !== undefined ? hexToHiraganaMap[hexCode] || char : char;
+    })
+    .join('');
+  
+  return `ひらがなでは「${hiraganaStr}」`;
+};
+
 /**
  * 略語の文字列（例: "ATM", "JR"）から、外字符＋各文字の点字データを自動生成する
  */
-export const createRyakugoData = (word: string, comment?: string): BrailleData => {
+export const createRyakugoData = (word: string, customComment?: string): BrailleData => {
   // 1. 先頭に外字符を追加
   const subCells = [
     {
@@ -324,31 +347,44 @@ export const createRyakugoData = (word: string, comment?: string): BrailleData =
     }),
   ];
 
+  // コメントが指定されていない場合は自動生成関数を使用
+  const comment = customComment || generateRyakugoComment(word);
+
   return {
     character: word,
     subCells,
     columnSpan: subCells.length,
-    comment: comment || `外来語・略語: ${word}`,
+    comment,
   };
 };
 
 interface RyakugoItem {
   word: string;
-  comment?: string;
+  comment?: string; // 省略可能（省略時は自動生成）
 }
 
-// よく使う略語の一覧からマッピングを自動生成
+// よく使う略語の一覧（コメントは、省略可能）
 const ryakugoList: RyakugoItem[] = [
-  { word: 'JR', comment: 'ろち' },
-  { word: 'ATM', comment: 'あとぬ' },
-  { word: 'NHK', comment: 'つりな' },
-  { word: 'AI', comment: 'あお' },
-  { word: 'IT', comment: 'おと' },
+  { word: 'JR' },
+  { word: 'ATM' },
+  { word: 'NHK' },
+  { word: 'AI' },
+  { word: 'IT' },
+  { word: 'QR' },
+  { word: 'SNS' },
+  { word: 'ETC' },
+  { word: 'PR' },
+  { word: 'CM' },
+  //{ word: 'Wi-Fi' },
+  { word: 'AED' },
+  //{ word: 'LiD/APD', comment: 'におる[4,5,6]点やあねる' },
+  //{ word: 'ASD' },
+  //{ word: 'ADHD' },
 ];
 
 // 各略語ごとに独立した行（category）としてデータを生成する
 export const ryakugoMappings: BrailleData[] = ryakugoList.map(item =>
-  createRyakugoData(item.word, `ひらがなでは「${item.comment}」`)
+  createRyakugoData(item.word, item.comment)
 );
 
 // --- 特殊音 ---
