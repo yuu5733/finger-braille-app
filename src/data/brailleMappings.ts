@@ -364,27 +364,43 @@ interface RyakugoItem {
 }
 
 // よく使う略語の一覧（コメントは、省略可能）
-const ryakugoList: RyakugoItem[] = [
+const ryakugoList: Set<RyakugoItem> = new Set([
+  // 特によく使う
   { word: 'JR' },
   { word: 'ATM' },
   { word: 'NHK' },
   { word: 'AI' },
-  { word: 'IT' },
   { word: 'QR' },
+  // IT
   { word: 'SNS' },
+  { word: 'IT' },
+  { word: 'URL' },
+  { word: 'HP' },
+  //{ word: 'Wi-Fi' },
+  // 移動、乗り物
   { word: 'ETC' },
+  { word: 'IC' },
+  { word: 'GPS' },
+  // 広報
   { word: 'PR' },
   { word: 'CM' },
-  //{ word: 'Wi-Fi' },
+  // 小物
+  { word: 'CD' },
+  { word: 'DVD' },
+  // 医療
   { word: 'AED' },
+  { word: 'CT' },
+  { word: 'MRI' },
+  // 障害
   //{ word: 'LiD/APD', comment: 'におる[4,5,6]点やあねる' },
   //{ word: 'ASD' },
   //{ word: 'ADHD' },
-];
+]);
 
 // 各略語ごとに独立した行（category）としてデータを生成する
-export const ryakugoMappings: BrailleData[] = ryakugoList.map(item =>
-  createRyakugoData(item.word, item.comment)
+export const ryakugoMappings: BrailleData[] = Array.from(
+  ryakugoList,
+  item => createRyakugoData(item.word, item.comment)
 );
 
 // --- 特殊音 ---
