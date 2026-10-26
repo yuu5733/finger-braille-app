@@ -8,12 +8,13 @@ import Layout from "../layouts/Layout.astro";
     <p>
       指点字（ゆびてんじ）の入力を練習するための Web アプリケーションです。<br
       />
-      キーボードを使って点字入力の基本を学びましょう。
+      キーボードを使って、指点字の基本を学びましょう。
     </p>
     <p>
       指をホームポジションに置いた時の、人差し指、中指、薬指を使います。<br />
-      左の人差し指をFキー、右手の人差し指をJキーに置きます
+      左の人差し指をFキー、右手の人差し指をJキーに置きます。
     </p>
+    <img src="src/assets/keyboard-placement.svg" alt="イラスト。指の配置" />
 
     <nav class="main-nav">
       <a href="/practice" class="start-button"> 練習を始める → </a>
@@ -40,9 +41,18 @@ import Layout from "../layouts/Layout.astro";
       margin-bottom: 1rem;
     }
 
-    p {
+    .top-page-main p {
       color: #555;
       line-height: 1.6;
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .top-page-main img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
     }
 
     .main-nav {
