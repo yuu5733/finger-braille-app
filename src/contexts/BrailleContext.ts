@@ -1,6 +1,17 @@
+// 1. コアライブラリ
 import { createContext, useContext } from 'react';
+
+// 2. 型定義 (Type Imports)
 import type { BrailleData, InputMode } from '../data/types';
 import type { Dispatch, SetStateAction } from 'react';
+
+// 3. サードパーティライブラリ (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
+
+// 5. 相対パスによるインポート
+
+// 6. スタイルシート / アセット
 
 // Context が提供する値の型を定義
 export interface BrailleContextType {

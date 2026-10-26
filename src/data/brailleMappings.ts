@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData, BrailleRowData } from './types';
+import type { BrailleData } from './types';
 
 // 3. サードパーティライブラリ (※ 無し)
 

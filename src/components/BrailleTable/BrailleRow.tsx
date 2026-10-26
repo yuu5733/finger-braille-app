@@ -1,5 +1,4 @@
 // 1. コアライブラリ
-import React from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
@@ -10,9 +9,9 @@ import type { BrailleRowData } from '../../data/types';
 // 4. プロジェクト内のモジュール / エイリアスパス
 
 // 5. 相対パスによるインポート
+import BrailleCell from './BrailleCell';
 
 // 6. スタイルシート / アセット
-import BrailleCell from './BrailleCell';
 import styles from './BrailleRow.module.css';
 
 interface BrailleRowProps extends BrailleRowData {}

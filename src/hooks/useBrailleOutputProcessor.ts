@@ -2,14 +2,14 @@
 import { useCallback } from 'react';
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData, InputMode, ModeChar } from '../data/types';
+import type { BrailleData, InputMode } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
 // 4. プロジェクト内のモジュール / エイリアスパス
 
 // 5. 相対パスによるインポート
-import { getConvertedCharacter, getModeFromModeChar } from '../utils/modeLogic'; 
+import { getConvertedCharacter } from '../utils/modeLogic'; 
 
 // 6. スタイルシート / アセット
 

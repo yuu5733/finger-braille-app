@@ -1,5 +1,13 @@
+// 1. コアライブラリ (※ 無し)
+
+// 2. 型定義 (Type Imports)
 import type { InputMode, ModeChar } from '../data/types';
 
+// 3. サードパーティライブラリ (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
+
+// 5. 相対パスによるインポート (※ 無し)
 import { 
   dakuonMap, 
   handakuonMap, 
@@ -10,6 +18,8 @@ import {
   tokushuKutenMap,
   tokushu456Map
 } from '../data/table';
+
+// 6. スタイルシート / アセット
 
 /**
  * モードと清音文字に基づき、最終的な確定文字を返す

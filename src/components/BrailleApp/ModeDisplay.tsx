@@ -1,7 +1,16 @@
-import React from 'react';
+// 1. コアライブラリ
+
+// 2. 型定義 (Type Imports)
 import type { FC } from 'react';
 import type { InputMode } from '../../data/types'; 
 
+// 3. サードパーティライブラリ (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
+
+// 5. 相対パスによるインポート
+
+// 6. スタイルシート / アセット
 import styles from './ModeDisplay.module.css';
 
 interface ModeDisplayProps {

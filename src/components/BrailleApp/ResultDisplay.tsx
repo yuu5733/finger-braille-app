@@ -1,9 +1,16 @@
-import React from 'react';
+// 1. コアライブラリ
 
+// 2. 型定義 (Type Imports)
 import type { FC } from 'react';
 
+// 3. サードパーティライブラリ (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
+
+// 5. 相対パスによるインポート
 import { dotsToHex } from '../../utils/dotsToHex';
 
+// 6. スタイルシート / アセット
 import styles from './ResultDisplay.module.css';
 
 interface ResultDisplayProps {
