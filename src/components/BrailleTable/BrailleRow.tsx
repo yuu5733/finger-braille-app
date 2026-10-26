@@ -31,15 +31,13 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells, colorType: rowColorT
     if (cat === 'わ行') return 'wagyou';
     if (cat === '数字') return 'number';
     if (cat === 'A〜J' || cat === 'K〜T' || cat === 'U〜Z' || cat === 'よく使う略語') return 'alphabet';
-    if (cat === '記号' || cat === 'かっこ') return 'kigou';
+    if (cat === '記号' || cat === 'かっこ' || cat === '記号など(数字)' || cat === '外字符など') return 'kigou';
     return 'hiragana';
   };
 
   // Rowプロパティから渡された色、またはカテゴリから算出した色を行全体のデフォルトとする
   const defaultRowType = getRowType(category);
   const rowColorType = rowColorTypeProp || defaultRowType;
-
-  const cellType = getRowType(category);
 
   return (
     <section className={styles.brailleRowSection}>

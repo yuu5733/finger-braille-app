@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData } from './types';
+import type { BrailleData, BrailleColorType } from './types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -52,6 +52,13 @@ hiraganaAndKigouMappings.forEach(mapping => {
   }
 });
 
+// 文字に特定の色をあてる文字の辞書
+const specialColorMap: Record<string, BrailleColorType> = {
+  'ん': 'wagyou',
+  'っ': 'kigou',
+  'ー': 'kigou',
+};
+
 // 点字表用（清音のマッピング）
 export const seionMappings: BrailleData[] = Object.entries(hiraganaTable).map(
   ([character, hexCode]) => {
@@ -59,6 +66,7 @@ export const seionMappings: BrailleData[] = Object.entries(hiraganaTable).map(
       character: character, // ひらがな
       dots: hexToDots(hexCode), // 点の配列
       braille: hexToBraille(hexCode), // Unicode点字文字
+      colorType: specialColorMap[character],
     };
   }
 );
