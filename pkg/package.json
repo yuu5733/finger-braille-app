@@ -1,0 +1,20 @@
+{
+  "name": "momors-wasm",
+  "type": "module",
+  "collaborators": [
+    "KIRIAKE Masanori <seiken@rd01.net>"
+  ],
+  "description": "WebAssembly bindings for the momors Japanese Braille engine.",
+  "version": "0.11.2",
+  "license": "BSD-3-Clause",
+  "files": [
+    "momors_wasm_bg.wasm",
+    "momors_wasm.js",
+    "momors_wasm.d.ts"
+  ],
+  "main": "momors_wasm.js",
+  "types": "momors_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
