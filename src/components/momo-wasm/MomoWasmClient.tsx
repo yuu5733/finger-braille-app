@@ -57,9 +57,8 @@ export default function WasmClient() {
 
     try {
       // 3. 予測器（Predictor）の準備とかな変換
-      // using を使ってスコープアウト時に自動解放させる
-      using predictor = new Predictor(mbmBytes);
-      using predResult = predictor.predict(input);
+      const predictor = new Predictor(mbmBytes);
+      const predResult = predictor.predict(input);
       
       // predResult.segmented の区切り文字を置換
       // 例: "キョー/ワ/ /イ/イ/ /テン/キ/デ/ス/ネ" のような形式を想定
@@ -72,8 +71,8 @@ export default function WasmClient() {
 
       // 点訳器（BrailleTranslator）による点字変換
       // 点訳には分ち書きなしの kana、あるいは整形済みの文字列を使用
-      using translator = new BrailleTranslator();
-      using brailleResult = translator.translate(predResult.kana);
+      const translator = new BrailleTranslator();
+      const brailleResult = translator.translate(predResult.kana);
 
       setData({
         original: input,
