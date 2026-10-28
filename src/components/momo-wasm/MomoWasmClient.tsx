@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { DynamicBrailleView } from './MomoBrailleList.tsx';
 import init, { Predictor, BrailleTranslator } from 'momors_wasm';
 
@@ -6,9 +6,12 @@ export default function WasmClient() {
   const [input, setInput] = useState('今日はいい天気ですね');
   const [loading, setLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [mbmBytes, setMbmBytes] = useState<Uint8Array | null>(null);
   const [data, setData] = useState<{ original: string; kana: string; result: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // PredictorとBrailleTranslatorをrefで保持
+  const predictorRef = useRef<Predictor | null>(null);
+  const translatorRef = useRef<BrailleTranslator | null>(null);
 
   // 初回ロード時にWASMと辞書データを初期化
   useEffect(() => {
@@ -21,44 +24,49 @@ export default function WasmClient() {
 
         // 2. public/data から辞書データをフェッチ
         const res = await fetch('/data/basic_data_7.mbm');
-        if (!res.ok) {
-          throw new Error('辞書データの読み込みに失敗しました');
-        }
+        if (!res.ok) throw new Error('辞書データの読み込みに失敗しました');
+
         const buffer = await res.arrayBuffer();
         const bytes = new Uint8Array(buffer);
 
         if (isMounted) {
-          setMbmBytes(bytes);
+          // 初期化時にインスタンスを生成して保持
+          predictorRef.current = new Predictor(bytes);
+          translatorRef.current = new BrailleTranslator();
           setIsInitialized(true);
         }
       } catch (err) {
-        if (isMounted) {
-          setError(`WASMの初期化に失敗しました: ${err}`);
-        }
+        if (isMounted) setError(`WASMの初期化に失敗しました: ${err}`);
       }
     }
 
     loadWasmAndData();
 
+    // クリーンアップ関数
     return () => {
       isMounted = false;
+      // アンロード（コンポーネントの破棄）時にWasmメモリを破棄
+      predictorRef.current?.free();
+      translatorRef.current?.free();
     };
   }, []);
 
   const handleConvert = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isInitialized || !mbmBytes) {
-      setError('WASMまたは辞書の準備がまだ完了していません');
+    if (!isInitialized || !predictorRef.current || !translatorRef.current) {
+      setError('WASMの準備がまだ完了していません');
       return;
     }
 
     setLoading(true);
     setError(null);
 
+    let predResult = null;
+    let brailleResult = null;
+
     try {
-      // 3. 予測器（Predictor）の準備とかな変換
-      const predictor = new Predictor(mbmBytes);
-      const predResult = predictor.predict(input);
+      // 毎回生成される結果オブジェクトは使い終わったら free() が必要。finallyに記載する
+      predResult = predictorRef.current.predict(input);
       
       // predResult.segmented の区切り文字を置換
       // 例: "キョー/ワ/ /イ/イ/ /テン/キ/デ/ス/ネ" のような形式を想定
@@ -72,7 +80,7 @@ export default function WasmClient() {
       // 点訳器（BrailleTranslator）による点字変換
       // 点訳には分ち書きなしの kana、あるいは整形済みの文字列を使用
       const translator = new BrailleTranslator();
-      const brailleResult = translator.translate(predResult.kana);
+      brailleResult = translatorRef.current.translate(predResult.kana);
 
       setData({
         original: input,
@@ -82,6 +90,9 @@ export default function WasmClient() {
     } catch (err) {
       setError(`変換失敗: ${err}`);
     } finally {
+      // 例外が起きても確実にメモリを解放する
+      predResult?.free();
+      brailleResult?.free();
       setLoading(false);
     }
   };
