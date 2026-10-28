@@ -59,15 +59,24 @@ export default function WasmClient() {
       // 3. 予測器（Predictor）の準備とかな変換
       const predictor = new Predictor(mbmBytes);
       const predResult = predictor.predict(input);
-      const kana = predResult.kana;
+      
+      // predResult.segmented の区切り文字を置換
+      // 例: "キョー/ワ/ /イ/イ/ /テン/キ/デ/ス/ネ" のような形式を想定
+      const rawSegmented = predResult.segmented;
+      
+      // 文節の区切り（//）を半角スペースに、単語の区切り（/）を削除する
+      const formattedKana = rawSegmented
+        .replace(/\/\//g, ' ')  // 文節区切りを半角スペースに
+        .replace(/\//g, '');    // 単語区切りを削除
 
-      // 4. 点訳器（BrailleTranslator）による点字変換
+      // 点訳器（BrailleTranslator）による点字変換
+      // 点訳には分ち書きなしの kana、あるいは整形済みの文字列を使用
       const translator = new BrailleTranslator();
-      const brailleResult = translator.translate(kana);
+      const brailleResult = translator.translate(predResult.kana);
 
       setData({
         original: input,
-        kana: predResult.segmented,
+        kana: formattedKana,
         result: brailleResult.braille,
       });
     } catch (err) {
