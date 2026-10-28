@@ -57,8 +57,9 @@ export default function WasmClient() {
 
     try {
       // 3. 予測器（Predictor）の準備とかな変換
-      const predictor = new Predictor(mbmBytes);
-      const predResult = predictor.predict(input);
+      // using を使ってスコープアウト時に自動解放させる
+      using predictor = new Predictor(mbmBytes);
+      using predResult = predictor.predict(input);
       
       // predResult.segmented の区切り文字を置換
       // 例: "キョー/ワ/ /イ/イ/ /テン/キ/デ/ス/ネ" のような形式を想定
@@ -71,8 +72,8 @@ export default function WasmClient() {
 
       // 点訳器（BrailleTranslator）による点字変換
       // 点訳には分ち書きなしの kana、あるいは整形済みの文字列を使用
-      const translator = new BrailleTranslator();
-      const brailleResult = translator.translate(predResult.kana);
+      using translator = new BrailleTranslator();
+      using brailleResult = translator.translate(predResult.kana);
 
       setData({
         original: input,
@@ -90,7 +91,7 @@ export default function WasmClient() {
     <div className="test-section" style={{ marginBottom: '2rem', padding: '1.5rem', background: '#f9f9f9', borderRadius: '8px' }}>
       <h2>2. テキストの指点字への変換</h2>
       <p style={{ paddingBottom: '0.5rem' }}>
-        {isInitialized ? '準備完了' : 'WASM 読み込み中...'}
+        {isInitialized ? '準備完了' : '読み込み中...'}
       </p>
 
       <form onSubmit={handleConvert} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
