@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import ApiTestClient from "../../components/momo-api/MomoApiClient";
+import WasmClient from "../../components/momo-wasm/MomoWasmClient";
 ---
 
 <Layout title="指点字アプリ - 文の表示">
@@ -29,47 +29,8 @@ import ApiTestClient from "../../components/momo-api/MomoApiClient";
     </section>
 
     <!-- Reactコンポーネントをクライアントサイドで実行・マウント -->
-    <ApiTestClient client:load />
+    <WasmClient client:load />
   </main>
-
-  <script>
-    const convertBtn = document.getElementById("convert-btn");
-    const inputField = document.getElementById("input-text");
-    const resultArea = document.getElementById("result-area");
-
-    convertBtn?.addEventListener("click", async () => {
-      // 要素が取得できていない場合は処理を中断
-      if (!inputField || !resultArea) return;
-
-      // 入力要素でない、または存在しない場合も処理を中断
-      if (!(inputField instanceof HTMLInputElement)) {
-        return;
-      }
-
-      const text = inputField.value || "";
-      resultArea.textContent = "変換中...";
-
-      try {
-        const res = await fetch(
-          `/api/momo-convert-braille?text=${encodeURIComponent(text)}`,
-        );
-
-        const data = await res.json();
-
-        if (res.ok) {
-          resultArea.innerHTML = `
-            <p><strong>原文:</strong> ${data.original || "-"}</p>
-            <p><strong>仮名:</strong> ${data.kana || "-"}</p>
-            <p><strong>点字:</strong> ${data.result || "-"}</p>
-          `;
-        } else {
-          resultArea.textContent = `エラー: ${data.error || "不明なエラー"}`;
-        }
-      } catch (error) {
-        resultArea.textContent = `通信失敗: ${error}`;
-      }
-    });
-  </script>
 
   <style>
     main {
@@ -101,18 +62,18 @@ import ApiTestClient from "../../components/momo-api/MomoApiClient";
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
-    .api-control {
+    .wasm-control {
       display: flex;
       gap: 0.5rem;
       margin-bottom: 1rem;
     }
-    .api-control input {
+    .wasm-control input {
       flex: 1;
       padding: 0.5rem;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    .api-control button {
+    .wasm-control button {
       padding: 0.5rem 1rem;
       background: #007bff;
       color: white;
@@ -120,7 +81,7 @@ import ApiTestClient from "../../components/momo-api/MomoApiClient";
       border-radius: 4px;
       cursor: pointer;
     }
-    .api-control button:hover {
+    .wasm-control button:hover {
       background: #0056b3;
     }
     .result-box {

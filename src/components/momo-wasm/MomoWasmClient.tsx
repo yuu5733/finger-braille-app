@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { DynamicBrailleView } from './momo-api.tsx';
-// wasm-packで生成されたモジュールをインポート
-import init, { /* 必要な関数名（例: convert_text 等） */ } from 'momors_wasm';
+import { DynamicBrailleView } from './MomoBrailleList.tsx';
+import init, { Predictor, BrailleTranslator } from 'momors_wasm';
 
-export default function ApiTestClient() {
+export default function WasmClient() {
   const [input, setInput] = useState('今日はいい天気ですね');
   const [loading, setLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [mbmBytes, setMbmBytes] = useState<Uint8Array | null>(null);
   const [data, setData] = useState<{ original: string; kana: string; result: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,18 +14,21 @@ export default function ApiTestClient() {
   useEffect(() => {
     let isMounted = true;
 
-    async function loadWasm() {
+    async function loadWasmAndData() {
       try {
-        // 1. WASMの初期化（WASMバイナリのロード）
+        // 1. WASMの初期化
         await init();
 
-        // 2. 必要に応じてpublic/dataから辞書データをフェッチしてWASM側に渡す処理
-        // ※ momors_wasm の仕様（バインド定義）に合わせて記述してください
-        // 例: const res = await fetch('/data/basic_data_7.mbm');
-        // const buffer = await res.arrayBuffer();
-        // 辞書登録関数(new Uint8Array(buffer));
+        // 2. public/data から辞書データをフェッチ
+        const res = await fetch('/data/basic_data_7.mbm');
+        if (!res.ok) {
+          throw new Error('辞書データの読み込みに失敗しました');
+        }
+        const buffer = await res.arrayBuffer();
+        const bytes = new Uint8Array(buffer);
 
         if (isMounted) {
+          setMbmBytes(bytes);
           setIsInitialized(true);
         }
       } catch (err) {
@@ -35,7 +38,7 @@ export default function ApiTestClient() {
       }
     }
 
-    loadWasm();
+    loadWasmAndData();
 
     return () => {
       isMounted = false;
@@ -44,8 +47,8 @@ export default function ApiTestClient() {
 
   const handleConvert = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isInitialized) {
-      setError('WASMの初期化がまだ完了していません');
+    if (!isInitialized || !mbmBytes) {
+      setError('WASMまたは辞書の準備がまだ完了していません');
       return;
     }
 
@@ -53,17 +56,19 @@ export default function ApiTestClient() {
     setError(null);
 
     try {
-      // 3. 外部APIのfetchの代わりにWASMの関数を直接呼び出す
-      // const convertedResult = convert_text(input); // momors_wasmのエクスポート関数
+      // 3. 予測器（Predictor）の準備とかな変換
+      const predictor = new Predictor(mbmBytes);
+      const predResult = predictor.predict(input);
+      const kana = predResult.kana;
 
-      // 仮の処理（WASMの関数名・戻り値構造に合わせて置き換えてください）
-      const kanaResult = input; // 仮
-      const brailleResult = "⠀"; // 仮
+      // 4. 点訳器（BrailleTranslator）による点字変換
+      const translator = new BrailleTranslator();
+      const brailleResult = translator.translate(kana);
 
       setData({
         original: input,
-        kana: kanaResult,
-        result: brailleResult,
+        kana: predResult.segmented,
+        result: brailleResult.braille,
       });
     } catch (err) {
       setError(`変換失敗: ${err}`);
