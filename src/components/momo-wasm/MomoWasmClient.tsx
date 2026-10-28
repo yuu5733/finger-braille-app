@@ -88,9 +88,9 @@ export default function WasmClient() {
 
   return (
     <div className="test-section" style={{ marginBottom: '2rem', padding: '1.5rem', background: '#f9f9f9', borderRadius: '8px' }}>
-      <h2>2. WASM変換</h2>
+      <h2>2. テキストの指点字への変換</h2>
       <p style={{ paddingBottom: '0.5rem' }}>
-        {isInitialized ? 'WASM 準備完了' : 'WASM 読み込み中...'}
+        {isInitialized ? '準備完了' : 'WASM 読み込み中...'}
       </p>
 
       <form onSubmit={handleConvert} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
