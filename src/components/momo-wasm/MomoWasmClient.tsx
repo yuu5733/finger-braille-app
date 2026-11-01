@@ -5,7 +5,8 @@ import { parseTextToBrailleCells } from '../../utils/wasmParser';
 import type { BrailleData } from '../../data/types';
 
 export default function WasmClient() {
-  const [input, setInput] = useState('今日は、いい天気ですね');
+  // const [input, setInput] = useState('今日は、いい天気ですね');
+  const [input, setInput] = useState('LiD/APD（聴覚情報処理障害）という言葉もあります');
   const [loading, setLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [data, setData] = useState<{ 
