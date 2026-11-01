@@ -1,28 +1,30 @@
 import { useState, useEffect, useRef } from 'react';
 import { DynamicBrailleView } from './MomoBrailleList.tsx';
 import init, { Predictor, BrailleTranslator } from 'momors_wasm';
+import { parseTextToAlignedArray } from '../../utils/wasmParser';
+import type { AlignedItem } from '../../data/types';
 
 export default function WasmClient() {
   const [input, setInput] = useState('今日はいい天気ですね');
   const [loading, setLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [data, setData] = useState<{ original: string; kana: string; result: string } | null>(null);
+  const [data, setData] = useState<{ 
+    original: string; 
+    kana: string; 
+    result: string;
+    aligned: AlignedItem[]; 
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // PredictorとBrailleTranslatorをrefで保持
   const predictorRef = useRef<Predictor | null>(null);
   const translatorRef = useRef<BrailleTranslator | null>(null);
 
-  // 初回ロード時にWASMと辞書データを初期化
   useEffect(() => {
     let isMounted = true;
 
     async function loadWasmAndData() {
       try {
-        // 1. WASMの初期化
         await init();
-
-        // 2. public/data から辞書データをフェッチ
         const res = await fetch('/data/basic_data_7.mbm');
         if (!res.ok) throw new Error('辞書データの読み込みに失敗しました');
 
@@ -30,7 +32,6 @@ export default function WasmClient() {
         const bytes = new Uint8Array(buffer);
 
         if (isMounted) {
-          // 初期化時にインスタンスを生成して保持
           predictorRef.current = new Predictor(bytes);
           translatorRef.current = new BrailleTranslator();
           setIsInitialized(true);
@@ -42,10 +43,8 @@ export default function WasmClient() {
 
     loadWasmAndData();
 
-    // クリーンアップ関数
     return () => {
       isMounted = false;
-      // アンロード（コンポーネントの破棄）時にWasmメモリを破棄
       predictorRef.current?.free();
       translatorRef.current?.free();
     };
@@ -61,38 +60,22 @@ export default function WasmClient() {
     setLoading(true);
     setError(null);
 
-    let predResult = null;
-    let brailleResult = null;
-
     try {
-      // 毎回生成される結果オブジェクトは使い終わったら free() が必要。finallyに記載する
-      predResult = predictorRef.current.predict(input);
-      
-      // predResult.segmented の区切り文字を置換
-      // 例: "キョー/ワ/ /イ/イ/ /テン/キ/デ/ス/ネ" のような形式を想定
-      const rawSegmented = predResult.segmented;
-      
-      // 文節の区切り（//）を半角スペースに、単語の区切り（/）を削除する
-      const formattedKana = rawSegmented
-        .replace(/\/\//g, ' ')  // 文節区切りを半角スペースに
-        .replace(/\//g, '');    // 単語区切りを削除
-
-      // 点訳器（BrailleTranslator）による点字変換
-      // 点訳には分ち書きなしの kana、あるいは整形済みの文字列を使用
-      const translator = new BrailleTranslator();
-      brailleResult = translatorRef.current.translate(predResult.kana);
+      const conversionResult = parseTextToAlignedArray(
+        predictorRef.current,
+        translatorRef.current,
+        input
+      );
 
       setData({
         original: input,
-        kana: formattedKana,
-        result: brailleResult.braille,
+        kana: conversionResult.kana,
+        result: conversionResult.result,
+        aligned: conversionResult.aligned,
       });
     } catch (err) {
       setError(`変換失敗: ${err}`);
     } finally {
-      // 例外が起きても確実にメモリを解放する
-      predResult?.free();
-      brailleResult?.free();
       setLoading(false);
     }
   };

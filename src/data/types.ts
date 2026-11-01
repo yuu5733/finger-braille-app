@@ -73,3 +73,21 @@ export interface BrailleRowData {
  * svgで色設定するための点字の種別（ひらがな、や行、英字、数字、記号）
  */
 export type BrailleColorType = 'hiragana' | 'yagyou' | 'wagyou' | 'alphabet' | 'number' | 'kigou';
+
+/** WASMを利用した、原文の1文字ごとの対応・整列データ */
+export type AlignedItem = {
+  sourceIndex: number;     // 原文のインデックス
+  sourceChar: string;      // 原文の文字（漢字など）
+  kanaIndices: number[];   // 対応するかなのインデックス配列
+  kanaChars: string[];     // 対応するかなの文字配列
+  kanaText: string;        // 対応するかなの結合文字列
+  brailleText: string;     // この部分に対応する点字文字列（またはセル）
+};
+
+/** WASM変換のトータル結果データ */
+export type WasmConversionResult = {
+  original: string;        // 入力原文
+  kana: string;            // かな文字列
+  result: string;          // 点字文字列
+  aligned: AlignedItem[];  // 詳細な対応配列
+};
