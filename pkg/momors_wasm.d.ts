@@ -173,7 +173,7 @@ export class PredictionResult {
     /**
      * 原文文字インデックス → かな文字インデックスの配列（配列の配列）。
      */
-    readonly sourceToKana: Array<any>;
+    readonly sourceToKana: Array<Uint32Array>;
     /**
      * 入力文字列（原文）。
      */
