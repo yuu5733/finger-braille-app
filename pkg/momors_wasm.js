@@ -2,6 +2,10 @@
 
 /**
  * [`BrailleBackTranslator::back_translate_aligned`] の結果。
+ * 点字セル範囲と復元された文字列の対応関係（セグメント情報）を保持するクラスです。
+ * 
+ * @property {Array<any>} segments 点字セル範囲 → 文字列のセグメント列。各要素は `{ cellStart, cellEnd, text }`。
+ * @property {string} text 復元された全文（`segments` のテキストを連結したものと一致する）。
  */
 export class BackTransResult {
     static __wrap(ptr) {
@@ -49,8 +53,9 @@ if (Symbol.dispose) BackTransResult.prototype[Symbol.dispose] = BackTransResult.
 
 /**
  * [`BrailleBackTranslator::step`] / [`BrailleBackTranslator::flush`] が引き継ぐ行内状態。
- *
- * 不透明なハンドル。JS 側は中身を参照せず、次回の `step`/`flush` にそのまま渡す。
+ * 点字の逐次逆変換（step / flush）の際に行内の状態（数符・外字符・濁音前置など）を引き継ぐためのクラスです。
+ * 
+* 不透明なハンドル。JS 側は中身を参照せず、次回の `step`/`flush` にそのまま渡す。
  */
 export class BackTransState {
     static __wrap(ptr) {
@@ -71,6 +76,7 @@ export class BackTransState {
     }
     /**
      * 保留セルが残っていない（行末で `flush` が不要）か。
+     * 保留されているセルがある場合、その確定処理が必要か
      * @returns {boolean}
      */
     isSettled() {
@@ -79,6 +85,7 @@ export class BackTransState {
     }
     /**
      * 初期状態（行頭）を生成する。
+     * @returns {BackTransState}
      */
     constructor() {
         const ret = wasm.backtransstate_new();
@@ -114,8 +121,8 @@ export class BrailleBackTranslator {
      * 点字セル列を逆変換し、復元文字列と点字セル範囲⇔文字列の対応を返す。
      *
      * エディタでの読みガイド表示など、点字セル位置と復元文字を対応付けたい用途向け。
-     * @param {string} braille
-     * @returns {BackTransResult}
+     * @param {string} braille 変換元の点字文字列
+     * @returns {BackTransResult} セグメント情報を含む逆変換結果
      */
     backTranslateAligned(braille) {
         const ptr0 = passStringToWasm0(braille, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -125,8 +132,8 @@ export class BrailleBackTranslator {
     }
     /**
      * 点字セル列を文字列に逆変換して返す。
-     * @param {string} braille
-     * @returns {string}
+     * @param {string} braille 変換元の点字文字列
+     * @returns {string}復元された文字列
      */
     backTranslate(braille) {
         let deferred2_0;
@@ -146,8 +153,9 @@ export class BrailleBackTranslator {
      * 行末で呼び、保留中のセル（結合待ちの前置セルなど）を確定させる。
      *
      * [`BackTransState::isSettled`] が `false` のまま行が終わる場合に呼ぶ。
-     * @param {BackTransState} state
-     * @returns {StepResult}
+     * 
+     * @param {BackTransState} state 現在の行内状態
+     * @returns {StepResult} 確定したテキストと更新後の状態
      */
     flush(state) {
         _assertClass(state, BackTransState);
@@ -156,6 +164,7 @@ export class BrailleBackTranslator {
     }
     /**
      * 組み込みテーブルからインスタンスを構築する。
+     * @returns {BrailleBackTranslator}
      */
     constructor() {
         const ret = wasm.braillebacktranslator_new();
@@ -174,9 +183,10 @@ export class BrailleBackTranslator {
      * [`StepResult::state`] を次回呼び出しに渡して、数符・外字符・濁音前置
      * などの行内状態を引き継ぐ。前置セル（濁音など）の直後は `text` が空になる
      * ことがある（次のセルと結合して確定するまで保留されるため）。
-     * @param {string} cell
-     * @param {BackTransState} state
-     * @returns {StepResult}
+     * 
+     * @param {string} cell 点字 1 セル分の文字列（先頭の 1 文字のみ使用）
+     * @param {BackTransState} state 前回の行内状態
+     * @returns {StepResult} 確定したテキストと更新後の状態
      */
     step(cell, state) {
         const ptr0 = passStringToWasm0(cell, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -193,6 +203,13 @@ if (Symbol.dispose) BrailleBackTranslator.prototype[Symbol.dispose] = BrailleBac
 
 /**
  * 点字変換結果。[`BrailleTranslator::translate`] 等の戻り値。
+ * 点訳処理の結果（点字文字列、言語判定結果、テキストとのインデックス対応など）を保持するクラスです。
+ * 
+ * @property {string} braille 変換後の点字文字列。
+ * @property {string} text 点訳したテキスト（日本語=かな / 英語=英文）。
+ * @property {string} language 点訳した経路（`"japanese"` / `"english"`）。
+ * @property {Uint32Array} textToBraille テキスト文字インデックス → 点字先頭セルインデックス。
+ * @property {Uint32Array} brailleToText 点字セルインデックス → テキスト文字インデックス。
  */
 export class BrailleResult {
     static __wrap(ptr) {
@@ -307,6 +324,7 @@ export class BrailleTranslator {
     }
     /**
      * 組み込みテーブル（日本語１級 + UEB grade 2）で変換器を作る。
+     * @returns {BrailleTranslator}
      */
     constructor() {
         const ret = wasm.brailletranslator_new();
@@ -319,8 +337,8 @@ export class BrailleTranslator {
     }
     /**
      * 言語判定せず、必ず英語（UEB）として点訳する。
-     * @param {string} text
-     * @returns {BrailleResult}
+     * @param {string} text 変換対象の英文
+     * @returns {BrailleResult} 点訳結果
      */
     translateEnglish(text) {
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -333,8 +351,8 @@ export class BrailleTranslator {
     }
     /**
      * 言語判定せず、必ず日本語として点訳する（英字は外字符 ⠰ ＋無縮約）。
-     * @param {string} kana
-     * @returns {BrailleResult}
+     * @param {string} kana 変換対象のかな文字列
+     * @returns {BrailleResult} 点訳結果
      */
     translateJapanese(kana) {
         const ptr0 = passStringToWasm0(kana, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -347,8 +365,8 @@ export class BrailleTranslator {
     }
     /**
      * 1行を言語判定して点字に変換する（日本語=かな / 英語=UEB）。
-     * @param {string} text
-     * @returns {BrailleResult}
+     * @param {string} text 変換対象のテキスト
+     * @returns {BrailleResult} 点訳結果
      */
     translate(text) {
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -364,6 +382,15 @@ if (Symbol.dispose) BrailleTranslator.prototype[Symbol.dispose] = BrailleTransla
 
 /**
  * 予測結果。[`Predictor::predict`] の戻り値。
+ * 漢字かな変換・分ち書き処理の予測結果（変換後のカナ、分ち書き文字列、自信度など）を保持するクラスです。
+ * 
+ * @property {string} source 入力文字列（原文）。
+ * @property {string} kana 変換後のカナ文字列。
+ * @property {string} segmented 分かち書きされたカナ（`ワガハイ/ワ/ネコ/デ/アル` 形式）。
+ * @property {string} sourceSegmented 分かち書きされた原文（`吾輩/は/猫/で/ある` 形式）。
+ * @property {Float32Array} confidences 各カナ文字の自信度（0.0〜1.0）。
+ * @property {Uint32Array} kanaToSource かな文字インデックス → 原文文字インデックス。
+ * @property {Array<any>} sourceToKana 原文文字インデックス → かな文字インデックスの配列（配列の配列）。
  */
 export class PredictionResult {
     static __wrap(ptr) {
@@ -500,7 +527,8 @@ export class Predictor {
     }
     /**
      * モデルバイト列 (.mbm) からインスタンスを構築する。
-     * @param {Uint8Array} mbm_data
+     * @param {Uint8Array} mbm_data モデルファイルのバイト列
+     * @returns {Predictor}
      */
     constructor(mbm_data) {
         const ptr0 = passArray8ToWasm0(mbm_data, wasm.__wbindgen_malloc);
@@ -515,8 +543,8 @@ export class Predictor {
     }
     /**
      * テキストをカナに変換する。
-     * @param {string} text
-     * @returns {PredictionResult}
+     * @param {string} text text 変換対象の漢字かな交じり文
+     * @returns {PredictionResult} 予測・かな変換結果
      */
     predict(text) {
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -532,6 +560,10 @@ if (Symbol.dispose) Predictor.prototype[Symbol.dispose] = Predictor.prototype.fr
 
 /**
  * [`BrailleBackTranslator::step`] / [`BrailleBackTranslator::flush`] の結果。
+ * 点字の逐次逆変換（step / flush）の実行結果を保持するクラスです。
+ * 
+ * @property {string} text このセルで確定した文字列（前置セルの保留中は空、拗音などは 2 文字になりうる）。
+ * @property {BackTransState} state 更新後の状態。次の `step`/`flush` にそのまま渡す。
  */
 export class StepResult {
     static __wrap(ptr) {
@@ -845,6 +877,12 @@ async function __wbg_load(module, imports) {
     }
 }
 
+/**
+ * 同期的にWebAssemblyモジュールを初期化する。
+ * 
+ * @param {WebAssembly.Module | object} [module] モジュールまたは設定オブジェクト
+ * @returns {object} wasmインスタンスのexports
+ */
 function initSync(module) {
     if (wasm !== undefined) return wasm;
 
@@ -865,6 +903,11 @@ function initSync(module) {
     return __wbg_finalize_init(instance, module);
 }
 
+/**
+ * 非同期でWebAssemblyモジュールを初期化する（デフォルトエクスポート）。
+ * @param {string | Request | URL | Response | WebAssembly.Module} [module_or_path] WasmのソースまたはURL
+ * @returns {Promise<object>} wasmインスタンスのexportsを返すPromise
+ */
 async function __wbg_init(module_or_path) {
     if (wasm !== undefined) return wasm;
 
