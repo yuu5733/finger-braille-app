@@ -1,35 +1,29 @@
 import { useState, useEffect, useRef } from 'react';
 import { DynamicBrailleView } from './MomoBrailleList.tsx';
 import init, { Predictor, BrailleTranslator } from 'momors_wasm';
-import { parseTextToAlignedArray } from '../../utils/wasmParser';
-import type { AlignedItem } from '../../data/types';
+import { parseTextToBrailleCells } from '../../utils/wasmParser';
+import type { BrailleData } from '../../data/types';
 
 export default function WasmClient() {
-  const [input, setInput] = useState('今日はいい天気ですね');
+  const [input, setInput] = useState('今日は、いい天気ですね');
   const [loading, setLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [data, setData] = useState<{ 
     original: string; 
     kana: string; 
-    result: string;
-    aligned: AlignedItem[]; 
+    brailleCells: BrailleData[]; 
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // PredictorとBrailleTranslatorをrefで保持
   const predictorRef = useRef<Predictor | null>(null);
   const translatorRef = useRef<BrailleTranslator | null>(null);
 
-  // 初回ロード時にWASMと辞書データを初期化
   useEffect(() => {
     let isMounted = true;
 
     async function loadWasmAndData() {
       try {
-        // 1. WASMの初期化
         await init();
-        
-        // 2. public/data から辞書データをフェッチ
         const res = await fetch('/data/basic_data_7.mbm');
         if (!res.ok) throw new Error('辞書データの読み込みに失敗しました');
 
@@ -37,7 +31,6 @@ export default function WasmClient() {
         const bytes = new Uint8Array(buffer);
 
         if (isMounted) {
-          // 初期化時にインスタンスを生成して保持
           predictorRef.current = new Predictor(bytes);
           translatorRef.current = new BrailleTranslator();
           setIsInitialized(true);
@@ -49,10 +42,8 @@ export default function WasmClient() {
 
     loadWasmAndData();
 
-    // クリーンアップ関数
     return () => {
       isMounted = false;
-      // アンロード（コンポーネントの破棄）時にWasmメモリを破棄
       predictorRef.current?.free();
       translatorRef.current?.free();
     };
@@ -60,7 +51,7 @@ export default function WasmClient() {
 
   const handleConvert = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isInitialized || !predictorRef.current || !translatorRef.current) {
+    if (!isInitialized || !predictorRef.current) {
       setError('WASMの準備がまだ完了していません');
       return;
     }
@@ -69,17 +60,18 @@ export default function WasmClient() {
     setError(null);
 
     try {
-      const conversionResult = parseTextToAlignedArray(
+      // アルファベットを小文字にしてwasmに渡す
+      const normalizedInput = input.toLowerCase();
+
+      const conversionResult = parseTextToBrailleCells(
         predictorRef.current,
-        translatorRef.current,
-        input
+        normalizedInput
       );
 
       setData({
         original: input,
         kana: conversionResult.kana,
-        result: conversionResult.result,
-        aligned: conversionResult.aligned,
+        brailleCells: conversionResult.brailleCells,
       });
     } catch (err) {
       setError(`変換失敗: ${err}`);
@@ -118,11 +110,10 @@ export default function WasmClient() {
         <div style={{ padding: '1rem', background: '#fff', border: '1px solid #ddd', borderRadius: '4px' }}>
           <p><strong>原文:</strong> {data.original}</p>
           <p><strong>仮名:</strong> {data.kana}</p>
-          <p><strong>点字:</strong> {data.result}</p>
           
           <div style={{ marginTop: '1rem' }}>
             <p><strong>指点字セル表示:</strong></p>
-            <DynamicBrailleView kanaText={data.kana} />
+            <DynamicBrailleView brailleCells={data.brailleCells} />
           </div>
         </div>
       )}
