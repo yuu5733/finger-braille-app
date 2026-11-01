@@ -16,15 +16,20 @@ export default function WasmClient() {
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // PredictorとBrailleTranslatorをrefで保持
   const predictorRef = useRef<Predictor | null>(null);
   const translatorRef = useRef<BrailleTranslator | null>(null);
 
+  // 初回ロード時にWASMと辞書データを初期化
   useEffect(() => {
     let isMounted = true;
 
     async function loadWasmAndData() {
       try {
+        // 1. WASMの初期化
         await init();
+        
+        // 2. public/data から辞書データをフェッチ
         const res = await fetch('/data/basic_data_7.mbm');
         if (!res.ok) throw new Error('辞書データの読み込みに失敗しました');
 
@@ -32,6 +37,7 @@ export default function WasmClient() {
         const bytes = new Uint8Array(buffer);
 
         if (isMounted) {
+          // 初期化時にインスタンスを生成して保持
           predictorRef.current = new Predictor(bytes);
           translatorRef.current = new BrailleTranslator();
           setIsInitialized(true);
@@ -43,8 +49,10 @@ export default function WasmClient() {
 
     loadWasmAndData();
 
+    // クリーンアップ関数
     return () => {
       isMounted = false;
+      // アンロード（コンポーネントの破棄）時にWasmメモリを破棄
       predictorRef.current?.free();
       translatorRef.current?.free();
     };
