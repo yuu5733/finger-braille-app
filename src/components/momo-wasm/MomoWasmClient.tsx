@@ -114,7 +114,48 @@ export default function WasmClient() {
           
           <div style={{ marginTop: '1rem' }}>
             <p><strong>指点字セル表示:</strong></p>
-            <DynamicBrailleView brailleCells={data.brailleCells} />
+            
+            {/* セットで折り返すためのコンテナ */}
+            <ul style={{ 
+              display: 'flex', 
+              flexWrap: 'wrap', 
+              gap: '0.5rem', 
+              listStyle: 'none', 
+              padding: 0, 
+              margin: '0.5rem 0 0 0' 
+            }}>
+              {data.brailleCells.map((cellData, index) => {
+                // 点字文字列の取得（subCells または braille プロパティから安全に取得）
+                const brailleStr = cellData.subCells 
+                  ? cellData.subCells.map(sc => sc.braille).join('') 
+                  : (cellData.braille || '');
+
+                return (
+                  <li 
+                    key={index} 
+                    style={{ 
+                      display: 'inline-flex', 
+                      flexDirection: 'column', 
+                      alignItems: 'center', 
+                      padding: '0.3rem 0.5rem', 
+                      background: '#f4f4f4', 
+                      border: '1px solid #ccc', 
+                      borderRadius: '4px',
+                      minWidth: '2rem'
+                    }}
+                  >
+                    {/* 仮名 */}
+                    <span style={{ fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+                      {cellData.character}
+                    </span>
+                    {/* 点字 */}
+                    <span style={{ fontSize: '1.1rem', fontFamily: 'monospace' }}>
+                      {brailleStr || '⠀'}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
       )}
