@@ -113,7 +113,7 @@ export default function WasmClient() {
           <p><strong>仮名:</strong> {data.kana}</p>
           
           <div style={{ marginTop: '1rem' }}>
-            <p><strong>指点字セル表示:</strong></p>
+            <p><strong>点字セル表示:</strong></p>
             
             {/* セットで折り返すためのコンテナ */}
             <ul style={{ 
