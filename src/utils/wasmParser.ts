@@ -2,24 +2,8 @@ import { Predictor } from '../../pkg/momors_wasm';
 import type { BrailleData } from '../data/types';
 import { hexToDots } from './hexToDots';
 import { hexToBraille } from './hexToBraille';
-import { hiraganaTable } from '../data/table';
-import { createDakuonData, createYouonData, createSpecialData } from '../data/brailleMappings';
-
-// 拗音・特殊パターンの判定リスト
-const specialPatterns = [
-  'うぃ', 'うぇ', 'うぉ', 'くぁ', 'くぃ', 'くぇ', 'くぉ',
-  'ぐぁ', 'ぐぃ', 'ぐぇ', 'ぐぉ', 'つぁ', 'つぃ', 'つぇ', 'つぉ',
-  'ふぁ', 'ふぃ', 'ふぇ', 'ふぉ', 'ゔぁ', 'ゔぃ', 'ゔぇ', 'ゔぉ',
-  'てゅ', 'ふゅ', 'ふょ', 'でゅ', 'ぶゅ', 'ぶょ', 'すぃ', 'てぃ', 'ずぃ', 'でぃ', 'とぅ', 'どぅ',
-  'きゃ', 'きゅ', 'きょ', 'しゃ', 'しゅ', 'しょ', 'ちゃ', 'ちゅ', 'ちょ',
-  'にゃ', 'にゅ', 'にょ', 'ひゃ', 'ひゅ', 'ひょ', 'みゃ', 'みゅ', 'みょ',
-  'りゃ', 'りゅ', 'りょ', 'ぎゃ', 'ぎゅ', 'ぎょ', 'じゃ', 'じゅ', 'じょ',
-  'ぢゃ', 'ぢゅ', 'ぢょ', 'びゃ', 'びゅ', 'びょ', 'ぴゃ', 'ぴゅ', 'ぴょ',
-  'いぇ', 'きぇ', 'しぇ', 'じぇ', 'ちぇ', 'にぇ', 'ひぇ',
-];
-
-const dakuonList = ['が', 'ぎ', 'ぐ', 'げ', 'ご', 'ざ', 'じ', 'ず', 'ぜ', 'ぞ', 'だ', 'ぢ', 'づ', 'で', 'ど', 'ば', 'び', 'ぶ', 'べ', 'ぼ'];
-const handakuonList = ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'];
+import { hiraganaTable, alphabetTable, numberTable } from '../data/table';
+import { createDakuonData, createYouonData, createSpecialData, dakuonList, handakuonList, specialPatterns } from '../data/brailleMappings';
 
 export function parseTextToBrailleCells(
   predictor: Predictor,

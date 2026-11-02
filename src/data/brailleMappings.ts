@@ -128,10 +128,10 @@ export const createDakuonData = (char: string): BrailleData => {
 };
 
 // 濁音リスト（が〜ぼ。ゔを除く）
-const dakuonList = Object.values(dakuonMap).filter(char => char !== 'ゔ');
+export const dakuonList = Object.values(dakuonMap).filter(char => char !== 'ゔ');
 
 // 半濁音リスト（ぱ〜ぽ）
-const handakuonList = Object.values(handakuonMap);
+export const handakuonList = Object.values(handakuonMap);
 
 export const dakuonMappings: BrailleData[] = dakuonList.map(char => createDakuonData(char));
 export const handakuonMappings: BrailleData[] = handakuonList.map(char => createDakuonData(char));
@@ -412,7 +412,7 @@ interface SpecialBrailleConfig {
 }
 
 // 特殊音の文字をキーにした設定マップ（オブジェクト）
-const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
+export const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
   // w系特殊音（疑問符 [2,6] ＋ 母音）
   'うぃ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'い' },
   'うぇ': { fuKey: '疑問符', fuHex: 0x22, baseChar: 'え' },
@@ -477,6 +477,10 @@ const specialHiraganaMap: Record<string, SpecialBrailleConfig> = {
   'ぶゅ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'ゆ' },
   'ぶょ': { fuKey: '[4,5,6点]', fuHex: 0x38, baseChar: 'よ' },
 };
+
+// 特殊音の配列
+// ['うぃ', 'うぇ', 'うぉ', 'くぁ', 'くぃ', ...]
+export const specialPatterns = Object.keys(specialHiraganaMap);
 
 export const createSpecialData = (char: string): BrailleData => {
   const config = specialHiraganaMap[char];
