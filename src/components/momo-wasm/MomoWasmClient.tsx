@@ -156,6 +156,7 @@ export default function WasmClient() {
                 );
               })}
             </ul>
+            <DynamicBrailleView brailleCells={data.brailleCells} />
           </div>
         </div>
       )}
