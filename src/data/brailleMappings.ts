@@ -186,9 +186,9 @@ export const createYouonData = (char: string): BrailleData => {
   };
 };
 
-const youonList = ['きゃ', 'きゅ', 'きょ', 'しゃ', 'しゅ', 'しょ', 'ちゃ', 'ちゅ', 'ちょ', 'にゃ', 'にゅ', 'にょ', 'ひゃ', 'ひゅ', 'ひょ', 'みゃ', 'みゅ', 'みょ', 'りゃ', 'りゅ', 'りょ'];
-const youdakuonList = ['ぎゃ', 'ぎゅ', 'ぎょ', 'じゃ', 'じゅ', 'じょ', 'ぢゃ', 'ぢゅ', 'ぢょ', 'びゃ', 'びゅ', 'びょ'];
-const youhandakuonList = ['ぴゃ', 'ぴゅ', 'ぴょ'];
+export const youonList = ['きゃ', 'きゅ', 'きょ', 'しゃ', 'しゅ', 'しょ', 'ちゃ', 'ちゅ', 'ちょ', 'にゃ', 'にゅ', 'にょ', 'ひゃ', 'ひゅ', 'ひょ', 'みゃ', 'みゅ', 'みょ', 'りゃ', 'りゅ', 'りょ'];
+export const youdakuonList = ['ぎゃ', 'ぎゅ', 'ぎょ', 'じゃ', 'じゅ', 'じょ', 'ぢゃ', 'ぢゅ', 'ぢょ', 'びゃ', 'びゅ', 'びょ'];
+export const youhandakuonList = ['ぴゃ', 'ぴゅ', 'ぴょ'];
 
 export const youonMappings: BrailleData[] = youonList.map(char => createYouonData(char));
 export const youdakuonMappings: BrailleData[] = youdakuonList.map(char => createYouonData(char));
