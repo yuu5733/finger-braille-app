@@ -59,6 +59,7 @@ export function parseTextToBrailleCells(
             character: '外字符',
             braille: hexToBraille(brailleCodes.gaijiFu),
             dots: hexToDots(brailleCodes.gaijiFu),
+            colorType: "kigou",
           },
           ...alphaWord.split('').map(c => {
             const lower = c.toLowerCase();
@@ -68,6 +69,7 @@ export function parseTextToBrailleCells(
               braille: hexToBraille(hex),
               dots: hexToDots(hex),
             };
+              colorType: "alphabet",
           })
         ];
 
