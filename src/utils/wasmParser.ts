@@ -20,15 +20,15 @@ export function parseTextToBrailleCells(
 ): { kana: string; brailleCells: BrailleData[] } {
   const predResult = predictor.predict(input);
   try {
-    const hiraGana = predResult.kana.replace(/[\u30a1-\u30f6]/g, (match) => 
+    const kanaEiSuu = predResult.kana.replace(/[\u30a1-\u30f6]/g, (match) => 
       String.fromCharCode(match.charCodeAt(0) - 0x60)
     );
 
     const results: BrailleData[] = [];
     let i = 0;
 
-    while (i < hiraGana.length) {
-      const char = hiraGana[i];
+    while (i < kanaEiSuu.length) {
+      const char = kanaEiSuu[i];
       
       // 1. スペースや読点の処理
       if (char === ' ' || char === ' ' || char === '、' || char === '､') {
@@ -48,8 +48,8 @@ export function parseTextToBrailleCells(
       if (/[a-zA-Z]/.test(char)) {
         let alphaWord = '';
         let j = i;
-        while (j < hiraGana.length && /[a-zA-Z]/.test(hiraGana[j])) {
-          alphaWord += hiraGana[j];
+        while (j < kanaEiSuu.length && /[a-zA-Z]/.test(kanaEiSuu[j])) {
+          alphaWord += kanaEiSuu[j];
           j++;
         }
         
@@ -99,8 +99,8 @@ export function parseTextToBrailleCells(
 
       // 4. 2文字のパターン（拗音・特殊音）をチェック
       let matched = false;
-      if (i + 1 < hiraGana.length) {
-        const twoChars = hiraGana.slice(i, i + 2);
+      if (i + 1 < kanaEiSuu.length) {
+        const twoChars = kanaEiSuu.slice(i, i + 2);
 
         // 4-A. 拗音の判定と処理
         if (
@@ -158,7 +158,7 @@ export function parseTextToBrailleCells(
     }
 
     return {
-      kana: hiraGana,
+      kana: kanaEiSuu,
       brailleCells: results,
     };
   } finally {
