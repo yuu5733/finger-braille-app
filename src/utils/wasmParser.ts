@@ -86,6 +86,46 @@ export function parseTextToBrailleCells(
         continue;
       }
 
+      // 2.5. 連続する数字の処理
+      if (/[0-9]/.test(char)) {
+        let numWord = '';
+        let j = i;
+        while (j < kanaEiSuu.length && /[0-9]/.test(kanaEiSuu[j])) {
+          numWord += kanaEiSuu[j];
+          j++;
+        }
+        
+        // 数符 ＋ 各数字のサブセルを生成（点字の数字1〜9,0は a〜j に対応）
+        const subCells: SubCellData[] = [
+          {
+            character: '数符',
+            braille: hexToBraille(brailleCodes.suujiFu ?? 0x3c),
+            dots: hexToDots(brailleCodes.suujiFu ?? 0x3c),
+            colorType: "number",
+          },
+          ...numWord.split('').map(c => {
+            const mapChar = c === '0' ? 'j' : String.fromCharCode(96 + parseInt(c, 10));
+            const hex = alphabetTable[mapChar] ?? 0x00;
+            return {
+              character: c,
+              braille: hexToBraille(hex),
+              dots: hexToDots(hex),
+              colorType: "number",
+            } satisfies SubCellData;
+          })
+        ];
+
+        results.push({
+          character: numWord,
+          subCells,
+          columnSpan: subCells.length,
+          comment: `数字: ${numWord}`,
+        });
+
+        i = j;
+        continue;
+      }
+
       // 3. 記号（スラッシュ、括弧など）の処理
       if (symbolBrailleMap[char]) {
         const sym = symbolBrailleMap[char];
