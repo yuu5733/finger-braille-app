@@ -1,5 +1,7 @@
 import { Predictor } from '../../pkg/momors_wasm';
-import type { BrailleData } from '../data/types';
+
+import type { BrailleData, SubCellData } from '../data/types';
+
 import { hexToDots } from './hexToDots';
 import { hexToBraille } from './hexToBraille';
 import { hiraganaTable, alphabetTable, brailleCodes } from '../data/table';
@@ -54,7 +56,7 @@ export function parseTextToBrailleCells(
         }
         
         // 外字符 ＋ 各アルファベットのサブセルを生成
-        const subCells = [
+        const subCells: SubCellData[] = [
           {
             character: '外字符',
             braille: hexToBraille(brailleCodes.gaijiFu),
@@ -68,8 +70,8 @@ export function parseTextToBrailleCells(
               character: c,
               braille: hexToBraille(hex),
               dots: hexToDots(hex),
-            };
               colorType: "alphabet",
+            }satisfies SubCellData;
           })
         ];
 
