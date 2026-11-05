@@ -99,7 +99,7 @@ export default function WasmClient() {
         <button 
           type="submit" 
           disabled={loading || !isInitialized}
-          style={{ padding: '0.5rem 1rem', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+          style={{ padding: '0.5rem 1rem', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', minWidth: '64px' }}
         >
           {loading ? '変換中...' : '変換'}
         </button>
