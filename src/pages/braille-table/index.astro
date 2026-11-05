@@ -113,8 +113,8 @@ import {
         max-width: 1000px;
         margin: 0 auto 3rem;
         padding: 1rem;
-        background-color: #f9f9f9;
-        border-radius: 8px;
+        background-color: var(--color-bg);
+        border-radius: var(--border-radius);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
 
@@ -125,7 +125,7 @@ import {
 
       .toc-header {
         font-size: 1.2rem;
-        color: #333;
+        color: var(--color-text);
         margin-top: 0;
         text-align: left;
       }
@@ -133,13 +133,13 @@ import {
       /* アンカーリンク */
       .toc-list a {
         text-decoration: none;
-        color: #0063cc;
+        color: var(--color-primary);
         font-weight: bold;
         transition: color 0.2s;
       }
 
       .toc-list a:hover {
-        color: #2ccc00;
+        color: var(--text-link-hover);
         text-decoration: underline;
       }
     </style>

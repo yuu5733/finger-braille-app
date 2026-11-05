@@ -59,20 +59,20 @@ const navigationLinks = [
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* ヘッダーの下から開始 */
+    justify-content: flex-start;
     padding: 60px 20px;
     min-height: calc(100vh - 80px); /* 画面の高さを確保 */
-    background-color: #f8f9fa; /* やわらかい背景色 */
+    background-color: var(--color-bg);
   }
 
   /* エラーコンテナ */
   .error-container {
     width: 100%;
-    max-width: 600px; /* PCでの幅を制限 */
+    max-width: 600px;
     padding: 30px;
-    background-color: #ffffff;
-    border-radius: 12px; /* 丸みのあるデザイン */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* 立体感 */
+    background-color: var(--color-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     text-align: center;
   }
 
@@ -81,7 +81,7 @@ const navigationLinks = [
     display: block;
     font-size: 5rem;
     font-weight: 900;
-    color: #cc0000;
+    color: var(--text-red);
     opacity: 0.85;
     line-height: 1;
     margin-bottom: 5px;
@@ -90,13 +90,13 @@ const navigationLinks = [
   /* 見出しとメッセージ */
   .error-heading {
     font-size: 2rem;
-    color: #333;
+    color: var(--color-text);
     margin-top: 0;
     margin-bottom: 20px;
   }
   .error-message {
     font-size: 1.1rem;
-    color: #555;
+    color: var(--color-darkgray);
     line-height: 1.6;
   }
 
@@ -109,7 +109,7 @@ const navigationLinks = [
   /* 誘導セクション */
   .guidance-section h2 {
     font-size: 1.3rem;
-    color: #007bff; /* ブランドカラーを使用 */
+    color: var(--color-primary); /* ブランドカラーを使用 */
     margin-top: 0;
     margin-bottom: 0.25rem;
   }
@@ -127,17 +127,17 @@ const navigationLinks = [
     display: inline-flex;
     align-items: center;
     padding: 10px 15px;
-    background-color: #e9f5ff; /* リンクの背景を薄い青に */
-    color: #007bff;
+    background-color: var(--color-paleblue);
+    color: var(--color-primary);
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     transition: all 0.2s ease;
     font-weight: 600;
-    border: 1px solid #b3d9ff;
+    border: 1px solid var(--color-aqua);
   }
 
   .guidance-link:hover {
-    background-color: #007bff;
+    background-color: var(--color-primary);
     color: white;
     box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
   }
@@ -156,14 +156,14 @@ const navigationLinks = [
 
   .faq-section h3 {
     font-size: 1rem;
-    color: #888;
+    color: var(--color-text-gray);
     margin-bottom: 5px;
     font-weight: 500;
   }
 
   .faq-answer {
     font-size: 0.9rem;
-    color: #999;
+    color: var(--color-text-gray);
     margin: 0;
   }
 

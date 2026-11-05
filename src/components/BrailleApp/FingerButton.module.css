@@ -1,15 +1,15 @@
 /* ボタンのスタイル */
 .fingerButton {
   padding: 1rem 2rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f0f0f0;
+  border: 1px solid var(--color-light-gray);
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg);
   transition: all 0.2s ease-in-out;
 }
 
 /* 押された時の状態 */
 .pressed {
-  background-color: #3b82f6;
+  background-color: var(--color-primary);
   /* 青系の色 */
   color: white;
   transform: scale(1.1);

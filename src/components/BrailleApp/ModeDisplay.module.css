@@ -8,7 +8,8 @@
   height: 35px;
   margin: 0 1rem;
   padding: 0 0.8rem;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
   font-size: 0.9rem;
   font-weight: bold;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -18,27 +19,27 @@
 
 /* 1. かなモード (デフォルト/常に表示/灰色) */
 .kana {
-  background-color: #e0e0e0;
-  color: #555;
+  background-color: var(--color-bg);
+  color: var(--color-darkgray);
 }
 
 /* 2. 数字モード (永続/青系統) */
 .suuji {
-  background-color: #cce5ff;
-  color: #004085;
-  border: 1px solid #b8daff;
+  background-color: var(--suuji-bg-color);
+  color: var(--suuji-color);
+  border: 1px solid var(--suuji-border-color);
 }
 
 /* 3. 英字モード (永続/緑系統) */
 .alphabet {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background-color: var(--alphabet-bg-color);
+  color: var(--alphabet-color);
+  border: 1px solid var(--alphabet-border-color);
 }
 
 /* 4. 待機モード (一時的/黄色系統) */
 .wait {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeeba;
+  background-color: var(--wait-bg-color);
+  color: var(--wait-color);
+  border: 1px solid var(--wait-border-color);
 }

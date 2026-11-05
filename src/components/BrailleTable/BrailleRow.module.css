@@ -6,15 +6,15 @@
 .categoryHeader {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #007bff;
+  color: var(--color-primary);
   padding: 10px 20px;
   margin: 0;
 
   /* カテゴリ行の境界線 */
-  border-top: 2px solid #333;
-  border-left: 2px solid #333;
-  border-right: 2px solid #333;
-  background-color: #f0f8ff;
+  border-top: 2px solid var(--color-text);
+  border-left: 2px solid var(--color-text);
+  border-right: 2px solid var(--color-text);
+  background-color: var(--color-paleblue);
 }
 
 /* 点字セルを配置するグリッドコンテナ (ul要素) */
@@ -28,7 +28,7 @@
   margin: 0;
 
   /* セルの左側の境界線の始まり */
-  border-left: 2px solid #333;
+  border-left: 2px solid var(--color-text);
 }
 
 /* BrailleCell の li要素（.cellContainer）に適用されるスタイル */
@@ -36,8 +36,8 @@
 /* :globalは、CSS ModulesやScoped CSSなどの環境で使われる疑似クラス。そのスコープ化を一時的に解除し、カッコ内のセレクタがグローバルな名前として扱われるように指定できる */
 .brailleRowGrid :global(.cellContainer) {
   /* --- ② 右と下の境界線のみを設定（隣接要素と共有する） --- */
-  border-right: 2px solid #333;
-  border-bottom: 2px solid #333;
+  border-right: 2px solid var(--color-text);
+  border-bottom: 2px solid var(--color-text);
 
   /* li要素のスタイルリセット */
   padding: 0;
@@ -50,12 +50,12 @@
 .ryakugoRowGrid {
   display: flex;
   flex-direction: column;
-  border-left: 2px solid #333;
+  border-left: 2px solid var(--color-text);
 }
 
 .ryakugoRowGrid :global(.cellContainer) {
-  border-right: 2px solid #333;
-  border-bottom: 2px solid #333;
+  border-right: 2px solid var(--color-text);
+  border-bottom: 2px solid var(--color-text);
   padding: 0;
   margin: 0;
   box-sizing: border-box;
