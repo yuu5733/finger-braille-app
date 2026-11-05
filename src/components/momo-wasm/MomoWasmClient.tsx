@@ -101,7 +101,7 @@ export default function WasmClient() {
           disabled={loading || !isInitialized}
           style={{ padding: '0.5rem 1rem', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
         >
-          {loading ? '変換中...' : '変換する'}
+          {loading ? '変換中...' : '変換'}
         </button>
       </form>
 
