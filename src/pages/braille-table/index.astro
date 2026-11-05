@@ -92,9 +92,16 @@ import {
       body > main {
         max-width: 1000px;
       }
+
       main {
-        margin: 0 40px;
+        margin: 0 16px; /* スマホ時の余白 */
         padding-top: 4rem;
+      }
+
+      @media (min-width: 768px) {
+        main {
+          margin: 0 40px; /* タブレット・PC時の余白 */
+        }
       }
 
       h1 {
