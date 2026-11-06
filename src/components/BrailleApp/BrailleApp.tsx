@@ -18,6 +18,7 @@ import ModeDisplay from './ModeDisplay';
 // 5. 相対パスによるインポート
 
 // 6. スタイルシート / アセット
+import styles from './BrailleApp.module.css';
 
 // -----------------------------------------------------
 // 内部コンポーネント (Contextの消費者) を定義
@@ -35,9 +36,10 @@ const BrailleAppContent: FC = () => {
         <BrailleInput pressedKeys={pressedKeys} />
       </div>
       {/* 確定された文字を表示するための新しい領域 */}
-      <div style={{ padding: '10px', border: '1px solid #ccc', margin: '1rem 0' }}>
-        確定済み: {outputString}
-      </div> 
+      <label htmlFor="outputArea" className={styles.outputLabel}>確定済み:
+        <textarea id="outputArea" className={styles.outputArea} value={outputString} 
+          readOnly/>
+       </label>
       <ResultDisplay text={character} brailleText={braille} dots={dots} />
     </>
   );

@@ -1,0 +1,14 @@
+.outputLabel {
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 560px;
+  overflow: scroll;
+}
+
+.outputArea {
+  margin-top: 8px;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius-sm);
+}
