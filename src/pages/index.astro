@@ -18,7 +18,7 @@ import keyboardPlacement from "../assets/keyboard-placement.svg";
     <img src={keyboardPlacement.src} alt="イラスト。指の配置" />
 
     <nav class="main-nav">
-      <a href="/practice" class="start-button"> 練習を始める → </a>
+      <a href="/practice" class="btn-primary"> 練習を始める → </a>
     </nav>
   </main>
 
@@ -57,35 +57,6 @@ import keyboardPlacement from "../assets/keyboard-placement.svg";
 
     .main-nav {
       margin-top: 3rem;
-    }
-
-    .start-button {
-      display: inline-block;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: white;
-      background-color: var(--color-primary);
-      border: none;
-      border-radius: var(--border-radius-lg);
-      text-decoration: none;
-      transition:
-        background-color 0.3s ease,
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .start-button:hover {
-      background-color: hsl(211, 100%, 35%);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-      cursor: pointer;
-    }
-
-    .start-button:active {
-      background-color: hsl(211, 100%, 26%);
-      transform: translateY(1px);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
   </style>
 </Layout>

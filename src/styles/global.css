@@ -59,3 +59,32 @@ font-family:
   sans-serif;
 }
 
+/* 共通のボタンスタイル ---------------- */
+.btn-primary {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--border-radius-lg);
+  text-decoration: none;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  background-color: hsl(211, 100%, 35%);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.btn-primary:active {
+  background-color: hsl(211, 100%, 26%);
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
