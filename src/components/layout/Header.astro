@@ -1,15 +1,28 @@
 ---
 import LoginButton from "../ui/LoginButton";
+const pathname = Astro.url.pathname;
 ---
 
 <header class="header">
   <div class="header-inner">
     <!-- PC・タブレット用ナビゲーション -->
     <nav class="header-links pc-only" aria-label="メインナビゲーション">
-      <a href="/">ホーム</a>
-      <a href="/practice">練習</a>
-      <a href="/braille-table">指点字表</a>
-      <a href="/sentence-conversion">指点字に変換</a>
+      <a href="/" aria-current={pathname === "/" ? "page" : undefined}>ホーム</a
+      >
+      <a
+        href="/practice"
+        aria-current={pathname === "/practice" ? "page" : undefined}>練習</a
+      >
+      <a
+        href="/braille-table"
+        aria-current={pathname === "/braille-table" ? "page" : undefined}
+        >指点字表</a
+      >
+      <a
+        href="/sentence-conversion"
+        aria-current={pathname === "/sentence-conversion" ? "page" : undefined}
+        >指点字に変換</a
+      >
     </nav>
 
     <!-- SP用メニューボタン -->
@@ -65,10 +78,22 @@ import LoginButton from "../ui/LoginButton";
       </button>
     </div>
     <nav class="dialog-links" aria-label="メインナビゲーション">
-      <a href="/">ホーム</a>
-      <a href="/practice">練習</a>
-      <a href="/braille-table">指点字表</a>
-      <a href="/sentence-conversion">指点字に変換</a>
+      <a href="/" aria-current={pathname === "/" ? "page" : undefined}>ホーム</a
+      >
+      <a
+        href="/practice"
+        aria-current={pathname === "/practice" ? "page" : undefined}>練習</a
+      >
+      <a
+        href="/braille-table"
+        aria-current={pathname === "/braille-table" ? "page" : undefined}
+        >指点字表</a
+      >
+      <a
+        href="/sentence-conversion"
+        aria-current={pathname === "/sentence-conversion" ? "page" : undefined}
+        >指点字に変換</a
+      >
     </nav>
   </dialog>
 </header>
@@ -117,6 +142,11 @@ import LoginButton from "../ui/LoginButton";
 
   .header-links a {
     margin-right: 8px;
+    transition:
+      background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .header-links a:last-child {
@@ -124,11 +154,27 @@ import LoginButton from "../ui/LoginButton";
   }
 
   /* ホバー時のスタイル */
-  .header-links a:hover,
-  .dialog-links a:hover {
+  .header-links a:not([aria-current="page"]):hover,
+  .dialog-links a:not([aria-current="page"]):hover {
+    background-color: var(--color-paleblue);
+    color: #1f2937;
+    border: #ffffff solid 0.25px;
+    font-weight: 600;
+  }
+
+  /* カレントページのスタイル */
+  .header-links a[aria-current="page"],
+  .dialog-links a[aria-current="page"] {
     background-color: rgba(150, 255, 255, 0.08);
     color: var(--color-paleblue);
-    border: #ffffff88 solid 0.25px;
+    border: #ffffff88 solid 2px;
+  }
+
+  /* カレントページにホバーしたときのスタイル */
+  .header-links a[aria-current="page"]:hover,
+  .dialog-links a[aria-current="page"]:hover {
+    background-color: #e5e7eb;
+    color: #111827;
   }
 
   /* メニューボタン（共通） */
