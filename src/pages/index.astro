@@ -6,15 +6,17 @@ import keyboardPlacement from "../assets/keyboard-placement.svg";
 <Layout title="ホーム｜指点字練習アプリ">
   <main class="top-page-main">
     <h1>指点字練習アプリ</h1>
-    <p>
-      指点字（ゆびてんじ）の入力を練習するための Web アプリケーションです。<br
-      />
-      キーボードを使って、指点字の基本を学びましょう。
-    </p>
-    <p>
-      指をホームポジションに置いた時の、人差し指、中指、薬指を使います。<br />
-      左の人差し指をFキー、右手の人差し指をJキーに置きます。
-    </p>
+    <div>
+      <p>
+        指点字（ゆびてんじ）の入力を練習するための Web アプリケーションです。<br
+        />
+        キーボードを使って、指点字の基本を学びましょう。
+      </p>
+      <p>
+        指をホームポジションに置いた時の、人差し指、中指、薬指を使います。<br />
+        左の人差し指をFキー、右手の人差し指をJキーに置きます。
+      </p>
+    </div>
     <img src={keyboardPlacement.src} alt="イラスト。指の配置" />
 
     <nav class="main-nav">
@@ -31,6 +33,7 @@ import keyboardPlacement from "../assets/keyboard-placement.svg";
       text-align: center;
       padding: 4rem 2rem;
       max-width: 800px;
+      width: width: fit-content;
       margin: auto;
       min-height: 100vh;
     }
