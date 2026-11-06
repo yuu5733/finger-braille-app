@@ -2,7 +2,7 @@
 .fingerButton {
   padding: 1rem 2rem;
   border: 1px solid var(--color-light-gray);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-md);
   background-color: var(--color-bg);
   transition: all 0.2s ease-in-out;
 }

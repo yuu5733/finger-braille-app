@@ -75,7 +75,7 @@ import WasmClient from "../../components/momo-wasm/MomoWasmClient";
       margin-bottom: 2rem;
       padding: 1.5rem;
       background: var(--color-bg);
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-md);
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     .wasm-control {
@@ -87,14 +87,14 @@ import WasmClient from "../../components/momo-wasm/MomoWasmClient";
       flex: 1;
       padding: 0.5rem;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      var(--border-radius-sm);
     }
     .wasm-control button {
       padding: 0.5rem 1rem;
       background: var(--color-primary);
       color: white;
       border: none;
-      border-radius: 4px;
+      var(--border-radius-sm);
       cursor: pointer;
     }
     .wasm-control button:hover {
@@ -104,7 +104,7 @@ import WasmClient from "../../components/momo-wasm/MomoWasmClient";
       padding: 1rem;
       background: #fff;
       border: 1px solid #ddd;
-      border-radius: 4px;
+      var(--border-radius-sm);
       min-height: 40px;
       word-break: break-all;
     }

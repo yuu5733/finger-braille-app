@@ -17,7 +17,12 @@
   --color-white: #ffffff;
   --text-red: #cc0000;
   --text-link-hover: #2ccc00;
-  --border-radius: 8px;
+
+
+  /* border-radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
 
   /* display mode color */
   --suuji-bg-color:#cce5ff;

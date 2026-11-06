@@ -4,7 +4,7 @@
   margin-top: 2rem;
   padding: 1rem 2rem;
   border: 2px solid var(--color-text);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-md);
   background-color: var(--color-bg);
   min-height: 50px;
   display: flex;

@@ -9,7 +9,7 @@
   margin: 0 1rem;
   padding: 0 0.8rem;
   border: 1px solid transparent;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-md);
   font-size: 0.9rem;
   font-weight: bold;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
