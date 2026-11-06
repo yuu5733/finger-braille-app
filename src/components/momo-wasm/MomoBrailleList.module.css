@@ -1,0 +1,6 @@
+.list {
+  margin: 1rem auto;
+  max-width: 550px;
+  border-top: 2px solid #333;
+  border-left: 2px solid #333;
+}

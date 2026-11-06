@@ -1,9 +1,10 @@
 import type { BrailleData } from '../../data/types';
 import BrailleCell from '../BrailleTable/BrailleCell.tsx';
+import styles from './MomoBrailleList.module.css';
 
 export function DynamicBrailleView({ brailleCells }: { brailleCells: BrailleData[] }) {
   return (
-    <ul className="" style={{ margin: "1rem auto", maxWidth: "550px", borderTop: "2px solid #333", borderLeft: "2px solid #333"}}>
+    <ul className={styles.list}>
       {brailleCells.map((cellData, index) => (
         <BrailleCell key={index} {...cellData} />
       ))}
