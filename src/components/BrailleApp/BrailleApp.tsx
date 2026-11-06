@@ -23,7 +23,7 @@ import ModeDisplay from './ModeDisplay';
 // 内部コンポーネント (Contextの消費者) を定義
 // -----------------------------------------------------
 const BrailleAppContent: FC = () => {
-  const { currentMode, setCurrentMode, pendingData, setPendingData, character, braille, dots, outputString, onOutput } = useBrailleContext();
+  const { currentMode, character, braille, dots, outputString} = useBrailleContext();
 
   const { pressedKeys } = useBrailleLogic();
 
