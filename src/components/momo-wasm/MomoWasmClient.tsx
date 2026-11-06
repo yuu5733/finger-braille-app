@@ -3,10 +3,10 @@ import { DynamicBrailleView } from './MomoBrailleList.tsx';
 import init, { Predictor, BrailleTranslator } from 'momors_wasm';
 import { parseTextToBrailleCells } from '../../utils/wasmParser';
 import type { BrailleData } from '../../data/types';
+import styles from './MomoWasmClient.module.css';
 
 export default function WasmClient() {
   const [input, setInput] = useState('今日は、いい天気ですね');
-  // const [input, setInput] = useState('LiD/APD（聴覚情報処理障害）という言葉もあります');
   const [loading, setLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [data, setData] = useState<{ 
@@ -18,6 +18,7 @@ export default function WasmClient() {
 
   const predictorRef = useRef<Predictor | null>(null);
   const translatorRef = useRef<BrailleTranslator | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -50,6 +51,19 @@ export default function WasmClient() {
     };
   }, []);
 
+  // テキストエリアの高さを自動調整する関数
+  const handleInputResize = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    handleInputResize();
+  }, [input]);
+
   const handleConvert = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isInitialized || !predictorRef.current) {
@@ -61,7 +75,6 @@ export default function WasmClient() {
     setError(null);
 
     try {
-      // アルファベットを小文字にしてwasmに渡す
       const normalizedInput = input.toLowerCase();
 
       const conversionResult = parseTextToBrailleCells(
@@ -82,75 +95,60 @@ export default function WasmClient() {
   };
 
   return (
-    <div className="test-section" style={{ marginBottom: '2rem', padding: '1.5rem', background: '#f9f9f9', borderRadius: '8px' }}>
+    <div className={styles.testSection}>
       <h2>2. テキストの指点字への変換</h2>
-      <p style={{ paddingBottom: '0.5rem' }}>
-        {isInitialized ? '準備完了' : '読み込み中...'}
+      <p className={styles.statusText}>
+        {isInitialized ? 'ライブラリ「MOMO」の準備が完了しました' : 'ライブラリ「MOMO」の読み込み中...'}
       </p>
 
-      <form onSubmit={handleConvert} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="変換するテキスト"
-          style={{ flex: 1, padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }}
-        />
+      <form onSubmit={handleConvert} className={styles.form}>
+        <label htmlFor="source-text" className={styles.label}>
+          変換するテキスト
+          <textarea
+            ref={textareaRef}
+            id="source-text"
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value);
+              handleInputResize();
+            }}
+            placeholder="変換するテキスト"
+            className={styles.textarea}
+            rows={3}
+          />
+        </label>
         <button 
           type="submit" 
+          id="convert-btn"
           disabled={loading || !isInitialized}
-          className="btn-primary"
-          style={{  minWidth: '64px' }}
+          className={`${styles.convertBtn} btn-primary`}
         >
           {loading ? '変換中...' : '変換'}
         </button>
       </form>
 
-      {error && <p style={{ color: 'red' }}>エラー: {error}</p>}
+      {error && <p className={styles.errorText}>エラー: {error}</p>}
 
       {data && (
-        <div style={{ padding: '1rem', background: '#fff', border: '1px solid #ddd', borderRadius: '4px' }}>
+        <div className={styles.resultContainer}>
           <p><strong>原文:</strong> {data.original}</p>
           <p><strong>仮名:</strong> {data.kana}</p>
           
-          <div style={{ marginTop: '1rem' }}>
+          <div className={styles.cellsWrapper}>
             <p><strong>点字セル表示:</strong></p>
             
-            {/* セットで折り返すためのコンテナ */}
-            <ul style={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              gap: '0.5rem', 
-              listStyle: 'none', 
-              padding: 0, 
-              margin: '0.5rem 0 0 0' 
-            }}>
+            <ul className={styles.cellsList}>
               {data.brailleCells.map((cellData, index) => {
-                // 点字文字列の取得（subCells または braille プロパティから安全に取得）
                 const brailleStr = cellData.subCells 
                   ? cellData.subCells.map(sc => sc.braille).join('') 
                   : (cellData.braille || '');
 
                 return (
-                  <li 
-                    key={index} 
-                    style={{ 
-                      display: 'inline-flex', 
-                      flexDirection: 'column', 
-                      alignItems: 'center', 
-                      padding: '0.3rem 0.5rem', 
-                      background: '#f4f4f4', 
-                      border: '1px solid #ccc', 
-                      borderRadius: '4px',
-                      minWidth: '2rem'
-                    }}
-                  >
-                    {/* 仮名 */}
-                    <span style={{ fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+                  <li key={index} className={styles.cellItem}>
+                    <span className={styles.cellCharacter}>
                       {cellData.character}
                     </span>
-                    {/* 点字 */}
-                    <span style={{ fontSize: '1.1rem', fontFamily: 'monospace' }}>
+                    <span className={styles.cellBraille}>
                       {brailleStr || '⠀'}
                     </span>
                   </li>

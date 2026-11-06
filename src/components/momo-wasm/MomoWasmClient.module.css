@@ -1,0 +1,86 @@
+.testSection {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.statusText {
+  padding-bottom: 0.5rem;
+}
+
+.form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.25rem;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius-md);
+  resize: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.5;
+}
+
+.errorText {
+  color: red;
+}
+
+.convertBtn {
+  margin-top: 28px;
+}
+
+.resultContainer {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.cellsWrapper {
+  margin-top: 1rem;
+}
+
+.cellsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+}
+
+.cellItem {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 2rem;
+}
+
+.cellCharacter {
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.cellBraille {
+  font-size: 1.1rem;
+  font-family: monospace;
+}
