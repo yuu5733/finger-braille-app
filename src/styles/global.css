@@ -29,6 +29,9 @@
   --wait-bg-color: #fff3cd;
   --wait-color: #856404;
   --wait-border-color: #ffeeba;
+
+  /* その他 */
+  --header-height: 80px;
 }
 
 body {
