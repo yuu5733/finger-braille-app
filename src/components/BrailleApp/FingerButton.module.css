@@ -1,4 +1,4 @@
-/* ボタンのスタイル */
+/* ボタンの共通スタイル */
 .fingerButton {
   width: 80px;
   height: 72px;
@@ -12,11 +12,27 @@
   position: relative;
 }
 
-/* 押された時の状態 */
+/* 押された時の状態（通常ボタン） */
 .pressed {
   background-color: var(--color-primary);
   color: white;
   transform: scale(1.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* スペースボタン（通常時）: 共通ベースにサイズとmax-widthを上書き */
+.spaceButton {
+  width: 100%;
+  max-width: 350px;
+  height: 3.5rem;
+  font-size: 1rem;
+}
+
+/* スペースボタン（押された時の状態） */
+.spacePressed {
+  background-color: var(--color-primary);
+  color: white;
+  transform: scale(1.02, 1.1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 

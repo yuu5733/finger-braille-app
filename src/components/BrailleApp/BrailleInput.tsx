@@ -47,7 +47,6 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
             id="spaceButton"
             isPressed={pressedKeys.has(' ')}
             label="スペース"
-            className={styles.spaceButton}
           />
         </div>
       </div>

@@ -29,7 +29,18 @@ const FingerButton: FC<FingerButtonProps> = ({
   label,
   className,
 }) => {
-  const buttonClassName = `${styles.fingerButton} ${isPressed ? styles.pressed : ''} ${className || ''}`;
+  const isSpace = (id === "spaceButton");
+  
+  // すべてのボタンに共通のベーススタイル（fingerButton）を当て、
+  // スペースの時だけサイズ等を上書きする .spaceButton を追加で当てます
+  const sizeStyle = isSpace ? styles.spaceButton : '';
+  
+  // 押された時のスタイル
+  const pressedStyle = isPressed 
+    ? (isSpace ? styles.spacePressed : styles.pressed) 
+    : '';
+
+  const buttonClassName = `${styles.fingerButton} ${sizeStyle} ${pressedStyle} ${className || ''}`;
 
   // 読み上げ用のラベルを決定（必要に応じて調整）
   const displayContent = label !== undefined ? label : dot;
