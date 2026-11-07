@@ -183,9 +183,7 @@ export function useBrailleLogic() {
     pendingData, 
     onDisplayUpdate, 
     setPendingData, 
-    processOutput,
-    character, 
-    dots]);
+    processOutput,]);
 
   return { pressedKeys, currentMode };
 }
