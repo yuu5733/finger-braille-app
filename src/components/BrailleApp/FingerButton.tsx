@@ -41,14 +41,12 @@ const FingerButton: FC<FingerButtonProps> = ({
       className={buttonClassName}
       aria-pressed={isPressed}
     >
-      <div className={styles.contentWrapper}>
-        <span className={styles.dotLabel}>{displayContent}</span>
-        {shortcutKey && (
-          <span className={styles.shortcutKey}>
-            {shortcutKey}
-          </span>
-        )}
-      </div>
+      <div className={styles.dotLabel}>{displayContent}</div>
+      {shortcutKey && (
+        <div className={styles.shortcutKey}>
+          {shortcutKey}
+        </div>
+      )}
     </button>
   );
 };
