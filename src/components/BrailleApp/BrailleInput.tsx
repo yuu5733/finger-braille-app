@@ -29,7 +29,7 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
         <div className={styles.buttonsGrid}>
           {/* 左の指のボタン */}
           <div className={leftHandClassName}> 
-            <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} shortcutKey="K" dot={3} />
+            <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} shortcutKey="S" dot={3} />
             <FingerButton id="leftMiddle" isPressed={pressedKeys.has('d')} shortcutKey="D" dot={2} />
             <FingerButton id="leftIndex" isPressed={pressedKeys.has('f')} shortcutKey="F" dot={1} />
           </div>
