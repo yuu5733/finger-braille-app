@@ -29,15 +29,15 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
         <div className={styles.buttonsGrid}>
           {/* 左の指のボタン */}
           <div className={leftHandClassName}> 
-            <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} dot={3} />
-            <FingerButton id="leftMiddle" isPressed={pressedKeys.has('d')} dot={2} />
-            <FingerButton id="leftIndex" isPressed={pressedKeys.has('f')} dot={1} />
+            <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} label="K" dot={3} />
+            <FingerButton id="leftMiddle" isPressed={pressedKeys.has('d')} label="D" dot={2} />
+            <FingerButton id="leftIndex" isPressed={pressedKeys.has('f')} label="F" dot={1} />
           </div>
           {/* 右の指のボタン */}
           <div className={rightHandClassName}>
-            <FingerButton id="rightIndex" isPressed={pressedKeys.has('j')} dot={4} />
-            <FingerButton id="rightMiddle" isPressed={pressedKeys.has('k')} dot={5} />
-            <FingerButton id="rightRing" isPressed={pressedKeys.has('l')} dot={6} />
+            <FingerButton id="rightIndex" isPressed={pressedKeys.has('j')} label="J" dot={4} />
+            <FingerButton id="rightMiddle" isPressed={pressedKeys.has('k')} label="K" dot={5} />
+            <FingerButton id="rightRing" isPressed={pressedKeys.has('l')} label="L" dot={6} />
           </div>
         </div>
 

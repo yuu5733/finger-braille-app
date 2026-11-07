@@ -13,10 +13,10 @@ import type { FC } from 'react';
 import styles from './FingerButton.module.css';
 
 interface FingerButtonProps {
-  id: string; // ボタンの識別子（例: 'leftIndex'）
+  id: string;         // ボタンの識別子（例: 'leftIndex'）
   isPressed: boolean; // ボタンが押されているかどうか
-  dot?: number; // 点字の点番号（任意）
-  label?: string; // 表示用ラベル（任意）
+  dot?: number;       // 点字の点番号（任意）
+  label?: string;     // 表示用ラベル（任意）
   className?: string; // 追加のCSSクラス（任意）
 }
 
