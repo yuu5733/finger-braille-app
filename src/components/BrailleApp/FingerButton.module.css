@@ -1,22 +1,48 @@
 /* ボタンのスタイル */
 .fingerButton {
-  padding: 1rem 2rem;
+  width: 80px;
+  height: 72px;
+  display: grid;
+  place-content: center;
   border: 1px solid var(--color-light-gray);
   border-radius: var(--border-radius-md);
   background-color: var(--color-bg);
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 /* 押された時の状態 */
 .pressed {
   background-color: var(--color-primary);
-  /* 青系の色 */
   color: white;
   transform: scale(1.1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* 内部要素を横並びにするラッパー */
+.contentWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 4px;
+}
+
 .dotLabel {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: bold;
+}
+
+/* キーボードショートカットの円形バッジ */
+.shortcutKey {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text, #333);
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
