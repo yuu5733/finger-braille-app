@@ -44,7 +44,7 @@ const FingerButton: FC<FingerButtonProps> = ({
       <div className={styles.contentWrapper}>
         <span className={styles.dotLabel}>{displayContent}</span>
         {shortcutKey && (
-          <span className={styles.shortcutKey} aria-hidden="true">
+          <span className={styles.shortcutKey}>
             {shortcutKey}
           </span>
         )}
