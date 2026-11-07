@@ -45,6 +45,10 @@
   transform: translateY(-2rem);
 }
 
+.fingerGroup button:nth-child(2)[aria-pressed="true"] {
+  transform: translateY(-2rem) scale(1.1);
+}
+
 .spaceButtonWrapper {
   width: 100%;
   display: flex;
