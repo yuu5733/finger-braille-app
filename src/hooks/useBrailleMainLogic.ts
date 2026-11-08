@@ -58,6 +58,16 @@ export function useBrailleLogic() {
 
     // 押された瞬間（立ち上がり）を検知
     if (isSpacePressed && !prevSpacePressedRef.current) {
+      const isWaitingMode = 
+        currentMode === 'Dakuon' || 
+        currentMode === 'Handakuon' ||
+        currentMode === 'Youon' || 
+        currentMode === 'YouDakuon' ||
+        currentMode === 'YouHandakuon' || 
+        currentMode === 'Question' ||
+        currentMode === 'Kuten' || 
+        currentMode === 'Tokushu456';
+
       // 1. pendingData があれば確定する
       if (pendingData) {
         if (pendingData.character && pendingData.character !== '不明') {
@@ -76,7 +86,7 @@ export function useBrailleLogic() {
       }
 
       // 2. モードに応じた処理の分岐（AlphabetおよびSuujiでリセット）
-      if (currentMode === 'Alphabet' || currentMode === 'Suuji') {
+      if (currentMode === 'Alphabet' || currentMode === 'Suuji'|| isWaitingMode) {
         setCurrentMode('Kana');
         onOutput(' '); // 半角スペースを追加
       } else if (currentMode === 'GaijiQuote') {
