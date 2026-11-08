@@ -3,7 +3,7 @@ import { useState, useCallback, useMemo } from 'react';
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleData, InputMode } from '../../data/types';
+import type { BrailleData, InputMode, BrailleChar } from '../../data/types';
 import type { BrailleContextType } from '../../contexts/BrailleContext';
 
 // 3. サードパーティライブラリ (※ 無し)
@@ -40,7 +40,7 @@ const BrailleAppContent: FC = () => {
         <textarea id="outputArea" className={styles.outputArea} value={outputString} 
           readOnly/>
        </label>
-      <ResultDisplay text={character} brailleText={brailleChar} dots={dots} />
+      <ResultDisplay text={character} brailleChar={brailleChar} dots={dots} />
     </>
   );
 };
@@ -54,7 +54,7 @@ const BrailleApp: FC = () => {
     const [pendingData, setPendingData] = useState<BrailleData | null>(null);
 
     const [character, setCharacter] = useState('');
-    const [brailleChar, setBrailleChar] = useState('');
+    const [brailleChar, setBrailleChar] = useState<BrailleChar>('');
     const [dots, setDots] = useState<number[]>([]);
 
     const [outputString, setOutputString] = useState('');
@@ -91,7 +91,7 @@ const handleOutput = useCallback((char: string) => {
         onOutput: handleOutput, 
         onDisplayUpdate: handleDisplayUpdate,
         character,   // ResultDisplay表示用（非必須だが便利）
-        brailleChar,     // ResultDisplay表示用
+        brailleChar, // ResultDisplay表示用
         dots,        // ResultDisplay表示用
         outputString,// ResultDisplay表示用
     }), [currentMode, pendingData, handleOutput, handleDisplayUpdate, character, brailleChar, dots, outputString]);
