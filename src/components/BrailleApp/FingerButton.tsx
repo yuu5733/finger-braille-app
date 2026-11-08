@@ -42,8 +42,12 @@ const FingerButton: FC<FingerButtonProps> = ({
 
   const buttonClassName = `${styles.fingerButton} ${sizeStyle} ${pressedStyle} ${className || ''}`;
 
-  // 読み上げ用のラベルを決定（必要に応じて調整）
-  const displayContent = label !== undefined ? label : dot;
+  // 読み上げ用のラベルを決定
+  const displayContent = label !== undefined ? label : (
+  <>
+    {dot}<span className="sr-only">の点</span>
+  </>
+);
 
   return (
     <button
@@ -55,7 +59,7 @@ const FingerButton: FC<FingerButtonProps> = ({
       <div className={styles.dotLabel}>{displayContent}</div>
       {shortcutKey && (
         <div className={styles.shortcutKey}>
-          {shortcutKey}
+          {shortcutKey}<span className="sr-only">キー</span>
         </div>
       )}
     </button>
