@@ -140,8 +140,8 @@ export default function WasmClient() {
             <ul className={styles.cellsList}>
               {data.brailleCells.map((cellData, index) => {
                 const brailleStr = cellData.subCells 
-                  ? cellData.subCells.map(sc => sc.braille).join('') 
-                  : (cellData.braille || '');
+                  ? cellData.subCells.map(sc => sc.brailleChar).join('') 
+                  : (cellData.brailleChar || '');
 
                 return (
                   <li key={index} className={styles.cellItem}>

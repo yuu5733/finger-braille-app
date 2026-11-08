@@ -28,7 +28,7 @@ export interface BrailleContextType {
   onDisplayUpdate: (data: BrailleData) => void; // 表示の更新
 
   character: string;      // ResultDisplay用
-  braille: string;        // ResultDisplay用
+  brailleChar: string;        // ResultDisplay用
   dots: number[];         // ResultDisplay用
   outputString: string;   // 確定文字列用
 }

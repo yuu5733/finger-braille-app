@@ -43,7 +43,7 @@ const getSubCellColorType = (
 const BrailleCell: FC<BrailleCellProps> = ({ 
   character, 
   dots, 
-  braille, 
+  brailleChar, 
   subCells, 
   columnSpan = 1, 
   comment, 
@@ -67,7 +67,7 @@ const BrailleCell: FC<BrailleCellProps> = ({
             {/* 1行目・右側：点字文字のグループ */}
             <div className={styles.multiBrailleCharContainer}>
               {subCells.map((sub, index) => (
-                <span key={index}>{sub.braille}</span>
+                <span key={index}>{sub.brailleChar}</span>
               ))}
             </div>
 
@@ -102,7 +102,7 @@ const BrailleCell: FC<BrailleCellProps> = ({
               <FingerBrailleSVG brailleDots={dots || []} colorType={colorType} />
             </div>
             <p className={styles.dotNumbers}>[{dots ? dots.join(', ') : 'なし'}]</p>
-            <p className={styles.brailleCharContainer}><span>{braille}</span></p>
+            <p className={styles.brailleCharContainer}><span>{brailleChar}</span></p>
           </>
         )}
 

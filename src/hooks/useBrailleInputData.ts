@@ -1,4 +1,4 @@
-import type { BrailleData, InputMode } from '../data/types';
+import type { BrailleData, InputMode, BrailleChar } from '../data/types';
 
 import { getBrailleData, getNumberData, getAlphabetData, getCurrentDots, isBrailleCodeMatch } from '../utils/brailleConverter';
 import { getConvertedCharacter } from '../utils/modeLogic';
@@ -44,7 +44,7 @@ export function useBrailleInputData(
 
       const data: BrailleData = {
           character: '数符',
-          braille: hexToBraille(brailleCodes.suufu),
+          brailleChar: hexToBraille(brailleCodes.suufu),
           dots: currentDots,
       };
 
@@ -64,13 +64,13 @@ export function useBrailleInputData(
     }
 
     // 4. Suujiモードで不明な点字の場合
-    let brailleText = '';
+    let brailleText: BrailleChar = '';
     if (currentDots.length > 0) {
       brailleText = hexToBraille(dotsToHex(currentDots)); 
     }
     const unknownData: BrailleData = {
       character: '不明',
-      braille: brailleText,
+      brailleChar: brailleText,
       dots: currentDots,
     };
 
@@ -85,7 +85,7 @@ export function useBrailleInputData(
 
       const data: BrailleData = {
           character: '外字符',
-          braille: hexToBraille(brailleCodes.gaijiFu),
+          brailleChar: hexToBraille(brailleCodes.gaijiFu),
           dots: currentDots,
       };
 
@@ -99,13 +99,13 @@ export function useBrailleInputData(
     } 
 
     // 3. Alphabetモードで不明な点字の場合
-    let brailleText = '';
+    let brailleText:BrailleChar = '';
     if (currentDots.length > 0) {
       brailleText = hexToBraille(dotsToHex(currentDots)); 
     }
     const unknownData: BrailleData = {
       character: '不明',
-      braille: brailleText,
+      brailleChar: brailleText,
       dots: currentDots,
     };
 
@@ -140,14 +140,14 @@ export function useBrailleInputData(
   }
 
   // ---通常モードで不明な点字の表示ロジック ---
-  let brailleText = '';
+  let brailleText:BrailleChar = '';
   if (currentDots.length > 0) {
     brailleText = hexToBraille(dotsToHex(currentDots)); 
   }
 
   const unknownData: BrailleData = {
     character: '不明',
-    braille: brailleText,
+    brailleChar: brailleText,
     dots: currentDots,
   };
 

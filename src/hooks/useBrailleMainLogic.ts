@@ -136,14 +136,14 @@ export function useBrailleLogic() {
         // 継続モード（数字やアルファベット）で不明な文字の時、pendingDataをリセット
         if (shouldResetPendingData) {
           setPendingData(null); 
-          onDisplayUpdate({ character: '', braille: '', dots: EMPTY_DOTS });
+          onDisplayUpdate({ character: '', brailleChar: '', dots: EMPTY_DOTS });
         }
 
       }
       else {
         // 無限ループ防止のため、表示がすでにクリアな場合は更新しない
         if (character !== '' || dots.length > 0) {
-            onDisplayUpdate({ character: '', braille: '', dots: EMPTY_DOTS });
+            onDisplayUpdate({ character: '', brailleChar: '', dots: EMPTY_DOTS });
         }
       }
       return;
@@ -156,8 +156,8 @@ export function useBrailleLogic() {
         const { mode, char, code } = stabilizedModeData;
         const currentDots = getCurrentDots(stabilizedKeys); // dotsはここで再取得が必要
         
-        const braille = hexToBraille(code);
-        const displayData = { character: char, braille, dots: currentDots };
+        const brailleChar = hexToBraille(code);
+        const displayData = { character: char, brailleChar, dots: currentDots };
 
         // 比較ロジック (元のコードからそのまま移植)
         // currentMode, pendingDataの比較...

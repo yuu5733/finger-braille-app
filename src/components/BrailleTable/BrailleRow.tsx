@@ -56,7 +56,7 @@ const BrailleRow: FC<BrailleRowProps> = ({ category, cells, colorType: rowColorT
             <BrailleCell
               key={data.character}
               character={data.character}
-              braille={data.braille}
+              brailleChar={data.brailleChar}
               dots={data.dots}
               subCells={data.subCells}
               columnSpan={data.columnSpan}

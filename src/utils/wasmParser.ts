@@ -38,7 +38,7 @@ export function parseTextToBrailleCells(
           character: '␣（間）',
           subCells: [{
             character: ' ',
-            braille: '⠀',
+            brailleChar: '⠀',
             dots: [],
           }]
         });
@@ -59,7 +59,7 @@ export function parseTextToBrailleCells(
         const subCells: SubCellData[] = [
           {
             character: '外字符',
-            braille: hexToBraille(brailleCodes.gaijiFu),
+            brailleChar: hexToBraille(brailleCodes.gaijiFu),
             dots: hexToDots(brailleCodes.gaijiFu),
             colorType: "kigou",
           },
@@ -68,7 +68,7 @@ export function parseTextToBrailleCells(
             const hex = alphabetTable[lower] ?? 0x00;
             return {
               character: c,
-              braille: hexToBraille(hex),
+              brailleChar: hexToBraille(hex),
               dots: hexToDots(hex),
               colorType: "alphabet",
             }satisfies SubCellData;
@@ -99,7 +99,7 @@ export function parseTextToBrailleCells(
         const subCells: SubCellData[] = [
           {
             character: '数符',
-            braille: hexToBraille(brailleCodes.suujiFu ?? 0x3c),
+            brailleChar: hexToBraille(brailleCodes.suujiFu ?? 0x3c),
             dots: hexToDots(brailleCodes.suujiFu ?? 0x3c),
             colorType: "number",
           },
@@ -108,7 +108,7 @@ export function parseTextToBrailleCells(
             const hex = alphabetTable[mapChar] ?? 0x00;
             return {
               character: c,
-              braille: hexToBraille(hex),
+              brailleChar: hexToBraille(hex),
               dots: hexToDots(hex),
               colorType: "number",
             } satisfies SubCellData;
@@ -133,7 +133,7 @@ export function parseTextToBrailleCells(
           character: char,
           subCells: [{
             character: char,
-            braille: hexToBraille(sym.hex),
+            brailleChar: hexToBraille(sym.hex),
             dots: sym.dots as any,
           }]
         });
@@ -184,7 +184,7 @@ export function parseTextToBrailleCells(
           character: char,
           subCells: [{
             character: char,
-            braille: hexToBraille(hexCode),
+            brailleChar: hexToBraille(hexCode),
             dots: hexToDots(hexCode),
           }]
         });
@@ -193,7 +193,7 @@ export function parseTextToBrailleCells(
           character: char,
           subCells: [{
             character: char,
-            braille: '',
+            brailleChar: '',
             dots: [],
           }]
         });

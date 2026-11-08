@@ -39,7 +39,7 @@ export const hiraganaAndKigouMappings: BrailleData[] = Object.entries(hiraganaAn
     return {
       character: character, // ひらがな
       dots: hexToDots(hexCode), // 点の配列
-      braille: hexToBraille(hexCode), // Unicode点字文字
+      brailleChar: hexToBraille(hexCode), // Unicode点字文字
     };
   }
 );
@@ -47,8 +47,8 @@ export const hiraganaAndKigouMappings: BrailleData[] = Object.entries(hiraganaAn
 // hiraganaAndKigouMappingsから逆引きのマッピングを作成
 export const brailleToCharacterMap: { [key: string]: string } = {};
 hiraganaAndKigouMappings.forEach(mapping => {
-  if (mapping.braille) {
-    brailleToCharacterMap[mapping.braille] = mapping.character;
+  if (mapping.brailleChar) {
+    brailleToCharacterMap[mapping.brailleChar] = mapping.character;
   }
 });
 
@@ -65,7 +65,7 @@ export const seionMappings: BrailleData[] = Object.entries(hiraganaTable).map(
     return {
       character: character, // ひらがな
       dots: hexToDots(hexCode), // 点の配列
-      braille: hexToBraille(hexCode), // Unicode点字文字
+      brailleChar: hexToBraille(hexCode), // Unicode点字文字
       colorType: specialColorMap[character],
     };
   }
@@ -86,7 +86,7 @@ export const hiraganaKigouMappings: BrailleData[] = Object.entries(kigouTable_yu
     return {
       character: character, // 記号
       dots: hexToDots(hexCode), // 点の配列
-      braille: hexToBraille(hexCode), // Unicode点字文字
+      brailleChar: hexToBraille(hexCode), // Unicode点字文字
       comment: commentMapHiraganaKigou[character], // コメント（覚えやすくするため）
     };
   }
@@ -109,12 +109,12 @@ export const createDakuonData = (char: string): BrailleData => {
   const subCells = [
     {
       character: fuKey,
-      braille: hexToBraille(fuHex),
+      brailleChar: hexToBraille(fuHex),
       dots: hexToDots(fuHex),
     },
     {
       character: baseChar,
-      braille: hexToBraille(baseHex),
+      brailleChar: hexToBraille(baseHex),
       dots: hexToDots(baseHex),
     },
   ];
@@ -174,8 +174,8 @@ export const createYouonData = (char: string): BrailleData => {
   const baseHex = hiraganaTable[baseChar] ?? 0x00;
 
   const subCells = [
-    { character: fuKey, braille: hexToBraille(fuHex), dots: hexToDots(fuHex) },
-    { character: baseChar, braille: hexToBraille(baseHex), dots: hexToDots(baseHex) },
+    { character: fuKey, brailleChar: hexToBraille(fuHex), dots: hexToDots(fuHex) },
+    { character: baseChar, brailleChar: hexToBraille(baseHex), dots: hexToDots(baseHex) },
   ];
 
   return {
@@ -232,7 +232,7 @@ export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu)
     return {
       character: character, // 数符、数字
       dots: hexToDots(hexCode), // 点の配列
-      braille: hexToBraille(hexCode), // Unicode点字文字
+      brailleChar: hexToBraille(hexCode), // Unicode点字文字
       comment: commentMapSuji[character], // コメント（覚えやすくするため）
     };
   }
@@ -294,7 +294,7 @@ export const alphabetMappings: BrailleData[] = Object.entries(alphabetTableWithG
     return {
       character: character, // 英語
       dots: hexToDots(hexCode), // 点の配列
-      braille: hexToBraille(hexCode), // Unicode点字文字
+      brailleChar: hexToBraille(hexCode), // Unicode点字文字
       comment: commentMapAlphabet[character], // コメント（覚えやすくするため）
     };
   }
@@ -332,7 +332,7 @@ export const createRyakugoData = (word: string, customComment?: string): Braille
   const subCells = [
     {
       character: '外字符',
-      braille: hexToBraille(brailleCodes.gaijiFu),
+      brailleChar: hexToBraille(brailleCodes.gaijiFu),
       dots: hexToDots(brailleCodes.gaijiFu),
     },
     // 2. 文字列の各文字をアルファベットテーブルから変換
@@ -341,7 +341,7 @@ export const createRyakugoData = (word: string, customComment?: string): Braille
       const hexCode = alphabetTable[lowerChar] ?? 0x00;
       return {
         character: char,
-        braille: hexToBraille(hexCode),
+        brailleChar: hexToBraille(hexCode),
         dots: hexToDots(hexCode),
       };
     }),
@@ -490,7 +490,7 @@ export const createSpecialData = (char: string): BrailleData => {
     const baseHex = hiraganaTable[char] ?? 0x00;
     return {
       character: char,
-      braille: hexToBraille(baseHex),
+      brailleChar: hexToBraille(baseHex),
       dots: hexToDots(baseHex),
     };
   }
@@ -501,12 +501,12 @@ export const createSpecialData = (char: string): BrailleData => {
   const subCells = [
     {
       character: fuKey,
-      braille: hexToBraille(fuHex),
+      brailleChar: hexToBraille(fuHex),
       dots: hexToDots(fuHex),
     },
     {
       character: baseChar,
-      braille: hexToBraille(baseHex),
+      brailleChar: hexToBraille(baseHex),
       dots: hexToDots(baseHex),
     },
   ];
@@ -529,9 +529,9 @@ export const specialMappings: BrailleData[] = specialList.map(char => createSpec
 // ----------------------------------------------------------------------
 // 指点字表用に独立した Map を作成する
 // Map {
-//   'あ' => { character: 'あ', dots: [1], braille: '⠁' },
-//   'い' => { character: 'い', dots: [1, 2], braille: '⠃' },
-//   'う' => { character: 'う', dots: [1, 4], braille: '⠉' },
+//   'あ' => { character: 'あ', dots: [1], brailleChar: '⠁' },
+//   'い' => { character: 'い', dots: [1, 2], brailleChar: '⠃' },
+//   'う' => { character: 'う', dots: [1, 4], brailleChar: '⠉' },
 //   // ...
 // }
 export const seionMap = new Map(seionMappings.map(data => [data.character, data]));

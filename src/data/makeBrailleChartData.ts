@@ -106,8 +106,8 @@ const TOKUSHU_ROW_CHARACTERS: Record<string, string[]> = {
  *   {
  *     category: 'あ行',
  *     cells: [
- *       { character: 'あ', braille: '⠁', dots: [1] },
- *       { character: 'い', braille: '⠃', dots: [1, 2] },
+ *       { character: 'あ', brailleChar: '⠁', dots: [1] },
+ *       { character: 'い', brailleChar: '⠃', dots: [1, 2] },
  *       ……
  *     ]
  *   },
@@ -119,7 +119,7 @@ const createTableData = (
 ): BrailleRowData[] => {
   return Object.entries(rowCharacters).map(([category, charArray]) => ({
     category,
-    cells: charArray.map(char => map.get(char) || { character: char, braille: '', dots: [] }),
+    cells: charArray.map(char => map.get(char) || { character: char, brailleChar: '', dots: [] }),
   }));
 };
 

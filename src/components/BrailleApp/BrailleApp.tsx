@@ -24,7 +24,7 @@ import styles from './BrailleApp.module.css';
 // 内部コンポーネント (Contextの消費者) を定義
 // -----------------------------------------------------
 const BrailleAppContent: FC = () => {
-  const { currentMode, character, braille, dots, outputString} = useBrailleContext();
+  const { currentMode, character, brailleChar, dots, outputString} = useBrailleContext();
 
   const { pressedKeys } = useBrailleLogic();
 
@@ -40,7 +40,7 @@ const BrailleAppContent: FC = () => {
         <textarea id="outputArea" className={styles.outputArea} value={outputString} 
           readOnly/>
        </label>
-      <ResultDisplay text={character} brailleText={braille} dots={dots} />
+      <ResultDisplay text={character} brailleText={brailleChar} dots={dots} />
     </>
   );
 };
@@ -54,7 +54,7 @@ const BrailleApp: FC = () => {
     const [pendingData, setPendingData] = useState<BrailleData | null>(null);
 
     const [character, setCharacter] = useState('');
-    const [braille, setBraille] = useState('');
+    const [brailleChar, setBrailleChar] = useState('');
     const [dots, setDots] = useState<number[]>([]);
 
     const [outputString, setOutputString] = useState('');
@@ -80,7 +80,7 @@ const handleOutput = useCallback((char: string) => {
     
     const handleDisplayUpdate = useCallback((data: BrailleData) => {
         setCharacter(data.character);
-        setBraille(data.braille ?? '');
+        setBrailleChar(data.brailleChar ?? '');
         setDots(data.dots ?? []);
     }, []);
 
@@ -91,10 +91,10 @@ const handleOutput = useCallback((char: string) => {
         onOutput: handleOutput, 
         onDisplayUpdate: handleDisplayUpdate,
         character,   // ResultDisplay表示用（非必須だが便利）
-        braille,     // ResultDisplay表示用
+        brailleChar,     // ResultDisplay表示用
         dots,        // ResultDisplay表示用
         outputString,// ResultDisplay表示用
-    }), [currentMode, pendingData, handleOutput, handleDisplayUpdate, character, braille, dots, outputString]);
+    }), [currentMode, pendingData, handleOutput, handleDisplayUpdate, character, brailleChar, dots, outputString]);
 
     // Providerとして自分自身をラップし、コンテンツコンポーネントを描画
     return (

@@ -79,7 +79,7 @@ export function getNumberData(pressedKeys: Set<string>): BrailleData | null {
     return {
       character: character,
       dots: hexToDots(code), // hexToDotsはインポート済みと仮定
-      braille: hexToBraille(code), // hexToBrailleはインポート済みと仮定
+      brailleChar: hexToBraille(code), // hexToBrailleはインポート済みと仮定
     };
   }
 
@@ -110,7 +110,7 @@ export function getAlphabetData(pressedKeys: Set<string>): BrailleData | null {
     return {
       character: character,
       dots: hexToDots(code), // hexToDotsはインポート済みと仮定
-      braille: hexToBraille(code), // hexToBrailleはインポート済みと仮定
+      brailleChar: hexToBraille(code), // hexToBrailleはインポート済みと仮定
     };
   }
 
