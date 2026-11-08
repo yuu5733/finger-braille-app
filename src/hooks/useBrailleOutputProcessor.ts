@@ -10,6 +10,7 @@ import type { BrailleData, InputMode } from '../data/types';
 
 // 5. 相対パスによるインポート
 import { getConvertedCharacter } from '../utils/modeLogic'; 
+import { numberTable } from '../data/table';
 
 // 6. スタイルシート / アセット
 
@@ -138,16 +139,21 @@ export function useBrailleOutputProcessor(
     else if (currentMode === 'Suuji') {
         if (confirmedCharacter === '不明') {
             return { shouldResetPendingData: true, nextMode: 'Kana' };
-        // '数符'自体は出力しない
-        } else if (confirmedCharacter !== '数符') {
-            // 数字、小数点、位取り点（アポストロフィ）が入力された場合
-            // 数字モードでは変換ロジック(getConvertedCharacter)は不要。文字をそのまま出力する。
-            onOutput(confirmedCharacter);
         }
-        
-        // モードは 'Suuji' のまま維持するが、
-        // 数字の確定後は pendingData をリセットする
-        return { shouldResetPendingData: true, nextMode: 'Suuji' };
+
+        // 数符、または数字テーブルに含まれる文字（数字・小数点・位取り点）の場合はモード継続
+        const isNumberOrSufu = confirmedCharacter === '数符' || Object.prototype.hasOwnProperty.call(numberTable, confirmedCharacter);
+
+        if (isNumberOrSufu) {
+            if (confirmedCharacter !== '数符') {
+                onOutput(confirmedCharacter);
+            }
+            return { shouldResetPendingData: true, nextMode: 'Suuji' };
+        } else {
+            // 数字以外（あ行・ら行以外のひらがな等）が入力された場合は出力してKanaモードにリセット
+            onOutput(confirmedCharacter);
+            return { shouldResetPendingData: true, nextMode: 'Kana' };
+        }
     }
 
     // --- 6. Alphabet および GaijiQuote モードの処理 ---

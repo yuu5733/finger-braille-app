@@ -51,13 +51,19 @@ export function useBrailleInputData(
       return { data }; 
     } 
     
-    // 2. 数字・記号への変換
+    // 2. 数字・記号への変換（あ行・ら行などはここで数字として処理される）
     const numberData = getNumberData(stabilizedKeys);
     if (numberData !== null) {
       return { data: numberData };
     } 
 
-    // 3. Suujiモードで不明な点字の場合
+    // 3. Suujiモードで数字に該当しない場合、モード符がないものとして通常の点字（ひらがな等）を試す
+    const characterData = getBrailleData(stabilizedKeys);
+    if (characterData !== null) {
+      return { data: characterData };
+    }
+
+    // 4. Suujiモードで不明な点字の場合
     let brailleText = '';
     if (currentDots.length > 0) {
       brailleText = hexToBraille(dotsToHex(currentDots)); 
