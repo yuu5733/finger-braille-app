@@ -2,7 +2,7 @@
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
-import type { BrailleChar } from '../../data/types';
+import type { BrailleChar, BrailleCode } from '../../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -17,7 +17,7 @@ import styles from './ResultDisplay.module.css';
 interface ResultDisplayProps {
   text: string;
   brailleChar: BrailleChar;
-  dots: number[];
+  dots: BrailleCode;
 }
 
 const ResultDisplay: FC<ResultDisplayProps> = ({ text, brailleChar, dots }) => {

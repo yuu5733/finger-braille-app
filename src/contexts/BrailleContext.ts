@@ -2,7 +2,7 @@
 import { createContext, useContext } from 'react';
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData, InputMode, BrailleChar } from '../data/types';
+import type { BrailleData, InputMode, BrailleChar, BrailleCode } from '../data/types';
 import type { Dispatch, SetStateAction } from 'react';
 
 // 3. サードパーティライブラリ (※ 無し)
@@ -29,7 +29,7 @@ export interface BrailleContextType {
 
   character: string;        // ResultDisplay用
   brailleChar: BrailleChar; // ResultDisplay用
-  dots: number[];           // ResultDisplay用
+  dots: BrailleCode;        // ResultDisplay用
   outputString: string;     // 確定文字列用
 }
 
