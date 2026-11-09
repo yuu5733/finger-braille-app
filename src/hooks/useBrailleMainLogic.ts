@@ -190,10 +190,8 @@ export function useBrailleLogic() {
   }, [isKeysReleased, 
     stabilizedKeys, 
     currentMode, 
-    pendingData, 
     onDisplayUpdate, 
-    setPendingData, 
-    processOutput,]);
+    setPendingData,]);
 
   return { pressedKeys, currentMode };
 }
