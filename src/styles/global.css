@@ -37,6 +37,10 @@
 
   /* width, height */
   --header-height: 80px;
+
+  /* font weight */
+  --font-weight-semi-bold: 600;
+  --font-weight-black: 900;
 }
 
 body {

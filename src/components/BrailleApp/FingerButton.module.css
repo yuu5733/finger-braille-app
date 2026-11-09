@@ -49,7 +49,7 @@
   width: 1.5rem;
   height: 1.5rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semi-bold);
   color: var(--color-text, #333);
   background-color: white;
   border-radius: 50%;

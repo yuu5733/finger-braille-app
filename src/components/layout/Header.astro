@@ -132,7 +132,7 @@ const pathname = Astro.url.pathname;
     height: 100%;
     border: #ffffff00 solid 0.25px;
     color: var(--color-white);
-    font-weight: 500;
+    font-weight: var(--font-weight-semi-bold);
     padding: 0.5rem 0.875rem;
     border-radius: 9999px;
     transition:
@@ -157,9 +157,9 @@ const pathname = Astro.url.pathname;
   .header-links a:not([aria-current="page"]):hover,
   .dialog-links a:not([aria-current="page"]):hover {
     background-color: var(--color-paleblue);
-    color: #1f2937;
+    color: var(--color-text);
     border: #ffffff solid 0.25px;
-    font-weight: 600;
+    font-weight: var(--font-weight-semi-bold);
   }
 
   /* カレントページのスタイル */
@@ -173,8 +173,9 @@ const pathname = Astro.url.pathname;
   /* カレントページにホバーしたときのスタイル */
   .header-links a[aria-current="page"]:hover,
   .dialog-links a[aria-current="page"]:hover {
-    background-color: #e5e7eb;
-    color: #111827;
+    background-color: var(--color-paleblue);
+    color: var(--color-text);
+    font-weight: var(--font-weight-semi-bold);
   }
 
   /* メニューボタン（共通） */
