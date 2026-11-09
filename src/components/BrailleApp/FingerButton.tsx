@@ -2,6 +2,7 @@
 
 // 2. 型定義 (Type Imports)
 import type { FC } from 'react';
+import type { BrailleDot } from '../../data/types'
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -15,7 +16,7 @@ import styles from './FingerButton.module.css';
 interface FingerButtonProps {
   id: string;           // ボタンの識別子（例: 'leftIndex'）
   isPressed: boolean;   // ボタンが押されているかどうか
-  dot?: number;         // 点字の点番号（任意）
+  dot?: BrailleDot;     // 点字の点番号（任意）
   shortcutKey?: string; // キーボードショートカット（任意）
   label?: string;       // 表示用ラベル（任意）
   className?: string;   // 追加のCSSクラス（任意）
