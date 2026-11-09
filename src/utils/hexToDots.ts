@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleCode } from '../data/types';
+import type { BrailleCode, brailleHex } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -14,7 +14,7 @@ import type { BrailleCode } from '../data/types';
 
 
 // Unicode点字データの16進コードを、押されている点の番号（1から6まで）の配列に変換するユーティリティ関数
-export function hexToDots(hexCode: number): BrailleCode {
+export function hexToDots(hexCode: brailleHex): BrailleCode {
   const dots: BrailleCode = [];
 
   if ((hexCode & 0x01) !== 0) dots.push(1);

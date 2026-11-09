@@ -1,7 +1,7 @@
 // 1. コアライブラリ
 
 // 2. 型定義 (Type Imports)
-import type { InputMode, ModeChar } from '../data/types';
+import type { InputMode, ModeChar, brailleHex } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -18,7 +18,7 @@ import { brailleCodes } from '../data/table';
 type ModeKeyResult = { 
   mode: InputMode; 
   char: ModeChar; 
-  code: number; 
+  hexCode: brailleHex; 
 } | null;
 
 export function useBrailleInputMode(stabilizedKeys: Set<string> | null): ModeKeyResult | null {
@@ -42,37 +42,37 @@ export function useBrailleInputMode(stabilizedKeys: Set<string> | null): ModeKey
 
   // 2. モードデータの設定
   if (isSufuOnly) { 
-    return { mode: 'Suuji', char: '数符', code: brailleCodes.suFu };
+    return { mode: 'Suuji', char: '数符', hexCode: brailleCodes.suFu };
   } 
   if (isGaijiOnly) { 
-    return { mode: 'Alphabet', char: '外字符', code: brailleCodes.gaijiFu };
+    return { mode: 'Alphabet', char: '外字符', hexCode: brailleCodes.gaijiFu };
   } 
   if (isGaijiQuoteOnly) {
-    return { mode: 'GaijiQuote', char: '外字引用符', code: brailleCodes.gaijiinyoFu_kaishi };
+    return { mode: 'GaijiQuote', char: '外字引用符', hexCode: brailleCodes.gaijiinyoFu_kaishi };
   }
   if (isDakuonOnly) { 
-    return { mode: 'Dakuon', char: '濁音符', code: brailleCodes.dakuonFu };
+    return { mode: 'Dakuon', char: '濁音符', hexCode: brailleCodes.dakuonFu };
   } 
   if (isHandakuonOnly) {
-    return { mode: 'Handakuon', char: '半濁音符', code: brailleCodes.handakuonFu };
+    return { mode: 'Handakuon', char: '半濁音符', hexCode: brailleCodes.handakuonFu };
   }
   if (isYouonOnly) {
-    return { mode: 'Youon', char: '拗音符', code: brailleCodes.youonFu };
+    return { mode: 'Youon', char: '拗音符', hexCode: brailleCodes.youonFu };
   }
   if (isYouDakuon) {
-    return { mode: 'YouDakuon', char: '拗濁音符', code: brailleCodes.youdakuonFu };
+    return { mode: 'YouDakuon', char: '拗濁音符', hexCode: brailleCodes.youdakuonFu };
   }
   if (isYouHandakuon) {
-    return { mode: 'YouHandakuon', char: '拗半濁音符', code: brailleCodes.youhandakuonFu };
+    return { mode: 'YouHandakuon', char: '拗半濁音符', hexCode: brailleCodes.youhandakuonFu };
   }
   if (isQuestionOnly) {
-    return { mode: 'Question', char: '疑問符', code: 0x22 };
+    return { mode: 'Question', char: '疑問符', hexCode: 0x22 };
   }
   if (isKutenOnly) {
-    return { mode: 'Kuten', char: '句点', code: 0x32 };
+    return { mode: 'Kuten', char: '句点', hexCode: 0x32 };
   }
   if (isTokushu456Only) {
-    return { mode: 'Tokushu456', char: '[4,5,6]点', code: 0x38 };
+    return { mode: 'Tokushu456', char: '[4,5,6]点', hexCode: 0x38 };
   }
   return null;
 }

@@ -21,12 +21,6 @@ import { hexToBraille } from '../utils/hexToBraille';
 // 5. 相対パスによるインポート
 
 // 6. スタイルシート / アセット
-import { brailleCodes } from '../data/table'; 
-
-const keyToDotMap: { [key: string]: number } = {
-  'f': 1, 'd': 2, 's': 3,
-  'j': 4, 'k': 5, 'l': 6
-};
 
 // 空の点字データを表す定数（asを使わずに型を一致させるため）
 const EMPTY_DOTS: BrailleCode = [];
@@ -153,10 +147,10 @@ export function useBrailleLogic() {
     if (stabilizedKeys) {
       // 1. モードキーの処理
       if (stabilizedModeData !== null) {
-        const { mode, char, code } = stabilizedModeData;
+        const { mode, char, hexCode } = stabilizedModeData;
         const currentDots = getCurrentDots(stabilizedKeys); // dotsはここで再取得が必要
         
-        const brailleChar = hexToBraille(code);
+        const brailleChar = hexToBraille(hexCode);
         const displayData = { character: char, brailleChar, dots: currentDots };
 
         // 比較ロジック (元のコードからそのまま移植)

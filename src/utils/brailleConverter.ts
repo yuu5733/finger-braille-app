@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData, BrailleCode, BrailleDot } from '../data/types';
+import type { BrailleData, BrailleCode, BrailleDot, brailleHex } from '../data/types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -139,7 +139,7 @@ export function getCurrentDots(pressedKeys: Set<string>): BrailleCode {
  * @param targetHex 比較対象の点字コード（Hex値、例: brailleCodes.suuFu）
  * @returns 一致すれば true
  */
-export function isBrailleCodeMatch(pressedKeys: Set<string>, targetHex: number): boolean {
+export function isBrailleCodeMatch(pressedKeys: Set<string>, targetHex: brailleHex): boolean {
     // 1. 押されているキーから現在の点の配列を取得
     const currentDots = getCurrentDots(pressedKeys);
     

@@ -1,5 +1,7 @@
+import type { brailleHex } from '../data/types'
+
 //清音のテーブル
-export const hiraganaTable: Record<string, number> = {
+export const hiraganaTable: Record<string, brailleHex> = {
   あ: 0x01,
   い: 0x03,
   う: 0x09,
@@ -55,7 +57,7 @@ export const hiraganaTable: Record<string, number> = {
 };
 
 // キーボードでの変換用
-export const hiraganaKigouTable: Record<string, number> = {
+export const hiraganaKigouTable: Record<string, brailleHex> = {
   // 空白 []。点字では、よく使われる。指点字では使わない
   "␣": 0x00,
   // 長音 [2,5]
@@ -73,7 +75,7 @@ export const hiraganaKigouTable: Record<string, number> = {
 };
 
 // 指点字表での表示用
-export const kigouTable_yubitenjiChart: Record<string, number> = {
+export const kigouTable_yubitenjiChart: Record<string, brailleHex> = {
   // 句点(終止符) [2,5,6]。点字では、スペースが2つ続く。指点字では使わない？
   "。(終止符)": 0x32,
   // 読点 [5,6]。点字では、スペースが続く。外字符と同じ。指点字では使わない？
@@ -109,7 +111,7 @@ export const KIGOU_CHAR_SET = new Set([
   '[4,5,6点]',
 ]);
 
-export const brailleCodes: Record<string, number> = {
+export const brailleCodes: Record<string, brailleHex> = {
   // 濁音符　例）ぎ。中黒と同じ。[5]
   dakuonFu: 0x10,
   // 半濁音符　例）ぴ。[6]
@@ -309,7 +311,7 @@ export const tokushuKutenMap: { [key: string]: string } = {
 };
 
 //数値
-export const numberTable: Record<string, number> = {
+export const numberTable: Record<string, brailleHex> = {
   // 1:ひらがなの「あ」、アルファベットのに「a」同じ [1]
   "1": 0x01,
 
@@ -349,7 +351,7 @@ export const numberTable: Record<string, number> = {
 };
 
 //アルファベット（a-z）
-export const alphabetTable: Record<string, number> = {
+export const alphabetTable: Record<string, brailleHex> = {
   // a:ひらがなの「あ」に同じ。数字の「1」と同じ
   a: 0x01,
 

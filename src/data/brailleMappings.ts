@@ -1,7 +1,7 @@
 // 1. コアライブラリ (※ 無し)
 
 // 2. 型定義 (Type Imports)
-import type { BrailleData, BrailleColorType } from './types';
+import type { BrailleData, BrailleColorType, brailleHex } from './types';
 
 // 3. サードパーティライブラリ (※ 無し)
 
@@ -204,7 +204,7 @@ const numberTableWithSuFu = {
   '小数点(.)': 0x02,
   '位取り点(,)': 0x04,
   // 'ｱﾎﾟｽﾄﾛﾌｨ(\')': 0x04,
-};
+}satisfies Record<string, brailleHex>;
 
 // 文字（または数字）ごとのコメント（語呂合わせなど）を定義する辞書
 const commentMapSuji: Record<string, string> = {
@@ -407,7 +407,7 @@ export const ryakugoMappings: BrailleData[] = Array.from(
 // 特殊音の構成情報を定義する型
 interface SpecialBrailleConfig {
   fuKey: string;      // 例: '疑問符', '濁音符', '拗音符' など
-  fuHex: number;      // 対応する点字コードのHEX
+  fuHex: brailleHex;      // 対応する点字コードのHEX
   baseChar: string;   // ベースとなる文字
 }
 
