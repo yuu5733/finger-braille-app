@@ -13,9 +13,12 @@ export type FingerStates = {
 export type BrailleDot = 1 | 2 | 3 | 4 | 5 | 6;
 export type LeftDot = 1 | 2 | 3;
 export type RightDot = 4 | 5 | 6;
-
 export type BrailleCode = BrailleDot[];
 
+
+/**
+ * Unicode点字の型 (6点点字または、空文字)
+ */
 const brailleChars = [
   '', 
   '⠀', '⠁', '⠂', '⠃', '⠄', '⠅', '⠆', '⠇',
@@ -30,6 +33,26 @@ const brailleChars = [
 
 // ユニオン型で抽出（インデックスアクセス型）
 export type BrailleChar = typeof brailleChars[number];
+
+
+/**
+ * hex点字の型
+ */
+
+// 0 から N未満 までの数値を要素に持つユニオン型を作るヘルパー
+// カスタムの再帰型。要素数が Nに達するまで再帰的に自分自身を呼び出す
+type Enumerate<
+  N extends number,                  // 例: 64 （ここまで数える）
+  Acc extends number[] = []          // 蓄積用の配列（最初は空 []）
+> = Acc['length'] extends N          // 【終了条件】配列の長さが N に達したか？
+  ? Acc[number]                      // 達していれば、配列の中身をユニオン型（0 | 1 | ...）にして返す
+  : Enumerate<                       // 達していなければ、再帰的に自分を呼び出す
+      N, 
+      [...Acc, Acc['length']]        // 現在の配列の長さ（次に数える数値）を配列に追加して渡す
+    >;
+
+// 0x00（0） | 0x01（1） | 0x02（2） | ... | 0x3f（63） のユニオン型
+export type brailleHex = Enumerate<64>;
 
 // 表用の点字データ（複数文字用）
 export type SubCellData = {
