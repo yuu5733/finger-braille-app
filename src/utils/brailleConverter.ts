@@ -17,13 +17,13 @@ import { hiraganaAndKigouMappings } from '../data/brailleMappings';
 import { numberTable, alphabetTable } from '../data/table';
 
 // キーと点字の点の対応マップ
-const keyToDotMap: { [key: string]: number } = {
+const keyToDotMap: Record<string, BrailleDot> = {
   'f': 1, 'd': 2, 's': 3,
   'j': 4, 'k': 5, 'l': 6
 };
 
 // 点の番号 -> キーボードのキー への逆マッピング
-const dotToKeyMap: { [key: number]: string } = {
+const dotToKeyMap: Record<BrailleDot, string> = {
     1: 'f', 2: 'd', 3: 's',
     4: 'j', 5: 'k', 6: 'l'
 };
