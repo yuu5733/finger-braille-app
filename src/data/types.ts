@@ -28,7 +28,7 @@ const brailleChars = [
   '⠸', '⠹', '⠺', '⠻', '⠼', '⠽', '⠾', '⠿'
 ] as const;
 
-// 型を抽出（ユニオン型で生成）
+// ユニオン型で抽出（インデックスアクセス型）
 export type BrailleChar = typeof brailleChars[number];
 
 // 表用の点字データ（複数文字用）
