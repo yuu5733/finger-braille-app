@@ -1,20 +1,57 @@
 import { Predictor } from '../../pkg/momors_wasm';
 
-import type { BrailleData, SubCellData, BrailleCode, brailleHex } from '../data/types';
+import type {
+  BrailleData,
+  SubCellData,
+  BrailleCode,
+  brailleHex,
+} from '../data/types';
 
 import { hexToDots } from './hexToDots';
 import { hexToBraille } from './hexToBraille';
 import { hiraganaTable, alphabetTable, brailleCodes } from '../data/table';
-import { createDakuonData, createYouonData, createSpecialData, dakuonList, handakuonList, youonList, youdakuonList, youhandakuonList, specialPatterns } from '../data/brailleMappings';
+import {
+  createDakuonData,
+  createYouonData,
+  createSpecialData,
+  dakuonList,
+  handakuonList,
+  youonList,
+  youdakuonList,
+  youhandakuonList,
+  specialPatterns,
+} from '../data/brailleMappings';
 
 // スラッシュや括弧などの記号用マップ
-const symbolBrailleMap: Record<string, { hex: brailleHex; dots: BrailleCode }> = {
-  '/': { hex: 0x0c, dots: [3, 4] },
-  '（': { hex: 0x36, dots: [2, 3, 5, 6] },
-  '）': { hex: 0x36, dots: [2, 3, 5, 6] },
-  '(': { hex: 0x36, dots: [2, 3, 5, 6] },
-  ')': { hex: 0x36, dots: [2, 3, 5, 6] },
-};
+const symbolBrailleMap: Record<string, { hex: brailleHex; dots: BrailleCode }> =
+  {
+    // 【アルファベットの符号】
+    // アクセント符：アキュート・アクセント（´）、グレイヴ・アクセント（`）
+    '´': { hex: 0x08, dots: [4] },
+    '`': { hex: 0x08, dots: [4] },
+    ',': { hex: 0x02, dots: [2] },
+    ';': { hex: 0x06, dots: [2, 3] },
+    ':': { hex: 0x12, dots: [2, 5] },
+    // ".": { hex: 0x32, dots: [2, 5, 6] },
+    '!': { hex: 0x16, dots: [2, 3, 5] },
+    '?': { hex: 0x26, dots: [2, 3, 6] },
+    // アポストロフィ
+    "'": { hex: 0x04, dots: [3] },
+    _: { hex: 0x24, dots: [3, 6] },
+    '(': { hex: 0x36, dots: [2, 3, 5, 6] },
+    ')': { hex: 0x36, dots: [2, 3, 5, 6] },
+
+    // 【日本語の符号】
+    '。': { hex: 0x32, dots: [2, 5, 6] },
+    '？': { hex: 0x26, dots: [2, 3, 6] },
+    '！': { hex: 0x16, dots: [2, 3, 5] },
+    // "、": { hex: 0x30, dots: [5, 6] },
+    // "・": { hex: 0x10, dots: [5] },
+    '「': { hex: 0x36, dots: [3, 6] },
+    '」': { hex: 0x36, dots: [3, 6] },
+    '（': { hex: 0x36, dots: [2, 3, 5, 6] },
+    '）': { hex: 0x36, dots: [2, 3, 5, 6] },
+  };
 
 export function parseTextToBrailleCells(
   predictor: Predictor,
@@ -22,7 +59,7 @@ export function parseTextToBrailleCells(
 ): { kana: string; brailleCells: BrailleData[] } {
   const predResult = predictor.predict(input);
   try {
-    const kanaEiSuu = predResult.kana.replace(/[\u30a1-\u30f6]/g, (match) => 
+    const kanaEiSuu = predResult.kana.replace(/[\u30a1-\u30f6]/g, (match) =>
       String.fromCharCode(match.charCodeAt(0) - 0x60)
     );
 
@@ -31,16 +68,18 @@ export function parseTextToBrailleCells(
 
     while (i < kanaEiSuu.length) {
       const char = kanaEiSuu[i];
-      
+
       // 1. スペースや読点の処理
       if (char === ' ' || char === ' ' || char === '、' || char === '､') {
         results.push({
           character: '␣（間）',
-          subCells: [{
-            character: ' ',
-            brailleChar: '⠀',
-            dots: [],
-          }]
+          subCells: [
+            {
+              character: ' ',
+              brailleChar: '⠀',
+              dots: [],
+            },
+          ],
         });
         i++;
         continue;
@@ -54,25 +93,25 @@ export function parseTextToBrailleCells(
           alphaWord += kanaEiSuu[j];
           j++;
         }
-        
+
         // 外字符 ＋ 各アルファベットのサブセルを生成
         const subCells: SubCellData[] = [
           {
             character: '外字符',
             brailleChar: hexToBraille(brailleCodes.gaijiFu),
             dots: hexToDots(brailleCodes.gaijiFu),
-            colorType: "kigou",
+            colorType: 'kigou',
           },
-          ...alphaWord.split('').map(c => {
+          ...alphaWord.split('').map((c) => {
             const lower = c.toLowerCase();
             const hex = alphabetTable[lower] ?? 0x00;
             return {
               character: c,
               brailleChar: hexToBraille(hex),
               dots: hexToDots(hex),
-              colorType: "alphabet",
-            }satisfies SubCellData;
-          })
+              colorType: 'alphabet',
+            } satisfies SubCellData;
+          }),
         ];
 
         results.push({
@@ -94,25 +133,26 @@ export function parseTextToBrailleCells(
           numWord += kanaEiSuu[j];
           j++;
         }
-        
+
         // 数符 ＋ 各数字のサブセルを生成（点字の数字1〜9,0は a〜j に対応）
         const subCells: SubCellData[] = [
           {
             character: '数符',
             brailleChar: hexToBraille(brailleCodes.suujiFu ?? 0x3c),
             dots: hexToDots(brailleCodes.suujiFu ?? 0x3c),
-            colorType: "number",
+            colorType: 'number',
           },
-          ...numWord.split('').map(c => {
-            const mapChar = c === '0' ? 'j' : String.fromCharCode(96 + parseInt(c, 10));
+          ...numWord.split('').map((c) => {
+            const mapChar =
+              c === '0' ? 'j' : String.fromCharCode(96 + parseInt(c, 10));
             const hex = alphabetTable[mapChar] ?? 0x00;
             return {
               character: c,
               brailleChar: hexToBraille(hex),
               dots: hexToDots(hex),
-              colorType: "number",
+              colorType: 'number',
             } satisfies SubCellData;
-          })
+          }),
         ];
 
         results.push({
@@ -131,11 +171,13 @@ export function parseTextToBrailleCells(
         const sym = symbolBrailleMap[char];
         results.push({
           character: char,
-          subCells: [{
-            character: char,
-            brailleChar: hexToBraille(sym.hex),
-            dots: sym.dots as any,
-          }]
+          subCells: [
+            {
+              character: char,
+              brailleChar: hexToBraille(sym.hex),
+              dots: sym.dots as any,
+            },
+          ],
         });
         i++;
         continue;
@@ -148,8 +190,8 @@ export function parseTextToBrailleCells(
 
         // 4-A. 拗音の判定と処理
         if (
-          youonList.includes(twoChars) || 
-          youdakuonList.includes(twoChars) || 
+          youonList.includes(twoChars) ||
+          youdakuonList.includes(twoChars) ||
           youhandakuonList.includes(twoChars)
         ) {
           results.push(createYouonData(twoChars));
@@ -165,7 +207,6 @@ export function parseTextToBrailleCells(
           matched = true;
           continue;
         }
-
       }
 
       if (matched) continue;
@@ -182,20 +223,24 @@ export function parseTextToBrailleCells(
       if (hexCode !== undefined) {
         results.push({
           character: char,
-          subCells: [{
-            character: char,
-            brailleChar: hexToBraille(hexCode),
-            dots: hexToDots(hexCode),
-          }]
+          subCells: [
+            {
+              character: char,
+              brailleChar: hexToBraille(hexCode),
+              dots: hexToDots(hexCode),
+            },
+          ],
         });
       } else {
         results.push({
           character: char,
-          subCells: [{
-            character: char,
-            brailleChar: '',
-            dots: [],
-          }]
+          subCells: [
+            {
+              character: char,
+              brailleChar: '',
+              dots: [],
+            },
+          ],
         });
       }
       i++;
