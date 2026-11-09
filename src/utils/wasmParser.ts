@@ -1,6 +1,6 @@
 import { Predictor } from '../../pkg/momors_wasm';
 
-import type { BrailleData, SubCellData } from '../data/types';
+import type { BrailleData, SubCellData, BrailleCode } from '../data/types';
 
 import { hexToDots } from './hexToDots';
 import { hexToBraille } from './hexToBraille';
@@ -8,7 +8,7 @@ import { hiraganaTable, alphabetTable, brailleCodes } from '../data/table';
 import { createDakuonData, createYouonData, createSpecialData, dakuonList, handakuonList, youonList, youdakuonList, youhandakuonList, specialPatterns } from '../data/brailleMappings';
 
 // スラッシュや括弧などの記号用マップ
-const symbolBrailleMap: Record<string, { hex: number; dots: number[] }> = {
+const symbolBrailleMap: Record<string, { hex: number; dots: BrailleCode }> = {
   '/': { hex: 0x0c, dots: [3, 4] },
   '（': { hex: 0x36, dots: [2, 3, 5, 6] },
   '）': { hex: 0x36, dots: [2, 3, 5, 6] },

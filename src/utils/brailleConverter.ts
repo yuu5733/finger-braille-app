@@ -28,7 +28,7 @@ const dotToKeyMap: { [key: number]: string } = {
     4: 'j', 5: 'k', 6: 'l'
 };
 
-function arraysEqual(a: number[], b: number[]): boolean {
+function arraysEqual(a: BrailleCode, b: BrailleCode): boolean {
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {
     if (a[i] !== b[i]) return false;
@@ -43,8 +43,9 @@ function arraysEqual(a: number[], b: number[]): boolean {
  */
 export function getBrailleData(pressedKeys: Set<string>): BrailleData | null {
   // Setから点の配列に変換し、数字順にソートする
-  const currentDots = Array.from(pressedKeys)
+  const currentDots: BrailleCode = Array.from(pressedKeys)
     .map(key => keyToDotMap[key])
+    .filter((dot): dot is BrailleDot => dot !== undefined)
     .sort((a, b) => a - b);
 
   const foundMapping = hiraganaAndKigouMappings.find(
@@ -64,6 +65,7 @@ export function getNumberData(pressedKeys: Set<string>): BrailleData | null {
   // Setから点の配列に変換し、数字順にソートする
   const currentDots = Array.from(pressedKeys)
     .map(key => keyToDotMap[key])
+    .filter((dot): dot is BrailleDot => dot !== undefined)
     .sort((a, b) => a - b);
 
   // 点の配列からHexコードに変換
@@ -95,6 +97,7 @@ export function getAlphabetData(pressedKeys: Set<string>): BrailleData | null {
   // Setから点の配列に変換し、数字順にソートする
   const currentDots = Array.from(pressedKeys)
     .map(key => keyToDotMap[key])
+    .filter((dot): dot is BrailleDot => dot !== undefined)
     .sort((a, b) => a - b);
 
   // 点の配列からHexコードに変換
