@@ -17,20 +17,16 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
   const rightHandClassName = `${styles.fingerGroup} ${styles.rightHand}`;
 
   const createPointerHandlers = (key: string) => ({
-    onPointerDown: (e: React.PointerEvent) => {
-      e.preventDefault();
+    onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
       onKeyPress(key);
     },
-    onPointerUp: (e: React.PointerEvent) => {
-      e.preventDefault();
+    onPointerUp: (e: React.PointerEvent<HTMLButtonElement>) => {
       onKeyRelease(key);
     },
-    onPointerLeave: (e: React.PointerEvent) => {
-      e.preventDefault();
+    onPointerLeave: (e: React.PointerEvent<HTMLButtonElement>) => {
       onKeyRelease(key);
     },
-    onPointerCancel: (e: React.PointerEvent) => {
-      e.preventDefault();
+    onPointerCancel: (e: React.PointerEvent<HTMLButtonElement>) => {
       onKeyRelease(key);
     },
   });
@@ -42,83 +38,58 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
     >
       <div className={styles.inputWrapper}>
         <div className={styles.buttonsGrid}>
-          {/* 左の指のボタン (点3: s, 点2: d, 点1: f) */}
+          {/* 左の指のボタン */}
           <div className={leftHandClassName}>
-            <div
+            <FingerButton
+              id="leftRing"
+              isPressed={pressedKeys.has('s')}
+              dot={3}
               {...createPointerHandlers('s')}
-              style={{ display: 'inline-block' }}
-            >
-              <FingerButton
-                id="leftRing"
-                isPressed={pressedKeys.has('s')}
-                dot={3}
-              />
-            </div>
-            <div
+            />
+            <FingerButton
+              id="leftMiddle"
+              isPressed={pressedKeys.has('d')}
+              dot={2}
               {...createPointerHandlers('d')}
-              style={{ display: 'inline-block' }}
-            >
-              <FingerButton
-                id="leftMiddle"
-                isPressed={pressedKeys.has('d')}
-                dot={2}
-              />
-            </div>
-            <div
+            />
+            <FingerButton
+              id="leftIndex"
+              isPressed={pressedKeys.has('f')}
+              dot={1}
               {...createPointerHandlers('f')}
-              style={{ display: 'inline-block' }}
-            >
-              <FingerButton
-                id="leftIndex"
-                isPressed={pressedKeys.has('f')}
-                dot={1}
-              />
-            </div>
+            />
           </div>
-          {/* 右の指のボタン (点4: j, 点5: k, 点6: l) */}
+          {/* 右の指のボタン */}
           <div className={rightHandClassName}>
-            <div
+            <FingerButton
+              id="rightIndex"
+              isPressed={pressedKeys.has('j')}
+              dot={4}
               {...createPointerHandlers('j')}
-              style={{ display: 'inline-block' }}
-            >
-              <FingerButton
-                id="rightIndex"
-                isPressed={pressedKeys.has('j')}
-                dot={4}
-              />
-            </div>
-            <div
+            />
+            <FingerButton
+              id="rightMiddle"
+              isPressed={pressedKeys.has('k')}
+              dot={5}
               {...createPointerHandlers('k')}
-              style={{ display: 'inline-block' }}
-            >
-              <FingerButton
-                id="rightMiddle"
-                isPressed={pressedKeys.has('k')}
-                dot={5}
-              />
-            </div>
-            <div
+            />
+            <FingerButton
+              id="rightRing"
+              isPressed={pressedKeys.has('l')}
+              dot={6}
               {...createPointerHandlers('l')}
-              style={{ display: 'inline-block' }}
-            >
-              <FingerButton
-                id="rightRing"
-                isPressed={pressedKeys.has('l')}
-                dot={6}
-              />
-            </div>
+            />
           </div>
         </div>
 
         {/* スペースボタン */}
         <div className={styles.spaceButtonWrapper}>
-          <div {...createPointerHandlers(' ')} style={{ width: '100%' }}>
-            <FingerButton
-              id="spaceButton"
-              isPressed={pressedKeys.has(' ')}
-              label="スペース"
-            />
-          </div>
+          <FingerButton
+            id="spaceButton"
+            isPressed={pressedKeys.has(' ')}
+            label="スペース"
+            {...createPointerHandlers(' ')}
+          />
         </div>
       </div>
     </div>

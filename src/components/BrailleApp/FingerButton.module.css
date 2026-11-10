@@ -10,6 +10,10 @@
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   position: relative;
+  /* iOS Safariでのタップハイライトや長押しメニューを抑制 */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 /* 押された時の状態（通常ボタン） */
@@ -27,6 +31,9 @@
   max-width: 350px;
   height: 3.5rem;
   font-size: 1rem;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 /* スペースボタン（押された時の状態） */
