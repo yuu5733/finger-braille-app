@@ -30,19 +30,46 @@ const BrailleAppContent: FC = () => {
   const { pressedKeys } = useBrailleLogic();
 
   // スクリーンリーダーへの通知用ステート
-  const [announcement, setAnnouncement] = useState("");
+  const [announcement, setAnnouncement] = useState('');
   const [prevLength, setPrevLength] = useState<number>(0);
+  const [prevMode, setPrevMode] = useState<InputMode>(currentMode);
 
-  // outputString が更新されたときに、新しく追加された文字を検知してアナウンスを設定
+  // outputString が更新されたときに、新しく追加された文字を検知して
+  // スクリーンリーダにアナウンスを設定
   useEffect(() => {
     if (outputString.length > prevLength) {
       const addedChars = outputString.slice(prevLength);
       // スペースの場合は読みやすく調整
-      const textToRead = addedChars === " " ? "スペース" : addedChars;
+      const textToRead = addedChars === ' ' ? 'スペース' : addedChars;
       setAnnouncement(`${textToRead} が確定しました`);
     }
     setPrevLength(outputString.length);
   }, [outputString, prevLength]);
+
+  // currentMode が変更されたときにスクリーンリーダーに通知
+  useEffect(() => {
+    if (currentMode !== prevMode) {
+      // ModeDisplay と同じ日本語ラベルを取得
+      const modeLabels: Record<InputMode, string> = {
+        Kana: 'かな入力モード',
+        Suuji: '数字モード',
+        Alphabet: '英字モード',
+        GaijiQuote: '外字引用符',
+        Dakuon: '濁音 (ﾞ) 待機',
+        Handakuon: '半濁音 (ﾟ) 待機',
+        Youon: '拗音 (ゃゅょぃぇ) 待機',
+        YouDakuon: '拗濁音 待機',
+        YouHandakuon: '拗半濁音 待機',
+        Question: '特殊音 (疑問符) 待機',
+        Kuten: '特殊音 (句点) 待機',
+        Tokushu456: '特殊音 ([4,5,6]点) 待機',
+      };
+
+      const label = modeLabels[currentMode] || 'モードが変更されました';
+      setAnnouncement(`${label} に変更しました`);
+      setPrevMode(currentMode);
+    }
+  }, [currentMode, prevMode]);
 
   return (
     <>
@@ -71,7 +98,7 @@ const BrailleAppContent: FC = () => {
       <ResultDisplay text={character} brailleChar={brailleChar} dots={dots} />
     </>
   );
-};;
+};;;
 
 // -----------------------------------------------------
 // BrailleAppがProviderの役割を果たす
