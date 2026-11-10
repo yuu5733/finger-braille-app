@@ -7,8 +7,8 @@
 .tableHeader {
   text-align: center;
   font-size: 1.75rem;
-  color: var(--color-table-header);
-  border-bottom: 3px solid var(--color-table-header);
+  color: var(--color-header-text);
+  border-bottom: 3px solid var(--color-header-text);
   padding-bottom: 10px;
   margin-bottom: 20px;
 }

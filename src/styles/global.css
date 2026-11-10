@@ -7,13 +7,17 @@
 :root {
   /* color */
   --color-primary: #0063cc;
-  --color-table-header: #1f3a93;
+  --color-header-text: #1f3a93;
+  --color-sub-header-text: #1d4ed8;
+  --color-accent-red: #ef4444;
   --color-text: #333333;
   --color-darkgray: #555555;
   --color-text-gray: #888888;
   --color-light-gray: #cccccc;
   --color-aqua: #b3d9ff;
-  --color-paleblue: #e9f5ff;
+  --color-paleblue: #eff6ff;
+  --color-pink: #fecaca;
+  --color-palepink: #fef2f2;
   --color-bg: #f9f9f9;
   --color-white: #ffffff;
   --text-red: #cc0000;
@@ -25,9 +29,9 @@
   --border-radius-lg: 16px;
 
   /* display mode color */
-  --suuji-bg-color:#cce5ff;
-  --suuji-color:#004085;
-  --suuji-border-color:#b8daff;
+  --suuji-bg-color: #cce5ff;
+  --suuji-color: #004085;
+  --suuji-border-color: #b8daff;
   --alphabet-bg-color: #d4edda;
   --alphabet-color: #155724;
   --alphabet-border-color: #c3e6cb;
@@ -44,23 +48,25 @@
 }
 
 body {
-font-family:
+  font-family:
   /* システムフォント */
-  -apple-system,
-  "BlinkMacSystemFont",
-  "Segoe UI",
-  "Roboto",
-  "Oxygen",
-  "Ubuntu",
-  "Cantarell",
-  "Fira Sans",
-  "Droid Sans",
-  "Helvetica Neue",
-  /* 日本語フォント */
-  "メイリオ", "Meiryo",
-  "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN",
-  "Yu Gothic", "游ゴシック",
-  sans-serif;
+    -apple-system,
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    /* 日本語フォント */ 'メイリオ',
+    'Meiryo',
+    'Hiragino Kaku Gothic ProN',
+    'ヒラギノ角ゴ ProN',
+    'Yu Gothic',
+    '游ゴシック',
+    sans-serif;
 }
 
 /* スクリーンリーダーでのみ読ませたいもの。divなど、aria-labelが使えないもので使う */
