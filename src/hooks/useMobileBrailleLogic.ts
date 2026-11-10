@@ -1,72 +1,170 @@
 import { useEffect, useRef } from 'react';
 import type { BrailleCode } from '../data/types.ts';
 import { useBrailleContext } from '../contexts/BrailleContext';
-import { getBrailleData, getCurrentDots } from '../utils/brailleConverter';
+import { useBrailleOutputProcessor } from './useBrailleOutputProcessor';
+import { useBrailleInputMode } from './useBrailleInputMode';
+import { useBrailleInputData } from './useBrailleInputData';
+import { getCurrentDots } from '../utils/brailleConverter';
 import { hexToBraille } from '../utils/hexToBraille';
 import { dotsToHex } from '../utils/dotsToHex';
 
 const EMPTY_DOTS: BrailleCode = [];
 
 export function useMobileBrailleLogic(pressedKeys: Set<string>) {
-  const { currentMode, setCurrentMode, onOutput, onDisplayUpdate } =
-    useBrailleContext();
+  const {
+    currentMode,
+    setCurrentMode,
+    pendingData,
+    setPendingData,
+    onOutput,
+    onDisplayUpdate,
+    character,
+    dots,
+  } = useBrailleContext();
 
-  // 指が触れている間に押されたすべてのキーを蓄積するセッション用のRef
+  const prevSpacePressedRef = useRef(false);
+
+  // スペースキーの処理
+  useEffect(() => {
+    const isSpacePressed = pressedKeys.has(' ');
+
+    if (isSpacePressed && !prevSpacePressedRef.current) {
+      const isWaitingMode =
+        currentMode === 'Dakuon' ||
+        currentMode === 'Handakuon' ||
+        currentMode === 'Youon' ||
+        currentMode === 'YouDakuon' ||
+        currentMode === 'YouHandakuon' ||
+        currentMode === 'Question' ||
+        currentMode === 'Kuten' ||
+        currentMode === 'Tokushu456';
+
+      if (pendingData) {
+        if (pendingData.character && pendingData.character !== '不明') {
+          let charToOutput = pendingData.character;
+          if (currentMode === 'Question' && charToOutput === '疑問符') {
+            charToOutput = '？';
+          } else if (currentMode === 'Kuten' && charToOutput === '句点') {
+            charToOutput = '。';
+          }
+          onOutput(charToOutput);
+        }
+        setPendingData(null);
+      }
+
+      if (
+        currentMode === 'Alphabet' ||
+        currentMode === 'Suuji' ||
+        isWaitingMode
+      ) {
+        setCurrentMode('Kana');
+        onOutput(' ');
+      } else {
+        onOutput(' ');
+      }
+    }
+
+    prevSpacePressedRef.current = isSpacePressed;
+  }, [
+    pressedKeys,
+    currentMode,
+    pendingData,
+    setCurrentMode,
+    setPendingData,
+    onOutput,
+  ]);
+
+  // マルチタッチ対応：指が触れている間に押されたキーを蓄積
   const accumulatedKeysRef = useRef<Set<string>>(new Set());
   const prevPressedKeysSizeRef = useRef<number>(0);
 
+  const currentSize = pressedKeys.size;
+  const prevSize = prevPressedKeysSizeRef.current;
+
+  if (currentSize > 0) {
+    pressedKeys.forEach((k) => accumulatedKeysRef.current.add(k));
+  }
+
+  const stabilizedKeys = currentSize > 0 ? accumulatedKeysRef.current : null;
+
+  const { processOutput } = useBrailleOutputProcessor(
+    pendingData,
+    currentMode,
+    onOutput,
+    setCurrentMode
+  );
+
+  const stabilizedModeData = useBrailleInputMode(stabilizedKeys);
+  const characterInput = useBrailleInputData(stabilizedKeys, currentMode);
+
   useEffect(() => {
-    const currentSize = pressedKeys.size;
-    const prevSize = prevPressedKeysSizeRef.current;
+    // 指がすべて離された瞬間
+    if (prevSize > 0 && currentSize === 0) {
+      if (pendingData) {
+        const { shouldResetPendingData, nextMode } = processOutput();
 
-    // 1. 新しく指が触れ始めた、または押している最中：キーを蓄積する
-    if (currentSize > 0) {
-      pressedKeys.forEach((k) => accumulatedKeysRef.current.add(k));
+        if (nextMode !== null && currentMode !== nextMode) {
+          setCurrentMode(nextMode);
+        }
 
-      // リアルタイム表示用の更新
-      const currentDots = getCurrentDots(accumulatedKeysRef.current);
-      if (currentDots.length > 0) {
-        const characterData = getBrailleData(accumulatedKeysRef.current);
-        if (characterData) {
-          onDisplayUpdate(characterData);
-        } else {
-          onDisplayUpdate({
-            character: '不明',
-            brailleChar: hexToBraille(dotsToHex(currentDots)),
-            dots: currentDots,
-          });
+        if (shouldResetPendingData) {
+          setPendingData(null);
+          onDisplayUpdate({ character: '', brailleChar: '', dots: EMPTY_DOTS });
+        }
+      } else {
+        if (character !== '' || dots.length > 0) {
+          onDisplayUpdate({ character: '', brailleChar: '', dots: EMPTY_DOTS });
         }
       }
+
+      accumulatedKeysRef.current.clear();
+      return;
     }
 
-    // 2. 指がすべて離された瞬間（サイズが 1以上 から 0 になった時）
-    if (prevSize > 0 && currentSize === 0) {
-      const finalKeys = accumulatedKeysRef.current;
-      console.log(
-        '[useMobileLogic] All fingers released. Final keys:',
-        Array.from(finalKeys)
-      );
+    // 押している最中のプレビューおよびモード移行判定
+    if (stabilizedKeys && stabilizedKeys.size > 0) {
+      if (stabilizedModeData !== null) {
+        const { mode, char, hexCode } = stabilizedModeData;
+        const currentDots = getCurrentDots(stabilizedKeys);
+        const brailleChar = hexToBraille(dotsToHex(currentDots));
+        const displayData = { character: char, brailleChar, dots: currentDots };
 
-      if (finalKeys.has(' ')) {
-        onOutput(' ');
-        setCurrentMode('Kana');
-      } else {
-        const currentDots = getCurrentDots(finalKeys);
-        if (currentDots.length > 0) {
-          const characterData = getBrailleData(finalKeys);
-          if (characterData && characterData.character !== '不明') {
-            onOutput(characterData.character);
-          }
+        const isModeSame = currentMode === mode;
+        const isPendingDataSame =
+          pendingData !== null &&
+          pendingData.character === char &&
+          JSON.stringify(pendingData.dots) === JSON.stringify(currentDots);
+
+        if (isModeSame && isPendingDataSame) {
+          return;
         }
-      }
 
-      // 蓄積をクリアして表示をリセット
-      accumulatedKeysRef.current.clear();
-      onDisplayUpdate({ character: '', brailleChar: '', dots: EMPTY_DOTS });
+        onDisplayUpdate(displayData);
+        setPendingData(displayData);
+        return;
+      } else if (characterInput !== null) {
+        const { data: characterData } = characterInput;
+        onDisplayUpdate(characterData);
+        setPendingData(characterData);
+      }
     }
 
     prevPressedKeysSizeRef.current = currentSize;
-  }, [pressedKeys, currentMode, onOutput, onDisplayUpdate, setCurrentMode]);
+  }, [
+    currentSize,
+    prevSize,
+    stabilizedKeys,
+    currentMode,
+    onDisplayUpdate,
+    setPendingData,
+    pendingData,
+    processOutput,
+    character,
+    dots,
+    setCurrentMode,
+    stabilizedModeData,
+    characterInput,
+  ]);
 
   return { currentMode };
 }
