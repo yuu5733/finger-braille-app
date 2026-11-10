@@ -16,22 +16,6 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
   const leftHandClassName = `${styles.fingerGroup} ${styles.leftHand}`;
   const rightHandClassName = `${styles.fingerGroup} ${styles.rightHand}`;
 
-  const createTouchHandlers = (key: string) => ({
-    onTouchStart: (e: React.TouchEvent<HTMLButtonElement>) => {
-      onKeyPress(key);
-    },
-    onTouchEnd: (e: React.TouchEvent<HTMLButtonElement>) => {
-      onKeyRelease(key);
-    },
-    onTouchCancel: (e: React.TouchEvent<HTMLButtonElement>) => {
-      onKeyRelease(key);
-    },
-    // PCのデバッグ用マウス操作も兼ねる
-    onMouseDown: () => onKeyPress(key),
-    onMouseUp: () => onKeyRelease(key),
-    onMouseLeave: () => onKeyRelease(key),
-  });
-
   return (
     <div
       className={styles.brailleInputContainer}
@@ -45,19 +29,22 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
               id="leftRing"
               isPressed={pressedKeys.has('s')}
               dot={3}
-              {...createTouchHandlers('s')}
+              onPress={() => onKeyPress('s')}
+              onRelease={() => onKeyRelease('s')}
             />
             <FingerButton
               id="leftMiddle"
               isPressed={pressedKeys.has('d')}
               dot={2}
-              {...createTouchHandlers('d')}
+              onPress={() => onKeyPress('d')}
+              onRelease={() => onKeyRelease('d')}
             />
             <FingerButton
               id="leftIndex"
               isPressed={pressedKeys.has('f')}
               dot={1}
-              {...createTouchHandlers('f')}
+              onPress={() => onKeyPress('f')}
+              onRelease={() => onKeyRelease('f')}
             />
           </div>
           {/* 右の指のボタン */}
@@ -66,19 +53,22 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
               id="rightIndex"
               isPressed={pressedKeys.has('j')}
               dot={4}
-              {...createTouchHandlers('j')}
+              onPress={() => onKeyPress('j')}
+              onRelease={() => onKeyRelease('j')}
             />
             <FingerButton
               id="rightMiddle"
               isPressed={pressedKeys.has('k')}
               dot={5}
-              {...createTouchHandlers('k')}
+              onPress={() => onKeyPress('k')}
+              onRelease={() => onKeyRelease('k')}
             />
             <FingerButton
               id="rightRing"
               isPressed={pressedKeys.has('l')}
               dot={6}
-              {...createTouchHandlers('l')}
+              onPress={() => onKeyPress('l')}
+              onRelease={() => onKeyRelease('l')}
             />
           </div>
         </div>
@@ -89,7 +79,8 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
             id="spaceButton"
             isPressed={pressedKeys.has(' ')}
             label="スペース"
-            {...createTouchHandlers(' ')}
+            onPress={() => onKeyPress(' ')}
+            onRelease={() => onKeyRelease(' ')}
           />
         </div>
       </div>

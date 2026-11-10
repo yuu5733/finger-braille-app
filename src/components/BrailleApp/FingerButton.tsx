@@ -1,32 +1,17 @@
-// 1. コアライブラリ
-
-// 2. 型定義 (Type Imports)
+import { useEffect, useRef } from 'react';
 import type { FC } from 'react';
-import type { BrailleDot } from '../../data/types'
-
-// 3. サードパーティライブラリ (※ 無し)
-
-// 4. プロジェクト内のモジュール / エイリアスパス
-
-// 5. 相対パスによるインポート
-
-// 6. スタイルシート / アセット
+import type { BrailleDot } from '../../data/types';
 import styles from './FingerButton.module.css';
 
 interface FingerButtonProps {
-  id: string; // ボタンの識別子（例: 'leftIndex'）
-  isPressed: boolean; // ボタンが押されているかどうか
-  dot?: BrailleDot; // 点字の点番号（任意）
-  shortcutKey?: string; // キーボードショートカット（任意）
-  label?: string; // 表示用ラベル（任意）
-  className?: string; // 追加のCSSクラス（任意）
-  onPointerDown?: (e: React.PointerEvent<HTMLButtonElement>) => void;
-  onPointerUp?: (e: React.PointerEvent<HTMLButtonElement>) => void;
-  onPointerLeave?: (e: React.PointerEvent<HTMLButtonElement>) => void;
-  onPointerCancel?: (e: React.PointerEvent<HTMLButtonElement>) => void;
-  onTouchStart?: (e: React.TouchEvent<HTMLButtonElement>) => void;
-  onTouchEnd?: (e: React.TouchEvent<HTMLButtonElement>) => void;
-  onTouchCancel?: (e: React.TouchEvent<HTMLButtonElement>) => void;
+  id: string;
+  isPressed: boolean;
+  dot?: BrailleDot;
+  shortcutKey?: string;
+  label?: string;
+  className?: string;
+  onPress?: () => void;
+  onRelease?: () => void;
 }
 
 const FingerButton: FC<FingerButtonProps> = ({
@@ -36,21 +21,52 @@ const FingerButton: FC<FingerButtonProps> = ({
   shortcutKey,
   label,
   className,
-  onPointerDown,
-  onPointerUp,
-  onPointerLeave,
-  onPointerCancel,
-  onTouchStart,
-  onTouchEnd,
-  onTouchCancel,
+  onPress,
+  onRelease,
 }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const btn = buttonRef.current;
+    if (!btn) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      console.log(`[DOM Event] touchstart on ${id}`);
+      onPress?.();
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      console.log(`[DOM Event] touchend on ${id}`);
+      onRelease?.();
+    };
+
+    const handleMouseDown = () => {
+      console.log(`[DOM Event] mousedown on ${id}`);
+      onPress?.();
+    };
+
+    const handleMouseUp = () => {
+      console.log(`[DOM Event] mouseup on ${id}`);
+      onRelease?.();
+    };
+
+    btn.addEventListener('touchstart', handleTouchStart, { passive: true });
+    btn.addEventListener('touchend', handleTouchEnd);
+    btn.addEventListener('touchcancel', handleTouchEnd);
+    btn.addEventListener('mousedown', handleMouseDown);
+    btn.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      btn.removeEventListener('touchstart', handleTouchStart);
+      btn.removeEventListener('touchend', handleTouchEnd);
+      btn.removeEventListener('touchcancel', handleTouchEnd);
+      btn.removeEventListener('mousedown', handleMouseDown);
+      btn.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [id, onPress, onRelease]);
+
   const isSpace = id === 'spaceButton';
-
-  // すべてのボタンに共通のベーススタイル（fingerButton）を当て、
-  // スペースの時だけサイズ等を上書きする .spaceButton を追加で当てます
   const sizeStyle = isSpace ? styles.spaceButton : '';
-
-  // 押された時のスタイル
   const pressedStyle = isPressed
     ? isSpace
       ? styles.spacePressed
@@ -59,7 +75,6 @@ const FingerButton: FC<FingerButtonProps> = ({
 
   const buttonClassName = `${styles.fingerButton} ${sizeStyle} ${pressedStyle} ${className || ''}`;
 
-  // 読み上げ用のラベルを決定
   const displayContent =
     label !== undefined ? (
       label
@@ -72,17 +87,11 @@ const FingerButton: FC<FingerButtonProps> = ({
 
   return (
     <button
+      ref={buttonRef}
       id={id}
       type="button"
       className={buttonClassName}
       aria-pressed={isPressed}
-      onPointerDown={onPointerDown}
-      onPointerUp={onPointerUp}
-      onPointerLeave={onPointerLeave}
-      onPointerCancel={onPointerCancel}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onTouchCancel={onTouchCancel}
     >
       <div className={styles.dotLabel}>{displayContent}</div>
       {shortcutKey && (
