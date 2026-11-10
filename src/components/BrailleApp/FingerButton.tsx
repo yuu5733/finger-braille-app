@@ -24,6 +24,9 @@ interface FingerButtonProps {
   onPointerUp?: (e: React.PointerEvent<HTMLButtonElement>) => void;
   onPointerLeave?: (e: React.PointerEvent<HTMLButtonElement>) => void;
   onPointerCancel?: (e: React.PointerEvent<HTMLButtonElement>) => void;
+  onTouchStart?: (e: React.TouchEvent<HTMLButtonElement>) => void;
+  onTouchEnd?: (e: React.TouchEvent<HTMLButtonElement>) => void;
+  onTouchCancel?: (e: React.TouchEvent<HTMLButtonElement>) => void;
 }
 
 const FingerButton: FC<FingerButtonProps> = ({
@@ -37,6 +40,9 @@ const FingerButton: FC<FingerButtonProps> = ({
   onPointerUp,
   onPointerLeave,
   onPointerCancel,
+  onTouchStart,
+  onTouchEnd,
+  onTouchCancel,
 }) => {
   const isSpace = id === 'spaceButton';
 
@@ -74,6 +80,9 @@ const FingerButton: FC<FingerButtonProps> = ({
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerLeave}
       onPointerCancel={onPointerCancel}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchCancel={onTouchCancel}
     >
       <div className={styles.dotLabel}>{displayContent}</div>
       {shortcutKey && (

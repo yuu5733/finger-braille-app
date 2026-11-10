@@ -16,24 +16,20 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
   const leftHandClassName = `${styles.fingerGroup} ${styles.leftHand}`;
   const rightHandClassName = `${styles.fingerGroup} ${styles.rightHand}`;
 
-const createPointerHandlers = (key: string) => ({
-  onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
-    console.log(`[MobileInput] PointerDown: key=${key}`);
-    onKeyPress(key);
-  },
-  onPointerUp: (e: React.PointerEvent<HTMLButtonElement>) => {
-    console.log(`[MobileInput] PointerUp: key=${key}`);
-    onKeyRelease(key);
-  },
-  onPointerLeave: (e: React.PointerEvent<HTMLButtonElement>) => {
-    console.log(`[MobileInput] PointerLeave: key=${key}`);
-    onKeyRelease(key);
-  },
-  onPointerCancel: (e: React.PointerEvent<HTMLButtonElement>) => {
-    console.log(`[MobileInput] PointerCancel: key=${key}`);
-    onKeyRelease(key);
-  },
-});
+  const createTouchHandlers = (key: string) => ({
+    onTouchStart: (e: React.TouchEvent<HTMLButtonElement>) => {
+      console.log(`[MobileInput] TouchStart: key=${key}`);
+      onKeyPress(key);
+    },
+    onTouchEnd: (e: React.TouchEvent<HTMLButtonElement>) => {
+      console.log(`[MobileInput] TouchEnd: key=${key}`);
+      onKeyRelease(key);
+    },
+    onTouchCancel: (e: React.TouchEvent<HTMLButtonElement>) => {
+      console.log(`[MobileInput] TouchCancel: key=${key}`);
+      onKeyRelease(key);
+    },
+  });
 
   return (
     <div
@@ -48,19 +44,19 @@ const createPointerHandlers = (key: string) => ({
               id="leftRing"
               isPressed={pressedKeys.has('s')}
               dot={3}
-              {...createPointerHandlers('s')}
+              {...createTouchHandlers('s')}
             />
             <FingerButton
               id="leftMiddle"
               isPressed={pressedKeys.has('d')}
               dot={2}
-              {...createPointerHandlers('d')}
+              {...createTouchHandlers('d')}
             />
             <FingerButton
               id="leftIndex"
               isPressed={pressedKeys.has('f')}
               dot={1}
-              {...createPointerHandlers('f')}
+              {...createTouchHandlers('f')}
             />
           </div>
           {/* 右の指のボタン */}
@@ -69,19 +65,19 @@ const createPointerHandlers = (key: string) => ({
               id="rightIndex"
               isPressed={pressedKeys.has('j')}
               dot={4}
-              {...createPointerHandlers('j')}
+              {...createTouchHandlers('j')}
             />
             <FingerButton
               id="rightMiddle"
               isPressed={pressedKeys.has('k')}
               dot={5}
-              {...createPointerHandlers('k')}
+              {...createTouchHandlers('k')}
             />
             <FingerButton
               id="rightRing"
               isPressed={pressedKeys.has('l')}
               dot={6}
-              {...createPointerHandlers('l')}
+              {...createTouchHandlers('l')}
             />
           </div>
         </div>
@@ -92,7 +88,7 @@ const createPointerHandlers = (key: string) => ({
             id="spaceButton"
             isPressed={pressedKeys.has(' ')}
             label="スペース"
-            {...createPointerHandlers(' ')}
+            {...createTouchHandlers(' ')}
           />
         </div>
       </div>
