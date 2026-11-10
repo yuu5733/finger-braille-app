@@ -43,40 +43,41 @@ const BrailleAppContent: FC = () => {
   const [prevLength, setPrevLength] = useState<number>(0);
   const [prevMode, setPrevMode] = useState<InputMode>('Kana');
 
-  // outputString が更新されたときに、新しく追加された文字を検知して
-  // スクリーンリーダにアナウンスを設定
+  // outputString または currentMode が変更されたときに、
+  // 追加された文字とモード変更の通知をまとめてスクリーンリーダーにアナウンスする
   useEffect(() => {
-    if (outputString.length > prevLength) {
-      const addedChars = outputString.slice(prevLength);
-      // スペースの場合は読みやすく調整
-      const textToRead = addedChars === ' ' ? 'スペース' : addedChars;
-      const baseMessage = `${textToRead} `;
+    let message = '';
 
-      // 前回と同じアナウンス内容であっても確実に再読み上げさせるため、
-      // 偶数回目・奇数回目でゼロ幅スペースをトグルして文字列を変化させる
-      setAnnouncement((prev) => {
-        const cleanPrev = prev.replace(/[\u200B-\u200D\uFEFF]/g, '');
-        // 既存のゼロ幅スペースを除去して比較
-        if (cleanPrev === baseMessage) {
-          // 前回と全く同じメッセージの場合は、ゼロ幅スペースを付与してDOMを強制的に変化させる
-          return baseMessage + (prev.includes('\u200B') ? '' : '\u200B');
-        }
-        return baseMessage;
-      });
-    }
-    setPrevLength(outputString.length);
-  }, [outputString, prevLength]);
-
-  // currentMode が変更されたときにスクリーンリーダーに通知
-  useEffect(() => {
+    // 1. モード変更の検知
     if (currentMode !== prevMode) {
       const config = inputModeConfigs[currentMode];
-      const label = config ? config.label : 'モードが変更されました';
-
-      setAnnouncement(`${label} に変更`);
+      const modeLabel = config ? `${config.label} に変更。` : 'モードが変更されました。';
+      message += modeLabel;
       setPrevMode(currentMode);
     }
-  }, [currentMode, prevMode]);
+
+    // 2. 文字追加の検知
+    if (outputString.length > prevLength) {
+      const addedChars = outputString.slice(prevLength);
+      const textToRead = addedChars === ' ' ? 'スペース' : addedChars;
+      message += `${textToRead} `;
+    }
+
+    // メッセージがある場合のみアナウンスを更新
+    if (message) {
+      setAnnouncement((prev) => {
+        const cleanPrev = prev.replace(/[\u200B-\u200D\uFEFF]/g, '');
+        const trimmedMessage = message.trim();
+        // 前回と全く同じメッセージの場合は、ゼロ幅スペースを付与してDOMを強制的に変化させる
+        if (cleanPrev === trimmedMessage) {
+          return trimmedMessage + (prev.includes('\u200B') ? '' : '\u200B');
+        }
+        return trimmedMessage;
+      });
+    }
+
+    setPrevLength(outputString.length);
+  }, [outputString, prevLength, currentMode, prevMode]);
 
   return (
     <>
