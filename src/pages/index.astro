@@ -5,23 +5,103 @@ import keyboardPlacement from "../assets/keyboard-placement.svg";
 
 <Layout title="ホーム｜指点字練習アプリ">
   <main class="top-page-main">
-    <h1>指点字練習アプリ</h1>
-    <div>
-      <p>
-        指点字（ゆびてんじ）の入力を練習するための Web アプリケーションです。<br
-        />
+    <div class="hero-section">
+      <h1 class="main-title">指点字練習アプリ</h1>
+      <p class="hero-lead">
+        指点字（ゆびてんじ）の入力を練習するための Web アプリケーションです。<br />
         キーボードを使って、指点字の基本を学びましょう。
       </p>
-      <p>
-        指をホームポジションに置いた時の、人差し指、中指、薬指を使います。<br />
-        左の人差し指をFキー、右手の人差し指をJキーに置きます。
-      </p>
-    </div>
-    <img src={keyboardPlacement.src} alt="イラスト。指の配置" />
 
-    <nav class="main-nav">
-      <a href="/practice" class="btn-primary"> 練習を始める → </a>
-    </nav>
+      <!-- 導入文のすぐ下に画像を配置 -->
+      <div class="image-wrapper">
+        <img src={keyboardPlacement.src} alt="イラスト。指の配置" />
+      </div>
+    </div>
+
+    <div class="content-container">
+      <section class="info-card">
+        <h2>指点字（ゆびてんじ）とは？</h2>
+        <p>
+          指点字は、主に盲ろう者（視覚と聴覚の両方に障害がある方）とコミュニケーションをとるための手段の一つです。福島智さん（盲ろう者で東京大学教授）のお母様である福島令子さんによって考案された、コミュニケーション方法です。
+        </p>
+        <p>
+          「点字」の6つの点を左右の人差し指・中指・薬指にあたります。指に上から触れることで文字を伝えます。
+        </p>
+      </section>
+
+      <section class="info-card Highlight-card">
+        <h2>指点字の仕組み</h2>
+        <p>点字の配置が元となってます。点字のように空白がないため、指点字を打つ間で表現するなど、細かな違いはありますが、基本的に同じです</p>
+        <p>例えば、50音（わ行、や行、ん、っなどを除く）は、点字と同じくローマ字のような母音と子音の組み合わせになっています。</p>
+        <div class="point-grid">
+          <div class="point-box left-hand">
+            <span class="badge">左手</span>
+            <strong>1・2・4点</strong>
+            <p><strong>母音</strong>を表します</p>
+          </div>
+          <div class="point-box right-hand">
+            <span class="badge">右手</span>
+            <strong>3・5・6点</strong>
+            <p><strong>子音</strong>を表します</p>
+          </div>
+        </div>
+        <p class="point-note">これらを組み合わせることで、50音が表現できます！</p>
+      </section>
+
+      <section class="info-card">
+        <h2>おすすめの学習手順</h2>
+        <ol class="step-list">
+          <li>
+            <span class="step-num">Step 1</span>
+            <div class="step-content">
+              <strong>「あいうえお（母音）」を覚える</strong>
+              <p>かなの基本となる5つの音からスタートしましょう。</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">Step 2</span>
+            <div class="step-content">
+              <strong>「か行〜ま行、ら行」を覚える</strong>
+              <p>子音との組み合わせを順に習得していきます。</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">Step 3</span>
+            <div class="step-content">
+              <strong>「わ行・や行・っ・ん・ー」を覚える</strong>
+              <p>かな文字のうち、母音と子音の組み合わせになっていない配置の文字を覚えましょう。</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">Step 4</span>
+            <div class="step-content">
+              <strong>濁音、半濁音覚える</strong>
+              <p>濁音や半濁音であることを示す、前置符の後にかなを打ちます。例えば、「が」は、濁音符＋「か」。「ぱ」は、半濁音符＋「は」です。</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">Step 5</span>
+            <div class="step-content">
+              <strong>拗音（きゃ、きゅ、きょ）などを覚える</strong>
+              <p>濁音や半濁音と同じく、拗音にも前置符があります。例えば、「きゃ」は、拗音符＋「か」です。1つ目の大きい文字が行（ここでは、か行）を、2つ目の小さな文字が母音になります。</p>
+              <p>例えば「しゅ」の場合。「さ行」で、母音は「う」なので、拗音符＋「す」と打つことで、「しゅ」になります</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="info-card keyboard-card">
+        <h2>キーボードの操作方法</h2>
+        <p>
+          両手のホームポジション（人差し指・中指・薬指）を使います。<br />
+          左手の人差し指を<strong>Fキー</strong>、右手の人差し指を<strong>Jキー</strong>に置いて練習します。
+        </p>
+      </section>
+    </div>
+
+    <div class="main-nav">
+      <a href="/practice" class="btn-primary btn-large"> 練習を始める → </a>
+    </div>
   </main>
 
   <style>
@@ -29,37 +109,204 @@ import keyboardPlacement from "../assets/keyboard-placement.svg";
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: start;
-      text-align: center;
-      padding: 4rem 2rem;
-      max-width: 800px;
-      width: width: fit-content;
+      padding: 3rem 1.5rem;
+      max-width: 760px;
       margin: auto;
       min-height: 100vh;
+      color: #333333;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      color: var(--color-text);
+    .hero-section {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .main-title {
+      font-size: 2.4rem;
+      color: #1e3a8a;
       margin-bottom: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
     }
 
-    .top-page-main p {
-      color: var(--color-darkgray);
-      line-height: 1.6;
-      text-align: left;
-      width: 100%;
-      max-width: 600px;
+    .hero-lead {
+      color: #4b5563;
+      line-height: 1.7;
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
     }
 
-    .top-page-main img {
+    .image-wrapper {
+      margin: 1rem auto 2rem auto;
+      max-width: 480px;
+    }
+
+    .image-wrapper img {
       width: 100%;
-      max-width: 400px;
       height: auto;
+      display: block;
     }
 
+    .content-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .info-card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      text-align: left;
+    }
+
+    .info-card h2 {
+      font-size: 1.25rem;
+      color: #1d4ed8;
+      margin-bottom: 0.8rem;
+      border-bottom: 2px solid #dbeafe;
+      padding-bottom: 0.4rem;
+    }
+
+    .info-card p {
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 0.6rem;
+    }
+
+    /* 点の仕組みカードのデザイン */
+    .point-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .point-box {
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .left-hand {
+      background-color: #eff6ff;
+      border: 1px solid #bfdbfe;
+    }
+
+    .right-hand {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.4rem;
+    }
+
+    .left-hand .badge {
+      background: #3b82f6;
+      color: #ffffff;
+    }
+
+    .right-hand .badge {
+      background: #ef4444;
+      color: #ffffff;
+    }
+
+    .point-box strong {
+      display: block;
+      font-size: 1.1rem;
+      color: #1f2937;
+      margin-bottom: 0.2rem;
+    }
+
+    .point-box p {
+      font-size: 0.875rem;
+      margin: 0;
+    }
+
+    .point-note {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    /* ステップリストのデザイン */
+    .step-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .step-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: #f9fafb;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .step-num {
+      background: #3b82f6;
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .step-content strong {
+      display: block;
+      color: #1f2937;
+      font-size: 0.95rem;
+    }
+
+    .step-content p {
+      font-size: 0.85rem;
+      margin: 0;
+      color: #6b7280;
+    }
+
+    /* ボタンのデザイン */
+    .cta-wrapper,
     .main-nav {
-      margin-top: 3rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background-color: #2563eb;
+      color: #ffffff;
+      font-weight: bold;
+      padding: 0.8rem 2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-large {
+      font-size: 1.1rem;
+      padding: 1rem 2.5rem;
     }
   </style>
 </Layout>
