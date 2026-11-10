@@ -13,7 +13,8 @@
 }
 
 /* 押された時の状態（通常ボタン） */
-.pressed {
+.pressed,
+.fingerButton:active {
   background-color: var(--color-primary);
   color: white;
   transform: scale(1.1);
@@ -29,7 +30,8 @@
 }
 
 /* スペースボタン（押された時の状態） */
-.spacePressed {
+.spacePressed,
+.spaceButton:active {
   background-color: var(--color-primary);
   color: white;
   transform: scale(1.02, 1.1);
