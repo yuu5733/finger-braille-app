@@ -12,7 +12,7 @@ import {
   BrailleContext,
   useBrailleContext,
 } from '../../contexts/BrailleContext';
-import { useBrailleLogic } from '../../hooks/useBrailleMainLogic';
+import { useMobileBrailleLogic } from '../../hooks/useMobileBrailleLogic';
 import MobileBrailleInput from './MobileBrailleInput';
 import ResultDisplay from './ResultDisplay';
 import ModeDisplay from './ModeDisplay';
@@ -23,7 +23,12 @@ import styles from './BrailleApp.module.css';
 
 const MobileBrailleAppContent: FC<{
   pressedKeys: Set<string>;
-}> = ({ pressedKeys }) => {
+  onKeyPress: (key: string) => void;
+  onKeyRelease: (key: string) => void;
+}> = ({ pressedKeys, onKeyPress, onKeyRelease }) => {
+  // ロジックをスマホ専用に置き換え
+  useMobileBrailleLogic(pressedKeys);
+
   const { currentMode, character, brailleChar, dots, outputString } =
     useBrailleContext();
 
@@ -71,8 +76,8 @@ const MobileBrailleAppContent: FC<{
         <ModeDisplay currentMode={currentMode} />
         <MobileBrailleInput
           pressedKeys={pressedKeys}
-          onKeyPress={() => {}}
-          onKeyRelease={() => {}}
+          onKeyPress={onKeyPress}
+          onKeyRelease={onKeyRelease}
         />
       </div>
 
@@ -103,11 +108,25 @@ const MobileBrailleApp: FC = () => {
   const [dots, setDots] = useState<BrailleCode>([]);
   const [outputString, setOutputString] = useState('');
 
-  // 物理キーボードのリスナーをベースにしつつ、タッチ用の状態も統合
   const keyboardKeys = useKeyboardListener();
   const [touchKeys, setTouchKeys] = useState<Set<string>>(new Set());
 
-  // 物理キーとタッチキーを結合
+  const handleKeyPress = useCallback((key: string) => {
+    setTouchKeys((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(key);
+      return newSet;
+    });
+  }, []);
+
+  const handleKeyRelease = useCallback((key: string) => {
+    setTouchKeys((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(key);
+      return newSet;
+    });
+  }, []);
+
   const pressedKeys = useMemo(() => {
     const combined = new Set(keyboardKeys);
     touchKeys.forEach((k) => combined.add(k));
@@ -164,7 +183,11 @@ const MobileBrailleApp: FC = () => {
 
   return (
     <BrailleContext.Provider value={contextValue}>
-      <MobileBrailleAppContent pressedKeys={pressedKeys} />
+      <MobileBrailleAppContent
+        pressedKeys={pressedKeys}
+        onKeyPress={handleKeyPress}
+        onKeyRelease={handleKeyRelease}
+      />
     </BrailleContext.Provider>
   );
 };
