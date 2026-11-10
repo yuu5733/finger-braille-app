@@ -16,20 +16,24 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
   const leftHandClassName = `${styles.fingerGroup} ${styles.leftHand}`;
   const rightHandClassName = `${styles.fingerGroup} ${styles.rightHand}`;
 
-  const createPointerHandlers = (key: string) => ({
-    onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
-      onKeyPress(key);
-    },
-    onPointerUp: (e: React.PointerEvent<HTMLButtonElement>) => {
-      onKeyRelease(key);
-    },
-    onPointerLeave: (e: React.PointerEvent<HTMLButtonElement>) => {
-      onKeyRelease(key);
-    },
-    onPointerCancel: (e: React.PointerEvent<HTMLButtonElement>) => {
-      onKeyRelease(key);
-    },
-  });
+const createPointerHandlers = (key: string) => ({
+  onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
+    console.log(`[MobileInput] PointerDown: key=${key}`);
+    onKeyPress(key);
+  },
+  onPointerUp: (e: React.PointerEvent<HTMLButtonElement>) => {
+    console.log(`[MobileInput] PointerUp: key=${key}`);
+    onKeyRelease(key);
+  },
+  onPointerLeave: (e: React.PointerEvent<HTMLButtonElement>) => {
+    console.log(`[MobileInput] PointerLeave: key=${key}`);
+    onKeyRelease(key);
+  },
+  onPointerCancel: (e: React.PointerEvent<HTMLButtonElement>) => {
+    console.log(`[MobileInput] PointerCancel: key=${key}`);
+    onKeyRelease(key);
+  },
+});
 
   return (
     <div
