@@ -1,20 +1,47 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import MobileBrailleApp from "../../components/BrailleApp/MobileBrailleApp.tsx";
 ---
 
-<Layout title="スマホ練習｜指点字練習アプリ">
-  <main>
-    <MobileBrailleApp client:only="react" />
+<Layout title="スマホ動作テスト｜指点字練習アプリ">
+  <main style="padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+    <h1>純粋HTMLボタンのテスト</h1>
+
+    <button
+      id="test-btn"
+      style="width: 200px; height: 100px; font-size: 1.5rem; background-color: #f0f0f0; border: 2px solid #333; border-radius: 8px; touch-action: manipulation;"
+    >
+      テストボタン
+    </button>
+
+    <div id="log-output" style="width: 100%; max-width: 400px; height: 180px; background: #000; color: #0f0; padding: 10px; font-family: monospace; overflow-y: auto; font-size: 0.85rem; border-radius: 4px;">
+      ログ出力エリア:<br>
+    </div>
   </main>
 
-  <style>
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem 1rem;
-      touch-action: manipulation;
+  <script>
+    const btn = document.getElementById('test-btn');
+    const logOutput = document.getElementById('log-output');
+
+    function log(msg) {
+      console.log(msg);
+      if (logOutput) {
+        logOutput.innerHTML += msg + '<br>';
+        logOutput.scrollTop = logOutput.scrollHeight;
+      }
     }
-  </style>
+
+    if (btn) {
+      btn.addEventListener('touchstart', (e) => {
+        log('👉 touchstart fired');
+      }, { passive: true });
+
+      btn.addEventListener('touchend', (e) => {
+        log('👆 touchend fired');
+      });
+
+      btn.addEventListener('click', (e) => {
+        log('✅ click fired');
+      });
+    }
+  </script>
 </Layout>
