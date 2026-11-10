@@ -14,7 +14,7 @@ import { useBrailleLogic } from '../../hooks/useBrailleMainLogic';
 import BrailleInput from "./BrailleInput";
 import ResultDisplay from "./ResultDisplay";
 import ModeDisplay from './ModeDisplay';
-import { inputModeLabels } from '../../data/table';
+import { inputModeConfigs } from '../../data/table';
 
 // 5. 相対パスによるインポート
 
@@ -50,9 +50,10 @@ const BrailleAppContent: FC = () => {
   // currentMode が変更されたときにスクリーンリーダーに通知
   useEffect(() => {
     if (currentMode !== prevMode) {
-      // table.ts から共通のラベルを取得
-      const label = inputModeLabels[currentMode] || 'モードが変更されました';
-      setAnnouncement(`${label} に変更しました`);
+      const config = inputModeConfigs[currentMode];
+      const label = config ? config.label : 'モードが変更されました';
+
+      setAnnouncement(`${label} に変更`);
       setPrevMode(currentMode);
     }
   }, [currentMode, prevMode]);

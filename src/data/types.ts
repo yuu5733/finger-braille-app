@@ -20,7 +20,7 @@ export type BrailleCode = BrailleDot[];
  * Unicode点字の型 (6点点字または、空文字)
  */
 const brailleChars = [
-  '', 
+  '',
   '⠀', '⠁', '⠂', '⠃', '⠄', '⠅', '⠆', '⠇',
   '⠈', '⠉', '⠊', '⠋', '⠌', '⠍', '⠎', '⠏',
   '⠐', '⠑', '⠒', '⠓', '⠔', '⠕', '⠖', '⠗',
@@ -47,7 +47,7 @@ type Enumerate<
 > = Acc['length'] extends N          // 【終了条件】配列の長さが N に達したか？
   ? Acc[number]                      // 達していれば、配列の中身をユニオン型（0 | 1 | ...）にして返す
   : Enumerate<                       // 達していなければ、再帰的に自分を呼び出す
-      N, 
+      N,
       [...Acc, Acc['length']]        // 現在の配列の長さ（次に数える数値）を配列に追加して渡す
     >;
 
@@ -71,6 +71,12 @@ export type BrailleData = {
   columnSpan?: number;          // グリッドの占有列数（2倍、3倍の幅にするため）
   comment?: string;             // コメント
   colorType?: BrailleColorType; // Cellレベルでの個別色指定（指定がある場合はRowより優先）
+};
+
+// 各モードの設定情報をまとめる型とデータ
+export type InputModeConfig = {
+  label: string;
+  classNameKey: 'kana' | 'suuji' | 'alphabet' | 'wait';
 };
 
 export type InputMode =
