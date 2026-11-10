@@ -8,65 +8,25 @@ import { dotsToHex } from '../utils/dotsToHex';
 const EMPTY_DOTS: BrailleCode = [];
 
 export function useMobileBrailleLogic(pressedKeys: Set<string>) {
-  console.log('[useMobileLogic] current pressedKeys:', Array.from(pressedKeys));
-
   const { currentMode, setCurrentMode, onOutput, onDisplayUpdate } =
     useBrailleContext();
 
-  const prevPressedKeysRef = useRef<Set<string>>(new Set());
+  // 指が触れている間に押されたすべてのキーを蓄積するセッション用のRef
+  const accumulatedKeysRef = useRef<Set<string>>(new Set());
+  const prevPressedKeysSizeRef = useRef<number>(0);
 
   useEffect(() => {
-    const prevKeys = prevPressedKeysRef.current;
-    const currentKeys = pressedKeys;
+    const currentSize = pressedKeys.size;
+    const prevSize = prevPressedKeysSizeRef.current;
 
-    console.log(
-      '[useMobileLogic] effect triggered. prevKeys:',
-      Array.from(prevKeys),
-      'currentKeys:',
-      Array.from(currentKeys)
-    );
+    // 1. 新しく指が触れ始めた、または押している最中：キーを蓄積する
+    if (currentSize > 0) {
+      pressedKeys.forEach((k) => accumulatedKeysRef.current.add(k));
 
-    // 指を離した瞬間（前回キーがあったが、今回0個になった場合）
-    if (prevKeys.size > 0 && currentKeys.size === 0) {
-      console.log(
-        '[useMobileLogic] Keys released! prevKeys was:',
-        Array.from(prevKeys)
-      );
-
-      if (prevKeys.has(' ')) {
-        console.log('[useMobileLogic] Outputting space');
-        onOutput(' ');
-        setCurrentMode('Kana');
-      } else {
-        const currentDots = getCurrentDots(prevKeys);
-        console.log(
-          '[useMobileLogic] calculated dots from prevKeys:',
-          currentDots
-        );
-
-        if (currentDots.length > 0) {
-          const characterData = getBrailleData(prevKeys);
-          console.log('[useMobileLogic] getBrailleData result:', characterData);
-
-          if (characterData && characterData.character !== '不明') {
-            console.log(
-              '[useMobileLogic] Outputting character:',
-              characterData.character
-            );
-            onOutput(characterData.character);
-          } else {
-            console.log(
-              '[useMobileLogic] Character was unknown or null, no output.'
-            );
-          }
-        }
-      }
-
-      onDisplayUpdate({ character: '', brailleChar: '', dots: EMPTY_DOTS });
-    } else if (currentKeys.size > 0) {
-      const currentDots = getCurrentDots(currentKeys);
+      // リアルタイム表示用の更新
+      const currentDots = getCurrentDots(accumulatedKeysRef.current);
       if (currentDots.length > 0) {
-        const characterData = getBrailleData(currentKeys);
+        const characterData = getBrailleData(accumulatedKeysRef.current);
         if (characterData) {
           onDisplayUpdate(characterData);
         } else {
@@ -79,7 +39,33 @@ export function useMobileBrailleLogic(pressedKeys: Set<string>) {
       }
     }
 
-    prevPressedKeysRef.current = new Set(pressedKeys);
+    // 2. 指がすべて離された瞬間（サイズが 1以上 から 0 になった時）
+    if (prevSize > 0 && currentSize === 0) {
+      const finalKeys = accumulatedKeysRef.current;
+      console.log(
+        '[useMobileLogic] All fingers released. Final keys:',
+        Array.from(finalKeys)
+      );
+
+      if (finalKeys.has(' ')) {
+        onOutput(' ');
+        setCurrentMode('Kana');
+      } else {
+        const currentDots = getCurrentDots(finalKeys);
+        if (currentDots.length > 0) {
+          const characterData = getBrailleData(finalKeys);
+          if (characterData && characterData.character !== '不明') {
+            onOutput(characterData.character);
+          }
+        }
+      }
+
+      // 蓄積をクリアして表示をリセット
+      accumulatedKeysRef.current.clear();
+      onDisplayUpdate({ character: '', brailleChar: '', dots: EMPTY_DOTS });
+    }
+
+    prevPressedKeysSizeRef.current = currentSize;
   }, [pressedKeys, currentMode, onOutput, onDisplayUpdate, setCurrentMode]);
 
   return { currentMode };
