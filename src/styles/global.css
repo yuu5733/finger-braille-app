@@ -69,6 +69,17 @@ body {
     sans-serif;
 }
 
+h1 {
+  color: var(--color-header-text);
+  font-size: 2.4rem;
+}
+
+@media (width <= 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+
 /* スクリーンリーダーでのみ読ませたいもの。divなど、aria-labelが使えないもので使う */
 .sr-only {
   position: absolute;

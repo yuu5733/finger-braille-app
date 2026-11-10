@@ -80,7 +80,10 @@ const BrailleAppContent: FC = () => {
 
   return (
     <>
-      <h1>指点字練習アプリ</h1>
+      <h1>指点字練習</h1>
+      <p className={styles.description}>
+        パソコンのキーボドを使って、練習ができます
+      </p>
       <div className="input-area-wrapper">
         <ModeDisplay currentMode={currentMode} />
         <BrailleInput pressedKeys={pressedKeys} />
