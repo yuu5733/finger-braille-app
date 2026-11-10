@@ -48,6 +48,7 @@
 .dotLabel {
   font-size: 1.75rem;
   font-weight: bold;
+  pointer-events: none;
 }
 
 /* キーボードショートカットの円形バッジ */
@@ -66,4 +67,5 @@
   position: absolute;
   right: 2px;
   top: 2px;
+  pointer-events: none;
 }
