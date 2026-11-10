@@ -14,6 +14,7 @@ import { useBrailleLogic } from '../../hooks/useBrailleMainLogic';
 import BrailleInput from "./BrailleInput";
 import ResultDisplay from "./ResultDisplay";
 import ModeDisplay from './ModeDisplay';
+import { inputModeLabels } from '../../data/table';
 
 // 5. 相対パスによるインポート
 
@@ -49,23 +50,8 @@ const BrailleAppContent: FC = () => {
   // currentMode が変更されたときにスクリーンリーダーに通知
   useEffect(() => {
     if (currentMode !== prevMode) {
-      // ModeDisplay と同じ日本語ラベルを取得
-      const modeLabels: Record<InputMode, string> = {
-        Kana: 'かな入力モード',
-        Suuji: '数字モード',
-        Alphabet: '英字モード',
-        GaijiQuote: '外字引用符',
-        Dakuon: '濁音 (ﾞ) 待機',
-        Handakuon: '半濁音 (ﾟ) 待機',
-        Youon: '拗音 (ゃゅょぃぇ) 待機',
-        YouDakuon: '拗濁音 待機',
-        YouHandakuon: '拗半濁音 待機',
-        Question: '特殊音 (疑問符) 待機',
-        Kuten: '特殊音 (句点) 待機',
-        Tokushu456: '特殊音 ([4,5,6]点) 待機',
-      };
-
-      const label = modeLabels[currentMode] || 'モードが変更されました';
+      // table.ts から共通のラベルを取得
+      const label = inputModeLabels[currentMode] || 'モードが変更されました';
       setAnnouncement(`${label} に変更しました`);
       setPrevMode(currentMode);
     }

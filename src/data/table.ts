@@ -1,4 +1,4 @@
-import type { brailleHex } from '../data/types'
+import type { brailleHex, InputMode } from '../data/types';
 
 //清音のテーブル
 export const hiraganaTable: Record<string, brailleHex> = {
@@ -472,4 +472,20 @@ export const alphabetTable: Record<string, brailleHex> = {
   //                           [2, 3, 6]、0x26 => [3]、0x04
   // --- "…" 直線形（開始記号と終了記号が同じ）
   // --- “…” 曲線形
+};
+
+// モードの日本語ラベルマップ
+export const inputModeLabels: Record<InputMode, string> = {
+  Kana: 'かな入力モード',
+  Suuji: '数字モード',
+  Alphabet: '英字モード',
+  GaijiQuote: '外字引用符',
+  Dakuon: '濁音 (ﾞ) 待機',
+  Handakuon: '半濁音 (ﾟ) 待機',
+  Youon: '拗音 (ゃゅょぃぇ) 待機',
+  YouDakuon: '拗濁音 待機',
+  YouHandakuon: '拗半濁音 待機',
+  Question: '特殊音 (疑問符) 待機',
+  Kuten: '特殊音 (句点) 待機',
+  Tokushu456: '特殊音 ([4,5,6]点) 待機',
 };
