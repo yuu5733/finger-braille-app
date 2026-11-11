@@ -73,7 +73,9 @@ const MobileBrailleAppContent: FC<{
       <h1>指点字練習 (スマホ版)</h1>
       <p className={styles.description}>画面のボタンをタッチして練習できます</p>
       <div className="input-area-wrapper">
-        <ModeDisplay currentMode={currentMode} />
+        <div className="modeDisplayWrapper">
+          <ModeDisplay currentMode={currentMode} />
+        </div>
         <MobileBrailleInput
           pressedKeys={pressedKeys}
           onKeyPress={onKeyPress}
