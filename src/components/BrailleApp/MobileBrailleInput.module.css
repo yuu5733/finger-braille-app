@@ -14,6 +14,12 @@
   gap: 40px;
 }
 
+@media screen and (orientation: landscape) {
+  .inputWrapper {
+    gap: 20px;
+  }
+}
+
 .buttonsGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -38,6 +44,12 @@
   display: flex;
   gap: 1rem;
   margin: 3rem 1rem 0;
+}
+
+@media screen and (orientation: landscape) {
+  .fingerGroup {
+    margin-top: 1rem;
+  }
 }
 
 /* 中央のボタンを上にずらす */
