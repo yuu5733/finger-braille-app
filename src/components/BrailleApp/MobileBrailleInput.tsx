@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import FingerButton from './FingerButton';
-import styles from './BrailleInput.module.css';
+import styles from './MobileBrailleInput.module.css';
 
 interface MobileBrailleInputProps {
   pressedKeys: Set<string>;
