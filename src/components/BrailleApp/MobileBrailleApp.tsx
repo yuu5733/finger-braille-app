@@ -28,7 +28,7 @@ import { useKeyboardListener } from '../../hooks/useKeyboardListener';
 // 5. 相対パスによるインポート
 
 // 6. スタイルシート / アセット
-import styles from './BrailleApp.module.css';
+import styles from './MobileBrailleApp.module.css';
 
 const MobileBrailleAppContent: FC<{
   pressedKeys: Set<string>;
@@ -79,13 +79,18 @@ const MobileBrailleAppContent: FC<{
 
   return (
     <>
-      <div className={styles.pageTitle}>
+      <div className={styles.titleWrapper}>
         <h1>指点字練習 (スマホ版)</h1>
-        <p className={styles.description}>画面のボタンをタッチして練習できます</p>
+        <p className={styles.description}>
+          画面のボタンをタッチして練習できます
+        </p>
       </div>
       <div className="input-area-wrapper">
         <div className="modeDisplayWrapper">
-          <ModeDisplay currentMode={currentMode} />
+          <ModeDisplay
+            currentMode={currentMode}
+            className={styles.mobileModeWrapper}
+          />
         </div>
         <MobileBrailleInput
           pressedKeys={pressedKeys}
