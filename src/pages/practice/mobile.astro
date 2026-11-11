@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import MobileBrailleApp from "../../components/BrailleApp/MobileBrailleApp.tsx";
 ---
 
-<Layout title="スマホ練習｜指点字練習アプリ">
+<Layout title="指点字練習(スマホ版)｜指点字練習アプリ" isMobileHeader={true}>
   <main>
     <MobileBrailleApp client:only="react" />
   </main>
