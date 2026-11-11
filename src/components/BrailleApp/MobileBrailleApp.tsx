@@ -70,8 +70,10 @@ const MobileBrailleAppContent: FC<{
 
   return (
     <>
-      <h1>指点字練習 (スマホ版)</h1>
-      <p className={styles.description}>画面のボタンをタッチして練習できます</p>
+      <div className={styles.pageTitle}>
+        <h1>指点字練習 (スマホ版)</h1>
+        <p className={styles.description}>画面のボタンをタッチして練習できます</p>
+      </div>
       <div className="input-area-wrapper">
         <div className="modeDisplayWrapper">
           <ModeDisplay currentMode={currentMode} />
