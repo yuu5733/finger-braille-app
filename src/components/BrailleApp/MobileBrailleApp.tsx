@@ -1,4 +1,7 @@
+// 1. コアライブラリ
 import { useState, useEffect, useCallback, useMemo } from 'react';
+
+// 2. 型定義 (Type Imports)
 import type { FC } from 'react';
 import type {
   BrailleData,
@@ -8,6 +11,9 @@ import type {
 } from '../../data/types';
 import type { BrailleContextType } from '../../contexts/BrailleContext';
 
+// 3. サードパーティライブラリ (※ 無し)
+
+// 4. プロジェクト内のモジュール / エイリアスパス
 import {
   BrailleContext,
   useBrailleContext,
@@ -19,6 +25,9 @@ import ModeDisplay from './ModeDisplay';
 import { inputModeConfigs } from '../../data/table';
 import { useKeyboardListener } from '../../hooks/useKeyboardListener';
 
+// 5. 相対パスによるインポート
+
+// 6. スタイルシート / アセット
 import styles from './BrailleApp.module.css';
 
 const MobileBrailleAppContent: FC<{
