@@ -21,7 +21,7 @@
 .inputAreaWrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* 子要素間の余白を統一管理 */
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
