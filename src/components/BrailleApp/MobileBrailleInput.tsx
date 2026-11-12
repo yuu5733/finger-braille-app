@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import FingerButton from './FingerButton';
+import SpaceButton from './SpaceButton';
 import styles from './MobileBrailleInput.module.css';
 
 interface MobileBrailleInputProps {
@@ -75,10 +76,9 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
 
         {/* スペースボタン */}
         <div className={styles.spaceButtonWrapper}>
-          <FingerButton
-            id="spaceButton"
+          <SpaceButton
             isPressed={pressedKeys.has(' ')}
-            label="スペース"
+            className={styles.mobileSpaceButton}
             onPress={() => onKeyPress(' ')}
             onRelease={() => onKeyRelease(' ')}
           />

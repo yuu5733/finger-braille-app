@@ -1,4 +1,3 @@
-/* ボタンの共通スタイル */
 .fingerButton {
   width: 80px;
   height: 72px;
@@ -10,38 +9,16 @@
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   position: relative;
-  /* iOS Safariでのタップハイライトや長押しメニューを抑制 */
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   user-select: none;
 }
 
-/* 押された時の状態（通常ボタン） */
 .pressed,
 .fingerButton:active {
   background-color: var(--color-primary);
   color: white;
   transform: scale(1.1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* スペースボタン（通常時）: 共通ベースにサイズとmax-widthを上書き */
-.spaceButton {
-  width: 100%;
-  max-width: 350px;
-  height: 3.5rem;
-  font-size: 1rem;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  user-select: none;
-}
-
-/* スペースボタン（押された時の状態） */
-.spacePressed,
-.spaceButton:active {
-  background-color: var(--color-primary);
-  color: white;
-  transform: scale(1.02, 1.1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -51,7 +28,6 @@
   pointer-events: none;
 }
 
-/* キーボードショートカットの円形バッジ */
 .shortcutKey {
   display: inline-flex;
   align-items: center;

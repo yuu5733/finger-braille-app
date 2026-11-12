@@ -9,13 +9,14 @@ import type { FC } from 'react';
 
 // 5. 相対パスによるインポート
 import FingerButton from './FingerButton';
+import SpaceButton from './SpaceButton';
 
 // 6. スタイルシート / アセット
 import styles from './BrailleInput.module.css';
 
 interface BrailleInputProps {
   // 重複のない文字列のコレクション
-  pressedKeys: Set<string>; 
+  pressedKeys: Set<string>;
 }
 
 const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
@@ -28,26 +29,51 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
       <div className={styles.inputWrapper}>
         <div className={styles.buttonsGrid}>
           {/* 左の指のボタン */}
-          <div className={leftHandClassName}> 
-            <FingerButton id="leftRing" isPressed={pressedKeys.has('s')} shortcutKey="S" dot={3} />
-            <FingerButton id="leftMiddle" isPressed={pressedKeys.has('d')} shortcutKey="D" dot={2} />
-            <FingerButton id="leftIndex" isPressed={pressedKeys.has('f')} shortcutKey="F" dot={1} />
+          <div className={leftHandClassName}>
+            <FingerButton
+              id="leftRing"
+              isPressed={pressedKeys.has('s')}
+              shortcutKey="S"
+              dot={3}
+            />
+            <FingerButton
+              id="leftMiddle"
+              isPressed={pressedKeys.has('d')}
+              shortcutKey="D"
+              dot={2}
+            />
+            <FingerButton
+              id="leftIndex"
+              isPressed={pressedKeys.has('f')}
+              shortcutKey="F"
+              dot={1}
+            />
           </div>
           {/* 右の指のボタン */}
           <div className={rightHandClassName}>
-            <FingerButton id="rightIndex" isPressed={pressedKeys.has('j')} shortcutKey="J" dot={4} />
-            <FingerButton id="rightMiddle" isPressed={pressedKeys.has('k')} shortcutKey="K" dot={5} />
-            <FingerButton id="rightRing" isPressed={pressedKeys.has('l')} shortcutKey="L" dot={6} />
+            <FingerButton
+              id="rightIndex"
+              isPressed={pressedKeys.has('j')}
+              shortcutKey="J"
+              dot={4}
+            />
+            <FingerButton
+              id="rightMiddle"
+              isPressed={pressedKeys.has('k')}
+              shortcutKey="K"
+              dot={5}
+            />
+            <FingerButton
+              id="rightRing"
+              isPressed={pressedKeys.has('l')}
+              shortcutKey="L"
+              dot={6}
+            />
           </div>
         </div>
 
-        {/* 6つのボタンの下に配置するスペースボタン */}
         <div className={styles.spaceButtonWrapper}>
-          <FingerButton
-            id="spaceButton"
-            isPressed={pressedKeys.has(' ')}
-            label="スペース"
-          />
+          <SpaceButton isPressed={pressedKeys.has(' ')} />
         </div>
       </div>
     </div>
