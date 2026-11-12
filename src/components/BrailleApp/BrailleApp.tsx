@@ -51,7 +51,9 @@ const BrailleAppContent: FC = () => {
     // 1. モード変更の検知
     if (currentMode !== prevMode) {
       const config = inputModeConfigs[currentMode];
-      const modeLabel = config ? `${config.label} に変更。` : 'モードが変更されました。';
+      const modeLabel = config
+        ? `${config.label} に変更。`
+        : 'モードが変更されました。';
       message += modeLabel;
       setPrevMode(currentMode);
     }
@@ -83,7 +85,7 @@ const BrailleAppContent: FC = () => {
     <>
       <h1>指点字練習</h1>
       <p className={styles.description}>
-        パソコンのキーボドを使って、練習ができます
+        パソコンのキーボードを使って、練習ができます
       </p>
       <div className="input-area-wrapper">
         <ModeDisplay currentMode={currentMode} />
