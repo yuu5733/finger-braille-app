@@ -78,6 +78,7 @@ export const MobileBrailleInput: FC<MobileBrailleInputProps> = ({
         <div className={styles.spaceButtonWrapper}>
           <SpaceButton
             isPressed={pressedKeys.has(' ')}
+            maxWidth="160px"
             className={styles.mobileSpaceButton}
             onPress={() => onKeyPress(' ')}
             onRelease={() => onKeyRelease(' ')}

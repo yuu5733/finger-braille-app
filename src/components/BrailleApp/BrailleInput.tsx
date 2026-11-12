@@ -73,7 +73,7 @@ const BrailleInput: FC<BrailleInputProps> = ({ pressedKeys }) => {
         </div>
 
         <div className={styles.spaceButtonWrapper}>
-          <SpaceButton isPressed={pressedKeys.has(' ')} />
+          <SpaceButton isPressed={pressedKeys.has(' ')} maxWidth="350px" />
         </div>
       </div>
     </div>

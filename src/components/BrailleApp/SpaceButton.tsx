@@ -6,6 +6,7 @@ interface SpaceButtonProps {
   isPressed: boolean;
   label?: string;
   className?: string;
+  maxWidth?: string;
   onPress?: () => void;
   onRelease?: () => void;
 }
@@ -14,6 +15,7 @@ const SpaceButton: FC<SpaceButtonProps> = ({
   isPressed,
   label = 'スペース',
   className,
+  maxWidth,
   onPress,
   onRelease,
 }) => {
@@ -64,6 +66,7 @@ const SpaceButton: FC<SpaceButtonProps> = ({
       id="spaceButton"
       type="button"
       className={buttonClassName}
+      style={maxWidth ? { maxWidth } : undefined}
       aria-pressed={isPressed}
     >
       <div className={styles.dotLabel}>{label}</div>
