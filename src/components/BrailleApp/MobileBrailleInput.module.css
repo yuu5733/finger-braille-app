@@ -5,6 +5,12 @@
   margin-bottom: 32px;
 }
 
+@media screen and (orientation: landscape) {
+  .brailleInputContainer {
+    margin-bottom: 16px;
+  }
+}
+
 /* 6つのボタンとスペースボタンをまとめるwrapper */
 .inputWrapper {
   display: flex;

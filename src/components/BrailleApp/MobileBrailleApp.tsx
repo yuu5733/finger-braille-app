@@ -35,7 +35,6 @@ const MobileBrailleAppContent: FC<{
   onKeyPress: (key: string) => void;
   onKeyRelease: (key: string) => void;
 }> = ({ pressedKeys, onKeyPress, onKeyRelease }) => {
-  // ロジックをスマホ専用に置き換え
   useMobileBrailleLogic(pressedKeys);
 
   const { currentMode, character, brailleChar, dots, outputString } =
@@ -99,21 +98,29 @@ const MobileBrailleAppContent: FC<{
         />
       </div>
 
-      <label htmlFor="outputArea" className={styles.outputLabel}>
-        確定済み:
-        <textarea
-          id="outputArea"
-          className={styles.outputArea}
-          value={outputString}
-          readOnly
+      {/* outputArea と ResultDisplay を囲むラッパー */}
+      <div className={styles.bottomContainer}>
+        <label htmlFor="outputArea" className={styles.outputLabel}>
+          確定済み:
+          <textarea
+            id="outputArea"
+            className={styles.outputArea}
+            value={outputString}
+            readOnly
+          />
+        </label>
+
+        <ResultDisplay
+          text={character}
+          brailleChar={brailleChar}
+          dots={dots}
+          className={styles.resultDisplayOverride}
         />
-      </label>
+      </div>
 
       <div aria-live="polite" className="sr-only">
         {announcement}
       </div>
-
-      <ResultDisplay text={character} brailleChar={brailleChar} dots={dots} />
     </>
   );
 };
