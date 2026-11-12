@@ -44,3 +44,13 @@
   border-radius: var(--border-radius-sm);
   overflow-y: auto;
 }
+
+.resultContainer {
+  max-width: min(18rem, 80vw);
+  width: 100%;
+}
+
+.resultDisplayOverride {
+  width: 100%;
+  max-width: 100%;
+}

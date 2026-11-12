@@ -107,12 +107,14 @@ const MobileBrailleAppContent: FC<{
           />
         </label>
 
-        <ResultDisplay
-          text={character}
-          brailleChar={brailleChar}
-          dots={dots}
-          className={styles.resultDisplayOverride}
-        />
+        <div className={styles.resultContainer}>
+          <ResultDisplay
+            text={character}
+            brailleChar={brailleChar}
+            dots={dots}
+            className={styles.resultDisplayOverride}
+          />
+        </div>
       </div>
 
       <div aria-live="polite" className="sr-only">

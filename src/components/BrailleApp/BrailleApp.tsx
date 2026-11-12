@@ -108,7 +108,9 @@ const BrailleAppContent: FC = () => {
         {announcement}
       </div>
 
-      <ResultDisplay text={character} brailleChar={brailleChar} dots={dots} />
+      <div className={styles.resultContainer}>
+        <ResultDisplay text={character} brailleChar={brailleChar} dots={dots} />
+      </div>
     </div>
   );
 };
