@@ -13,7 +13,7 @@
 
 @media screen and (orientation: landscape) {
   .inputAreaWrapper {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 }
 
@@ -48,6 +48,12 @@
   width: 100%;
 }
 
+.resultContainer {
+  container-type: inline-size;
+  max-width: 220px;
+  width: 100%;
+}
+
 @media screen and (orientation: landscape) {
   .titleWrapper {
     display: none;
@@ -62,12 +68,6 @@
     margin-top: -80px;
   }
 
-  .resultContainer {
-    container-type: inline-size;
-    max-width: 220px;
-    width: 100%;
-  }
-
   .outputLabel {
     margin-bottom: 0;
     max-width: 400px;
@@ -78,9 +78,9 @@
   }
 
   @container (max-width: 250px) {
-  .resultDisplayOverride {
-    /* 必要に応じた上書き */
-    width: 100%;
+    .resultDisplayOverride {
+      /* 必要に応じた上書き */
+      width: 100%;
+    }
   }
-}
 }
