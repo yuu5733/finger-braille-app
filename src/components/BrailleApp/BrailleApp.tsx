@@ -80,12 +80,14 @@ const BrailleAppContent: FC = () => {
   }, [outputString, prevLength, currentMode, prevMode]);
 
   return (
-    <>
-      <h1>指点字練習</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>指点字練習</h1>
       <p className={styles.description}>
-        パソコンのキーボドを使って、練習ができます
+        パソコンのキーボードを使って、練習ができます
       </p>
-      <div className="input-area-wrapper">
+
+      {/* モード表示と入力ボタン群をまとめるラッパー */}
+      <div className={styles.inputAreaWrapper}>
         <ModeDisplay currentMode={currentMode} />
         <BrailleInput pressedKeys={pressedKeys} />
       </div>
@@ -107,7 +109,7 @@ const BrailleAppContent: FC = () => {
       </div>
 
       <ResultDisplay text={character} brailleChar={brailleChar} dots={dots} />
-    </>
+    </div>
   );
 };
 

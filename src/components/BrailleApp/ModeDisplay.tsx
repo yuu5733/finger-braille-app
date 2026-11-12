@@ -16,10 +16,9 @@ import styles from './ModeDisplay.module.css';
 
 interface ModeDisplayProps {
   currentMode: InputMode;
-  className?: string;
 }
 
-const ModeDisplay: FC<ModeDisplayProps> = ({ currentMode, className }) => {
+const ModeDisplay: FC<ModeDisplayProps> = ({ currentMode }) => {
   // table.ts からモード設定を取得（存在しない場合は、kanaにフォールバック）
   const config = inputModeConfigs[currentMode] || {
     label: 'モード情報なし',
@@ -29,9 +28,7 @@ const ModeDisplay: FC<ModeDisplayProps> = ({ currentMode, className }) => {
   const modeClassName = `${styles.modeDisplay} ${styles[config.classNameKey]}`;
 
   return (
-    <div className={`${styles.modeDisplayWrapper} ${className || ''}`}>
-      <div className={modeClassName}>{config.label}</div>
-    </div>
+    <div className={modeClassName}>{config.label}</div>
   );
 };
 

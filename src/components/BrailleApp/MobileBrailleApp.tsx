@@ -88,7 +88,6 @@ const MobileBrailleAppContent: FC<{
         <div className="modeDisplayWrapper">
           <ModeDisplay
             currentMode={currentMode}
-            className={styles.mobileModeWrapper}
           />
         </div>
         <MobileBrailleInput
