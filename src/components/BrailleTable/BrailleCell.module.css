@@ -105,6 +105,8 @@
     #ffdd8888 15%,
     #ddff8888 85%,
     transparent 85%);
+  width: 20px;
+  padding: 0 3px;
 }
 
 .comment {
