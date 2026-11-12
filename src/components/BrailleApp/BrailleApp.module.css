@@ -54,3 +54,8 @@
   width: 100%;
   max-width: 100%;
 }
+
+.mobileLink {
+  color: var(--color-primary);
+  text-decoration: underline;
+}

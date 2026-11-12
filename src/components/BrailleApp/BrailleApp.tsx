@@ -51,7 +51,9 @@ const BrailleAppContent: FC = () => {
     // 1. モード変更の検知
     if (currentMode !== prevMode) {
       const config = inputModeConfigs[currentMode];
-      const modeLabel = config ? `${config.label} に変更。` : 'モードが変更されました。';
+      const modeLabel = config
+        ? `${config.label} に変更。`
+        : 'モードが変更されました。';
       message += modeLabel;
       setPrevMode(currentMode);
     }
@@ -81,9 +83,13 @@ const BrailleAppContent: FC = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>指点字練習</h1>
+      <h1 className={styles.title}>指点字練習(PC版)</h1>
       <p className={styles.description}>
         パソコンのキーボードを使って、練習ができます
+        <br />→
+        <a href="/practice/mobile" className={styles.mobileLink}>
+          スマホ版の指点字練習ページ
+        </a>
       </p>
 
       {/* モード表示と入力ボタン群をまとめるラッパー */}
