@@ -81,7 +81,8 @@ const MobileBrailleAppContent: FC<{
       <div className={styles.titleWrapper}>
         <h1>指点字練習 (スマホ版)</h1>
         <p className={styles.description}>
-          画面のボタンをタッチして練習できます
+          画面のボタンをタッチして練習できます<br/>
+          横向きが打ちやすいと思います！
         </p>
       </div>
       <div className={styles.inputAreaWrapper}>
