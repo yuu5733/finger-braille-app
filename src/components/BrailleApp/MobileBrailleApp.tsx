@@ -84,11 +84,9 @@ const MobileBrailleAppContent: FC<{
           画面のボタンをタッチして練習できます
         </p>
       </div>
-      <div className="input-area-wrapper">
-        <div className="modeDisplayWrapper">
-          <ModeDisplay
-            currentMode={currentMode}
-          />
+      <div className={styles.inputAreaWrapper}>
+        <div className={styles.mobileModeWrapper}>
+          <ModeDisplay currentMode={currentMode} />
         </div>
         <MobileBrailleInput
           pressedKeys={pressedKeys}
