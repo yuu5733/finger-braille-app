@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
+
 import type { BrailleCode } from '../data/types.ts';
+
 import { useBrailleContext } from '../contexts/BrailleContext';
 import { useBrailleOutputProcessor } from './useBrailleOutputProcessor';
 import { useBrailleInputMode } from './useBrailleInputMode';
@@ -24,11 +26,21 @@ export function useMobileBrailleLogic(pressedKeys: Set<string>) {
 
   const prevSpacePressedRef = useRef(false);
 
+  // 連続入力を防ぐためのクールダウン用Refと閾値 (ms)
+  const lastProcessedTimeRef = useRef<number>(0);
+  const DEBOUNCE_TIME = 250;
+
   // スペースキーの処理
   useEffect(() => {
     const isSpacePressed = pressedKeys.has(' ');
 
     if (isSpacePressed && !prevSpacePressedRef.current) {
+      // const now = Date.now();
+      // if (now - lastProcessedTimeRef.current < DEBOUNCE_TIME) {
+      //   return;
+      // }
+      // lastProcessedTimeRef.current = now;
+
       const isWaitingMode =
         currentMode === 'Dakuon' ||
         currentMode === 'Handakuon' ||
@@ -100,6 +112,13 @@ export function useMobileBrailleLogic(pressedKeys: Set<string>) {
   useEffect(() => {
     // 指がすべて離された瞬間
     if (prevSize > 0 && currentSize === 0) {
+      const now = Date.now();
+      if (now - lastProcessedTimeRef.current < DEBOUNCE_TIME) {
+        accumulatedKeysRef.current.clear();
+        return;
+      }
+      lastProcessedTimeRef.current = now;
+
       if (pendingData) {
         const { shouldResetPendingData, nextMode } = processOutput();
 
