@@ -35,12 +35,6 @@ export function useMobileBrailleLogic(pressedKeys: Set<string>) {
     const isSpacePressed = pressedKeys.has(' ');
 
     if (isSpacePressed && !prevSpacePressedRef.current) {
-      // const now = Date.now();
-      // if (now - lastProcessedTimeRef.current < DEBOUNCE_TIME) {
-      //   return;
-      // }
-      // lastProcessedTimeRef.current = now;
-
       const isWaitingMode =
         currentMode === 'Dakuon' ||
         currentMode === 'Handakuon' ||
