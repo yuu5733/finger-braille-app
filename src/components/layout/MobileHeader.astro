@@ -19,8 +19,8 @@ const displayTitle = title ? title.split(/[｜|]/)[0].trim() : '';
     >
       <svg
         class="hamburger-icon"
-        width="44"
-        height="44"
+        width="30"
+        height="30"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -38,7 +38,7 @@ const displayTitle = title ? title.split(/[｜|]/)[0].trim() : '';
   <dialog id="nav-dialog" class="nav-dialog" aria-label="ナビゲーションメニュー">
     <div class="dialog-header">
       <button id="menu-close" class="menu-close-btn menu-button" aria-label="メニューを閉じる">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
@@ -64,7 +64,7 @@ const displayTitle = title ? title.split(/[｜|]/)[0].trim() : '';
     background-color: var(--color-text);
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: sticky;
+    position: static;
     top: 0;
     z-index: 10;
   }
@@ -86,10 +86,9 @@ const displayTitle = title ? title.split(/[｜|]/)[0].trim() : '';
 
   @media screen and (orientation: landscape) {
     .mobile-header {
-      position: static;
       background-color: transparent;
       box-shadow: none;
-      height: auto;
+      height: var(--header-height);
       padding: 0.5rem 1rem 0;
       width: 100%;
     }
@@ -121,6 +120,10 @@ const displayTitle = title ? title.split(/[｜|]/)[0].trim() : '';
     align-items: center;
     justify-content: center;
     border-radius: var(--border-radius-md);
+
+    background-color: var(--color-text);;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 0 2px rgba(255, 255, 255, 1);
   }
 
   .menu-button[aria-expanded="true"] {
