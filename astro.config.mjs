@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import { AstroPWAIntegration } from '@vite-pwa/astro';
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     react(),
@@ -37,6 +36,8 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: '/',
+        // サイズの大きいブラウザ用の一覧ページなどをプリキャッシュから除外
+        globIgnores: ['**/braille-table/**/*.html'],
       },
     }),
   ],
