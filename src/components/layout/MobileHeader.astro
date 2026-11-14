@@ -64,7 +64,7 @@ const displayTitle = title ? title.split(/[｜|]/)[0].trim() : '';
     background-color: var(--color-text);
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: sticky;
+    position: static;
     top: 0;
     z-index: 10;
   }
@@ -86,7 +86,6 @@ const displayTitle = title ? title.split(/[｜|]/)[0].trim() : '';
 
   @media screen and (orientation: landscape) {
     .mobile-header {
-      position: static;
       background-color: transparent;
       box-shadow: none;
       height: auto;
