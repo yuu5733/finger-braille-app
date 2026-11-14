@@ -1,14 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
-import { AstroPWAIntegration } from '@vite-pwa/astro'; // ← 修正：名前付きインポートにする
+import { AstroPWAIntegration } from '@vite-pwa/astro';
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     react(),
     AstroPWAIntegration({
-      // ← 修正：関数名も合わせる
       registerType: 'autoUpdate',
       manifest: {
         name: 'ゆびテン｜指点字学習',
