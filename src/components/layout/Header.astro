@@ -34,8 +34,8 @@ const pathname = Astro.url.pathname;
     >
       <svg
         class="hamburger-icon"
-        width="44"
-        height="44"
+        width="30"
+        height="30"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -63,8 +63,8 @@ const pathname = Astro.url.pathname;
         aria-label="メニューを閉じる"
       >
         <svg
-          width="44"
-          height="44"
+          width="30"
+          height="30"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -184,8 +184,9 @@ const pathname = Astro.url.pathname;
 
   /* メニューボタン（共通） */
   .menu-button {
-    background: transparent;
-    border: #ffffff00 solid 0.25px;
+    background-color: var(--color-text);;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 0 2px rgba(255, 255, 255, 1);
     color: white;
     cursor: pointer;
     padding: 0.5rem;
@@ -193,6 +194,7 @@ const pathname = Astro.url.pathname;
     align-items: center;
     justify-content: center;
     border-radius: var(--border-radius-md);
+
     transition:
       background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
       color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -203,8 +205,8 @@ const pathname = Astro.url.pathname;
 
   /* メニューボタンのホバー時 */
   .menu-button:hover {
-    background-color: rgba(150, 255, 255, 0.08);
-    color: var(--color-paleblue);
+    background-color: var(--color-paleblue);
+    color: black;
     border: #ffffff88 solid 0.25px;
   }
 
