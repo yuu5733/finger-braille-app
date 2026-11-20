@@ -1,11 +1,7 @@
 /* @ts-self-types="./momors_wasm.d.ts" */
 
 /**
- * [`BrailleBackTranslator::back_translate_aligned`] の結果。
- * 点字セル範囲と復元された文字列の対応関係（セグメント情報）を保持するクラスです。
- * 
- * @property {Array<any>} segments 点字セル範囲 → 文字列のセグメント列。各要素は `{ cellStart, cellEnd, text }`。
- * @property {string} text 復元された全文（`segments` のテキストを連結したものと一致する）。
+ * `BrailleBackTranslator.backTranslateAligned()` の結果。
  */
 export class BackTransResult {
     static __wrap(ptr) {
@@ -25,8 +21,10 @@ export class BackTransResult {
         wasm.__wbg_backtransresult_free(ptr, 0);
     }
     /**
-     * 点字セル範囲 → 文字列のセグメント列。各要素は `{ cellStart, cellEnd, text }`。
-     * @returns {Array<any>}
+     * 点字セル範囲 → 文字列のセグメント列。範囲は半開区間 `[cellStart, cellEnd)`。
+     *
+     * 参照のたびに新しい配列とオブジェクトを作るので、ループ内では変数に受けてから使う。
+     * @returns {BackTransSegment[]}
      */
     get segments() {
         const ret = wasm.backtransresult_segments(this.__wbg_ptr);
@@ -52,10 +50,9 @@ export class BackTransResult {
 if (Symbol.dispose) BackTransResult.prototype[Symbol.dispose] = BackTransResult.prototype.free;
 
 /**
- * [`BrailleBackTranslator::step`] / [`BrailleBackTranslator::flush`] が引き継ぐ行内状態。
- * 点字の逐次逆変換（step / flush）の際に行内の状態（数符・外字符・濁音前置など）を引き継ぐためのクラスです。
- * 
-* 不透明なハンドル。JS 側は中身を参照せず、次回の `step`/`flush` にそのまま渡す。
+ * `BrailleBackTranslator.step()` / `flush()` が引き継ぐ行内状態。
+ *
+ * 不透明なハンドル。JS 側は中身を参照せず、次回の `step`/`flush` にそのまま渡す。
  */
 export class BackTransState {
     static __wrap(ptr) {
@@ -76,7 +73,6 @@ export class BackTransState {
     }
     /**
      * 保留セルが残っていない（行末で `flush` が不要）か。
-     * 保留されているセルがある場合、その確定処理が必要か
      * @returns {boolean}
      */
     isSettled() {
@@ -85,7 +81,6 @@ export class BackTransState {
     }
     /**
      * 初期状態（行頭）を生成する。
-     * @returns {BackTransState}
      */
     constructor() {
         const ret = wasm.backtransstate_new();
@@ -99,7 +94,7 @@ if (Symbol.dispose) BackTransState.prototype[Symbol.dispose] = BackTransState.pr
 /**
  * 点字をかな・記号・数字・ラテン文字に逆変換する。
  *
- * 順変換 [`BrailleTranslator`] と異なりモデル（.mbm）不要で、組み込みテーブルのみで動作する。
+ * 順変換 `BrailleTranslator` と異なりモデル（.mbm）不要で、組み込みテーブルのみで動作する。
  *
  * ```js
  * const bt = new BrailleBackTranslator();
@@ -121,8 +116,8 @@ export class BrailleBackTranslator {
      * 点字セル列を逆変換し、復元文字列と点字セル範囲⇔文字列の対応を返す。
      *
      * エディタでの読みガイド表示など、点字セル位置と復元文字を対応付けたい用途向け。
-     * @param {string} braille 変換元の点字文字列
-     * @returns {BackTransResult} セグメント情報を含む逆変換結果
+     * @param {string} braille
+     * @returns {BackTransResult}
      */
     backTranslateAligned(braille) {
         const ptr0 = passStringToWasm0(braille, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -132,8 +127,8 @@ export class BrailleBackTranslator {
     }
     /**
      * 点字セル列を文字列に逆変換して返す。
-     * @param {string} braille 変換元の点字文字列
-     * @returns {string}復元された文字列
+     * @param {string} braille
+     * @returns {string}
      */
     backTranslate(braille) {
         let deferred2_0;
@@ -152,10 +147,9 @@ export class BrailleBackTranslator {
     /**
      * 行末で呼び、保留中のセル（結合待ちの前置セルなど）を確定させる。
      *
-     * [`BackTransState::isSettled`] が `false` のまま行が終わる場合に呼ぶ。
-     * 
-     * @param {BackTransState} state 現在の行内状態
-     * @returns {StepResult} 確定したテキストと更新後の状態
+     * `BackTransState.isSettled()` が `false` のまま行が終わる場合に呼ぶ。
+     * @param {BackTransState} state
+     * @returns {StepResult}
      */
     flush(state) {
         _assertClass(state, BackTransState);
@@ -164,7 +158,6 @@ export class BrailleBackTranslator {
     }
     /**
      * 組み込みテーブルからインスタンスを構築する。
-     * @returns {BrailleBackTranslator}
      */
     constructor() {
         const ret = wasm.braillebacktranslator_new();
@@ -179,19 +172,18 @@ export class BrailleBackTranslator {
      * 点字 1 セルを逐次逆変換する（エディタでの逐次入力向け）。
      *
      * `cell` は点字 1 セル分の文字列（先頭の 1 文字のみ使用）。
-     * 行頭では [`BackTransState::new`] の初期状態を渡し、以降は返り値の
-     * [`StepResult::state`] を次回呼び出しに渡して、数符・外字符・濁音前置
+     * 行頭では `new BackTransState()` の初期状態を渡し、以降は返り値の
+     * `StepResult.state` を次回呼び出しに渡して、数符・外字符・濁音前置
      * などの行内状態を引き継ぐ。前置セル（濁音など）の直後は `text` が空になる
      * ことがある（次のセルと結合して確定するまで保留されるため）。
-     * 
-     * @param {string} cell 点字 1 セル分の文字列（先頭の 1 文字のみ使用）
-     * @param {BackTransState} state 前回の行内状態
-     * @returns {StepResult} 確定したテキストと更新後の状態
+     * @param {string} cell
+     * @param {BackTransState} state
+     * @returns {StepResult}
      */
     step(cell, state) {
+        _assertClass(state, BackTransState);
         const ptr0 = passStringToWasm0(cell, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        _assertClass(state, BackTransState);
         const ret = wasm.braillebacktranslator_step(this.__wbg_ptr, ptr0, len0, state.__wbg_ptr);
         if (ret[2]) {
             throw takeFromExternrefTable0(ret[1]);
@@ -202,14 +194,10 @@ export class BrailleBackTranslator {
 if (Symbol.dispose) BrailleBackTranslator.prototype[Symbol.dispose] = BrailleBackTranslator.prototype.free;
 
 /**
- * 点字変換結果。[`BrailleTranslator::translate`] 等の戻り値。
- * 点訳処理の結果（点字文字列、言語判定結果、テキストとのインデックス対応など）を保持するクラスです。
- * 
- * @property {string} braille 変換後の点字文字列。
- * @property {string} text 点訳したテキスト（日本語=かな / 英語=英文）。
- * @property {string} language 点訳した経路（`"japanese"` / `"english"`）。
- * @property {Uint32Array} textToBraille テキスト文字インデックス → 点字先頭セルインデックス。
- * @property {Uint32Array} brailleToText 点字セルインデックス → テキスト文字インデックス。
+ * 点字変換結果。`BrailleTranslator.translate()` 等の戻り値。
+ *
+ * テキスト側の文字位置はコードポイント単位（`Array.from(text)` の添字）。点字セルは
+ * すべて BMP 内（U+2800 台）なので、セル位置は `braille` の添字（UTF-16 単位）と一致する。
  */
 export class BrailleResult {
     static __wrap(ptr) {
@@ -229,7 +217,9 @@ export class BrailleResult {
         wasm.__wbg_brailleresult_free(ptr, 0);
     }
     /**
-     * 点字セルインデックス → テキスト文字インデックス。
+     * 点字のセル位置 → テキストの文字位置。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      * @returns {Uint32Array}
      */
     get brailleToText() {
@@ -256,22 +246,16 @@ export class BrailleResult {
     }
     /**
      * 点訳した経路（`"japanese"` / `"english"`）。
-     * @returns {string}
+     * @returns {BrailleLanguage}
      */
     get language() {
-        let deferred1_0;
-        let deferred1_1;
-        try {
-            const ret = wasm.brailleresult_language(this.__wbg_ptr);
-            deferred1_0 = ret[0];
-            deferred1_1 = ret[1];
-            return getStringFromWasm0(ret[0], ret[1]);
-        } finally {
-            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
-        }
+        const ret = wasm.brailleresult_language(this.__wbg_ptr);
+        return __wbindgen_enum_BrailleLanguage[ret];
     }
     /**
-     * テキスト文字インデックス → 点字先頭セルインデックス。
+     * テキストの文字位置 → 対応する点字の先頭セル位置。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      * @returns {Uint32Array}
      */
     get textToBraille() {
@@ -303,7 +287,7 @@ if (Symbol.dispose) BrailleResult.prototype[Symbol.dispose] = BrailleResult.prot
  * 点訳器。読み（かな／英文）を点字に変換する。行の言語を判定して日本語／英語へ振り分ける。
  *
  * 入力は**読みに変換済みのテキスト**（日本語ならカナ）。漢字かな交じり文はまず
- * [`Predictor::predict`] でカナにしてから渡す。
+ * `Predictor.predict()` でカナにしてから渡す。
  *
  * ```js
  * const t = new BrailleTranslator();
@@ -324,7 +308,6 @@ export class BrailleTranslator {
     }
     /**
      * 組み込みテーブル（日本語１級 + UEB grade 2）で変換器を作る。
-     * @returns {BrailleTranslator}
      */
     constructor() {
         const ret = wasm.brailletranslator_new();
@@ -337,8 +320,8 @@ export class BrailleTranslator {
     }
     /**
      * 言語判定せず、必ず英語（UEB）として点訳する。
-     * @param {string} text 変換対象の英文
-     * @returns {BrailleResult} 点訳結果
+     * @param {string} text
+     * @returns {BrailleResult}
      */
     translateEnglish(text) {
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -351,8 +334,8 @@ export class BrailleTranslator {
     }
     /**
      * 言語判定せず、必ず日本語として点訳する（英字は外字符 ⠰ ＋無縮約）。
-     * @param {string} kana 変換対象のかな文字列
-     * @returns {BrailleResult} 点訳結果
+     * @param {string} kana
+     * @returns {BrailleResult}
      */
     translateJapanese(kana) {
         const ptr0 = passStringToWasm0(kana, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -365,8 +348,8 @@ export class BrailleTranslator {
     }
     /**
      * 1行を言語判定して点字に変換する（日本語=かな / 英語=UEB）。
-     * @param {string} text 変換対象のテキスト
-     * @returns {BrailleResult} 点訳結果
+     * @param {string} text
+     * @returns {BrailleResult}
      */
     translate(text) {
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -381,16 +364,10 @@ export class BrailleTranslator {
 if (Symbol.dispose) BrailleTranslator.prototype[Symbol.dispose] = BrailleTranslator.prototype.free;
 
 /**
- * 予測結果。[`Predictor::predict`] の戻り値。
- * 漢字かな変換・分ち書き処理の予測結果（変換後のカナ、分ち書き文字列、自信度など）を保持するクラスです。
- * 
- * @property {string} source 入力文字列（原文）。
- * @property {string} kana 変換後のカナ文字列。
- * @property {string} segmented 分かち書きされたカナ（`ワガハイ/ワ/ネコ/デ/アル` 形式）。
- * @property {string} sourceSegmented 分かち書きされた原文（`吾輩/は/猫/で/ある` 形式）。
- * @property {Float32Array} confidences 各カナ文字の自信度（0.0〜1.0）。
- * @property {Uint32Array} kanaToSource かな文字インデックス → 原文文字インデックス。
- * @property {Array<any>} sourceToKana 原文文字インデックス → かな文字インデックスの配列（配列の配列）。
+ * 予測結果。`Predictor.predict()` の戻り値。
+ *
+ * 文字位置はすべてコードポイント単位（`Array.from(source)` / `Array.from(kana)` の添字）。
+ * JS 文字列の添字（UTF-16 単位）とは、サロゲートペアの文字（𠮟・𩸽 など）より後ろでずれる。
  */
 export class PredictionResult {
     static __wrap(ptr) {
@@ -410,7 +387,9 @@ export class PredictionResult {
         wasm.__wbg_predictionresult_free(ptr, 0);
     }
     /**
-     * 各カナ文字の自信度（0.0〜1.0）。
+     * 各カナ文字の自信度（0.0〜1.0）。`Array.from(kana)` の各要素に対応する。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      * @returns {Float32Array}
      */
     get confidences() {
@@ -420,7 +399,9 @@ export class PredictionResult {
         return v1;
     }
     /**
-     * かな文字インデックス → 原文文字インデックス。
+     * かなの文字位置 → 原文の文字位置（いずれもコードポイント単位）。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      * @returns {Uint32Array}
      */
     get kanaToSource() {
@@ -478,8 +459,11 @@ export class PredictionResult {
         }
     }
     /**
-     * 原文文字インデックス → かな文字インデックスの配列（配列の配列）。
-     * @returns {Array<any>}
+     * 原文の文字位置 → かなの文字位置の配列（いずれもコードポイント単位）。
+     *
+     * 原文 1 文字が複数のかなに対応しうるため配列の配列になる。
+     * 参照のたびに外側・内側の配列をすべて作り直すので、ループ内では変数に受けてから使う。
+     * @returns {Uint32Array[]}
      */
     get sourceToKana() {
         const ret = wasm.predictionresult_sourceToKana(this.__wbg_ptr);
@@ -527,11 +511,10 @@ export class Predictor {
     }
     /**
      * モデルバイト列 (.mbm) からインスタンスを構築する。
-     * @param {Uint8Array} mbm_data モデルファイルのバイト列
-     * @returns {Predictor}
+     * @param {Uint8Array | number[]} mbmData
      */
-    constructor(mbm_data) {
-        const ptr0 = passArray8ToWasm0(mbm_data, wasm.__wbindgen_malloc);
+    constructor(mbmData) {
+        const ptr0 = passArray8ToWasm0(mbmData, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.predictor_new(ptr0, len0);
         if (ret[2]) {
@@ -543,8 +526,8 @@ export class Predictor {
     }
     /**
      * テキストをカナに変換する。
-     * @param {string} text text 変換対象の漢字かな交じり文
-     * @returns {PredictionResult} 予測・かな変換結果
+     * @param {string} text
+     * @returns {PredictionResult}
      */
     predict(text) {
         const ptr0 = passStringToWasm0(text, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -559,11 +542,7 @@ export class Predictor {
 if (Symbol.dispose) Predictor.prototype[Symbol.dispose] = Predictor.prototype.free;
 
 /**
- * [`BrailleBackTranslator::step`] / [`BrailleBackTranslator::flush`] の結果。
- * 点字の逐次逆変換（step / flush）の実行結果を保持するクラスです。
- * 
- * @property {string} text このセルで確定した文字列（前置セルの保留中は空、拗音などは 2 文字になりうる）。
- * @property {BackTransState} state 更新後の状態。次の `step`/`flush` にそのまま渡す。
+ * `BrailleBackTranslator.step()` / `flush()` の結果。
  */
 export class StepResult {
     static __wrap(ptr) {
@@ -611,30 +590,30 @@ if (Symbol.dispose) StepResult.prototype[Symbol.dispose] = StepResult.prototype.
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,
-        __wbg___wbindgen_throw_41e9ee4f547fc59a: function(arg0, arg1) {
+        __wbg___wbindgen_throw_4c88d8bf264fd984: function(arg0, arg1) {
             throw new Error(getStringFromWasm0(arg0, arg1));
         },
-        __wbg_new_617a8cdb8bb1130e: function() {
-            const ret = new Object();
-            return ret;
-        },
-        __wbg_new_ee2291f50781bf1d: function() {
+        __wbg_new_37eb45aaf5eeb820: function() {
             const ret = new Array();
             return ret;
         },
-        __wbg_new_with_length_31d0d732d07f3195: function(arg0) {
+        __wbg_new_cd4348290afae586: function() {
+            const ret = new Object();
+            return ret;
+        },
+        __wbg_new_with_length_00818aa0a226a550: function(arg0) {
             const ret = new Uint32Array(arg0 >>> 0);
             return ret;
         },
-        __wbg_push_2baf45db356cf468: function(arg0, arg1) {
+        __wbg_push_c9f4893fc209f768: function(arg0, arg1) {
             const ret = arg0.push(arg1);
             return ret;
         },
-        __wbg_set_145a351398b48c65: function() { return handleError(function (arg0, arg1, arg2) {
+        __wbg_set_2793479888329cb6: function() { return handleError(function (arg0, arg1, arg2) {
             const ret = Reflect.set(arg0, arg1, arg2);
             return ret;
         }, arguments); },
-        __wbg_set_index_8255fcb5efcbdb24: function(arg0, arg1, arg2) {
+        __wbg_set_index_b1e811714a6fd099: function(arg0, arg1, arg2) {
             arg0[arg1 >>> 0] = arg2 >>> 0;
         },
         __wbindgen_generic_0000000000000001: function(arg0) {
@@ -649,12 +628,11 @@ function __wbg_get_imports() {
         },
         __wbindgen_init_externref_table: function() {
             const table = wasm.__wbindgen_externrefs;
-            const offset = table.grow(4);
             table.set(0, undefined);
-            table.set(offset + 0, undefined);
-            table.set(offset + 1, null);
-            table.set(offset + 2, true);
-            table.set(offset + 3, false);
+            table.set(1024, undefined);
+            table.set(1025, null);
+            table.set(1026, true);
+            table.set(1027, false);
         },
     };
     return {
@@ -663,6 +641,7 @@ function __wbg_get_imports() {
     };
 }
 
+const __wbindgen_enum_BrailleLanguage = ["japanese", "english"];
 const BackTransResultFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_backtransresult_free(ptr, 1));
@@ -719,7 +698,8 @@ function getFloat32ArrayMemory0() {
 }
 
 function getStringFromWasm0(ptr, len) {
-    return decodeText(ptr >>> 0, len);
+    ptr = ptr >>> 0;
+    return decodeText(getUint8ArrayMemory0().subarray(ptr, ptr + len));
 }
 
 let cachedUint32ArrayMemory0 = null;
@@ -797,18 +777,18 @@ function takeFromExternrefTable0(idx) {
     return value;
 }
 
-let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true });
 cachedTextDecoder.decode();
 const MAX_SAFARI_DECODE_BYTES = 2146435072;
 let numBytesDecoded = 0;
-function decodeText(ptr, len) {
-    numBytesDecoded += len;
+function decodeText(bytes) {
+    numBytesDecoded += bytes.length;
     if (numBytesDecoded >= MAX_SAFARI_DECODE_BYTES) {
-        cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+        cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true });
         cachedTextDecoder.decode();
-        numBytesDecoded = len;
+        numBytesDecoded = bytes.length;
     }
-    return cachedTextDecoder.decode(getUint8ArrayMemory0().subarray(ptr, ptr + len));
+    return cachedTextDecoder.decode(bytes);
 }
 
 const cachedTextEncoder = new TextEncoder();
@@ -877,12 +857,6 @@ async function __wbg_load(module, imports) {
     }
 }
 
-/**
- * 同期的にWebAssemblyモジュールを初期化する。
- * 
- * @param {WebAssembly.Module | object} [module] モジュールまたは設定オブジェクト
- * @returns {object} wasmインスタンスのexports
- */
 function initSync(module) {
     if (wasm !== undefined) return wasm;
 
@@ -903,14 +877,17 @@ function initSync(module) {
     return __wbg_finalize_init(instance, module);
 }
 
-/**
- * 非同期でWebAssemblyモジュールを初期化する（デフォルトエクスポート）。
- * @param {string | Request | URL | Response | WebAssembly.Module} [module_or_path] WasmのソースまたはURL
- * @returns {Promise<object>} wasmインスタンスのexportsを返すPromise
- */
+let __wbg_init_promise;
 async function __wbg_init(module_or_path) {
     if (wasm !== undefined) return wasm;
+    if (__wbg_init_promise === undefined) {
+        __wbg_init_promise = __wbg_init_once(module_or_path);
+        __wbg_init_promise.catch(() => { __wbg_init_promise = undefined; });
+    }
+    return __wbg_init_promise;
+}
 
+async function __wbg_init_once(module_or_path) {
 
     if (module_or_path !== undefined) {
         if (Object.getPrototypeOf(module_or_path) === Object.prototype) {

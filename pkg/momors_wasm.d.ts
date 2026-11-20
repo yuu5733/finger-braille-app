@@ -1,17 +1,40 @@
 /* tslint:disable */
 /* eslint-disable */
+/**
+ * 点訳した経路。`BrailleResult.language` の値。
+ */
+
+export type BrailleLanguage = "japanese" | "english";
 
 /**
- * [`BrailleBackTranslator::back_translate_aligned`] の結果。
+ * 点字セル範囲 → 復元文字列の対応。`BackTransResult.segments` の要素。
+ *
+ * セル位置は `braille` の添字（点字セルはすべて BMP 内なので UTF-16 単位と一致する）。
+ */
+export interface BackTransSegment {
+    /** 対応する点字セル範囲の先頭（この位置を含む）。 */
+    cellStart: number;
+    /** 対応する点字セル範囲の終端（この位置を含まない）。 */
+    cellEnd: number;
+    /** このセル範囲から復元された文字列。 */
+    text: string;
+}
+
+
+
+/**
+ * `BrailleBackTranslator.backTranslateAligned()` の結果。
  */
 export class BackTransResult {
     private constructor();
     free(): void;
     [Symbol.dispose](): void;
     /**
-     * 点字セル範囲 → 文字列のセグメント列。各要素は `{ cellStart, cellEnd, text }`。
+     * 点字セル範囲 → 文字列のセグメント列。範囲は半開区間 `[cellStart, cellEnd)`。
+     *
+     * 参照のたびに新しい配列とオブジェクトを作るので、ループ内では変数に受けてから使う。
      */
-    readonly segments: Array<any>;
+    readonly segments: BackTransSegment[];
     /**
      * 復元された全文（`segments` のテキストを連結したものと一致する）。
      */
@@ -19,7 +42,7 @@ export class BackTransResult {
 }
 
 /**
- * [`BrailleBackTranslator::step`] / [`BrailleBackTranslator::flush`] が引き継ぐ行内状態。
+ * `BrailleBackTranslator.step()` / `flush()` が引き継ぐ行内状態。
  *
  * 不透明なハンドル。JS 側は中身を参照せず、次回の `step`/`flush` にそのまま渡す。
  */
@@ -39,7 +62,7 @@ export class BackTransState {
 /**
  * 点字をかな・記号・数字・ラテン文字に逆変換する。
  *
- * 順変換 [`BrailleTranslator`] と異なりモデル（.mbm）不要で、組み込みテーブルのみで動作する。
+ * 順変換 `BrailleTranslator` と異なりモデル（.mbm）不要で、組み込みテーブルのみで動作する。
  *
  * ```js
  * const bt = new BrailleBackTranslator();
@@ -62,7 +85,7 @@ export class BrailleBackTranslator {
     /**
      * 行末で呼び、保留中のセル（結合待ちの前置セルなど）を確定させる。
      *
-     * [`BackTransState::isSettled`] が `false` のまま行が終わる場合に呼ぶ。
+     * `BackTransState.isSettled()` が `false` のまま行が終わる場合に呼ぶ。
      */
     flush(state: BackTransState): StepResult;
     /**
@@ -73,8 +96,8 @@ export class BrailleBackTranslator {
      * 点字 1 セルを逐次逆変換する（エディタでの逐次入力向け）。
      *
      * `cell` は点字 1 セル分の文字列（先頭の 1 文字のみ使用）。
-     * 行頭では [`BackTransState::new`] の初期状態を渡し、以降は返り値の
-     * [`StepResult::state`] を次回呼び出しに渡して、数符・外字符・濁音前置
+     * 行頭では `new BackTransState()` の初期状態を渡し、以降は返り値の
+     * `StepResult.state` を次回呼び出しに渡して、数符・外字符・濁音前置
      * などの行内状態を引き継ぐ。前置セル（濁音など）の直後は `text` が空になる
      * ことがある（次のセルと結合して確定するまで保留されるため）。
      */
@@ -82,14 +105,19 @@ export class BrailleBackTranslator {
 }
 
 /**
- * 点字変換結果。[`BrailleTranslator::translate`] 等の戻り値。
+ * 点字変換結果。`BrailleTranslator.translate()` 等の戻り値。
+ *
+ * テキスト側の文字位置はコードポイント単位（`Array.from(text)` の添字）。点字セルは
+ * すべて BMP 内（U+2800 台）なので、セル位置は `braille` の添字（UTF-16 単位）と一致する。
  */
 export class BrailleResult {
     private constructor();
     free(): void;
     [Symbol.dispose](): void;
     /**
-     * 点字セルインデックス → テキスト文字インデックス。
+     * 点字のセル位置 → テキストの文字位置。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      */
     readonly brailleToText: Uint32Array;
     /**
@@ -99,9 +127,11 @@ export class BrailleResult {
     /**
      * 点訳した経路（`"japanese"` / `"english"`）。
      */
-    readonly language: string;
+    readonly language: BrailleLanguage;
     /**
-     * テキスト文字インデックス → 点字先頭セルインデックス。
+     * テキストの文字位置 → 対応する点字の先頭セル位置。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      */
     readonly textToBraille: Uint32Array;
     /**
@@ -114,7 +144,7 @@ export class BrailleResult {
  * 点訳器。読み（かな／英文）を点字に変換する。行の言語を判定して日本語／英語へ振り分ける。
  *
  * 入力は**読みに変換済みのテキスト**（日本語ならカナ）。漢字かな交じり文はまず
- * [`Predictor::predict`] でカナにしてから渡す。
+ * `Predictor.predict()` でカナにしてから渡す。
  *
  * ```js
  * const t = new BrailleTranslator();
@@ -144,18 +174,25 @@ export class BrailleTranslator {
 }
 
 /**
- * 予測結果。[`Predictor::predict`] の戻り値。
+ * 予測結果。`Predictor.predict()` の戻り値。
+ *
+ * 文字位置はすべてコードポイント単位（`Array.from(source)` / `Array.from(kana)` の添字）。
+ * JS 文字列の添字（UTF-16 単位）とは、サロゲートペアの文字（𠮟・𩸽 など）より後ろでずれる。
  */
 export class PredictionResult {
     private constructor();
     free(): void;
     [Symbol.dispose](): void;
     /**
-     * 各カナ文字の自信度（0.0〜1.0）。
+     * 各カナ文字の自信度（0.0〜1.0）。`Array.from(kana)` の各要素に対応する。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      */
     readonly confidences: Float32Array;
     /**
-     * かな文字インデックス → 原文文字インデックス。
+     * かなの文字位置 → 原文の文字位置（いずれもコードポイント単位）。
+     *
+     * 参照のたびに新しい配列を作るので、ループ内では変数に受けてから使う。
      */
     readonly kanaToSource: Uint32Array;
     /**
@@ -171,9 +208,12 @@ export class PredictionResult {
      */
     readonly sourceSegmented: string;
     /**
-     * 原文文字インデックス → かな文字インデックスの配列（配列の配列）。
+     * 原文の文字位置 → かなの文字位置の配列（いずれもコードポイント単位）。
+     *
+     * 原文 1 文字が複数のかなに対応しうるため配列の配列になる。
+     * 参照のたびに外側・内側の配列をすべて作り直すので、ループ内では変数に受けてから使う。
      */
-    readonly sourceToKana: Array<Uint32Array>;
+    readonly sourceToKana: Uint32Array[];
     /**
      * 入力文字列（原文）。
      */
@@ -196,7 +236,7 @@ export class Predictor {
     /**
      * モデルバイト列 (.mbm) からインスタンスを構築する。
      */
-    constructor(mbm_data: Uint8Array);
+    constructor(mbmData: Uint8Array | number[]);
     /**
      * テキストをカナに変換する。
      */
@@ -204,7 +244,7 @@ export class Predictor {
 }
 
 /**
- * [`BrailleBackTranslator::step`] / [`BrailleBackTranslator::flush`] の結果。
+ * `BrailleBackTranslator.step()` / `flush()` の結果。
  */
 export class StepResult {
     private constructor();
@@ -243,7 +283,7 @@ export interface InitOutput {
     readonly braillebacktranslator_step: (a: number, b: number, c: number, d: number) => [number, number, number];
     readonly brailleresult_braille: (a: number) => [number, number];
     readonly brailleresult_brailleToText: (a: number) => [number, number];
-    readonly brailleresult_language: (a: number) => [number, number];
+    readonly brailleresult_language: (a: number) => number;
     readonly brailleresult_text: (a: number) => [number, number];
     readonly brailleresult_textToBraille: (a: number) => [number, number];
     readonly brailletranslator_new: () => [number, number, number];
