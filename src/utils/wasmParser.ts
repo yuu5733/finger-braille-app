@@ -138,8 +138,8 @@ export function parseTextToBrailleCells(
         const subCells: SubCellData[] = [
           {
             character: '数符',
-            brailleChar: hexToBraille(brailleCodes.suujiFu ?? 0x3c),
-            dots: hexToDots(brailleCodes.suujiFu ?? 0x3c),
+            brailleChar: hexToBraille(brailleCodes.suFu),
+            dots: hexToDots(brailleCodes.suFu),
             colorType: 'number',
           },
           ...numWord.split('').map((c) => {
