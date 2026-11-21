@@ -70,7 +70,7 @@ export function getNumberData(pressedKeys: Set<string>): BrailleData | null {
 
   // 点の配列からHexコードに変換
   const hexCode = dotsToHex(currentDots);
-  
+
   // numberTableから逆引きする（直接参照する）
   const numberMapping = Object.entries(numberTable).find(
     ([character, code]) => code === hexCode
@@ -102,7 +102,7 @@ export function getAlphabetData(pressedKeys: Set<string>): BrailleData | null {
 
   // 点の配列からHexコードに変換
   const hexCode = dotsToHex(currentDots);
-  
+
   // alphabetTableから逆引きする（直接参照する）
   const alphabetMapping = Object.entries(alphabetTable).find(
     ([character, code]) => code === hexCode
@@ -136,20 +136,20 @@ export function getCurrentDots(pressedKeys: Set<string>): BrailleCode {
  * 押されているキーのセットが、指定された点字コード（Hex値）と一致するかを判定する。
  * これにより、数符や外字符などの複雑なコードの判定ロジックが簡素化されます。
  * * @param pressedKeys 現在押されているキーのSet
- * @param targetHex 比較対象の点字コード（Hex値、例: brailleCodes.suuFu）
+ * @param targetHex 比較対象の点字コード（Hex値、例: brailleCodes.suFu）
  * @returns 一致すれば true
  */
 export function isBrailleCodeMatch(pressedKeys: Set<string>, targetHex: brailleHex): boolean {
     // 1. 押されているキーから現在の点の配列を取得
     const currentDots = getCurrentDots(pressedKeys);
-    
+
     if (currentDots.length === 0) {
         return false;
     }
-    
+
     // 2. 点の配列をHex値に変換 (この関数がソートを担保していることが重要)
     const currentHex = dotsToHex(currentDots);
-    
+
     // 3. 目的のHex値と比較
     return currentHex === targetHex;
 }
