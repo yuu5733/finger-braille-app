@@ -5,6 +5,8 @@
 ## 主な機能
 
 - **キーボード入力対応**: `F`, `D`, `S`, `J`, `K`, `L` キーを使った指点字入力に対応しています。
+- **タッチデバイスによる入力対応**: 点番号に当たる1〜6ボタンを使った指点字入力に対応しています。
+- **PWA**: PWAを使ったアプリのようなUI。
 - **リアルタイム変換**: 押された点の組み合わせに基づき、対応する文字を即座に表示します。
 - **全仮名対応**: 全仮名対応: 清音、濁音、半濁音、拗音、拗濁音、拗半濁音、特殊音の入力と変換に対応しています。
 - **連符の対応**: 数符、英語などの連符の入力もできます。
@@ -53,7 +55,7 @@ Vercelで公開しています！　Githubのmainブランチと同機してい�
 
 - **フロントエンド**: React (Astro の環境で動作)
 - **言語**: TypeScript
-- **状態管理/ロジック**: React Hooks (`useBrailleLogic.ts` などカスタムフック中心)
+- **状態管理/ロジック**: React Hooks (`src/hooks/useMobileBrailleLogic.ts` などカスタムフック中心)
 - **スタイリング**: CSS Modules
 - **パッケージ管理**: npm / yarn
 
@@ -64,7 +66,7 @@ Vercelで公開しています！　Githubのmainブランチと同機してい�
 1.  **リポジトリのクローン**
     ```bash
     git clone [https://github.com/yuu5733/finger-braille-app.git](https://github.com/yuu5733/finger-braille-app.git)
-    cd my-braille-app
+    cd finger-braille-app
     ```
 2.  **依存関係のインストール**
     ```bash
@@ -79,6 +81,17 @@ Vercelで公開しています！　Githubのmainブランチと同機してい�
     yarn dev
     ```
     ブラウザで `http://localhost:4321` にアクセスするとアプリが確認できます（環境によってはURLが変わることもありえます）。
+
+## テストの実行
+
+- **ユニット・コンポーネントテスト (Vitest)**
+  ```bash
+  npx vitest run```
+
+- **E2Eテスト (Playwright)**
+  ```bash
+  npx playwright test```
+
 
 ## 主な更新履歴
 - 2025年10月14日
@@ -128,7 +141,7 @@ Vercelで公開しています！　Githubのmainブランチと同機してい�
 
 [ライセンスを記載予定 (例: MIT License)]
 
-## 入力ロジックの概要 (`useBrailleLogic` および関連フック)
+## 入力ロジックの概要 (`src/hooks/useMobileBrailleLogic.ts` および関連フック)
 
 点字入力のコアロジックは、キーボードの**生の入力**と、変換後の**出力**を分離することで、モード推移を実現しています。
 濁音までの入力ができた時のものなので、少し古いフローチャートになります。
@@ -136,10 +149,10 @@ Vercelで公開しています！　Githubのmainブランチと同機してい�
 
 | モジュール | 役割 |
 | --- | --- |
-| `useKeyboardListener` | キーボードからの生のキー押下 (`pressedKeys`) を取得する。 |
-| `useBrailleInputTiming` | キー押下をデバウンスし、**安定した入力** (`stabilizedKeys`) と **キー解放** (`isKeysReleased`) の状態を生成する。 |
-| `useBrailleLogic` | `stabilizedKeys` を受け取り、表示すべき文字（`pendingData`）を計算し、モード変更のトリガーを行う。**（表示のロジック）** |
-| `useBrailleOutputProcessor` | `isKeysReleased` のタイミングで `pendingData` を受け取り、**現在のモードに基づいて最終的な文字を確定・出力する。** **（確定のロジック）** |
+| `useKeyboardListener.tsx` | キーボードからの生のキー押下 (`pressedKeys`) を取得する。 |
+| `useBrailleInputTiming.tsx` | キー押下をデバウンスし、**安定した入力** (`stabilizedKeys`) と **キー解放** (`isKeysReleased`) の状態を生成する。 |
+| `useBrailleLogic.tsx` | `stabilizedKeys` を受け取り、表示すべき文字（`pendingData`）を計算し、モード変更のトリガーを行う。**（表示のロジック）** |
+| `useBrailleOutputProcessor.tsx` | `isKeysReleased` のタイミングで `pendingData` を受け取り、**現在のモードに基づいて最終的な文字を確定・出力する。** **（確定のロジック）** |
 
 ### コアロジックのフローチャート（`refactor/input-logic`）
 
@@ -158,10 +171,10 @@ flowchart TD
         debounce -- 100ms経過後 --> stabilizedKeys("stabilizedKeys: Set<string>");
 
         stabilizedKeys --> isModeKey{"安定入力は<br>モード符単独か？"};
-        
+
         isModeKey -- Yes --> setModeDisplay["setCurrentModeでモード変更<br>pendingDataにモード符をセット"];
         isModeKey -- No --> isKana{"有効な点字か？"};
-        
+
         isKana -- Yes --> setKanaDisplay["pendingDataに清音をセット"];
         isKana -- No --> setUnknown["pendingDataに「不明」をセット"];
     end
@@ -171,23 +184,23 @@ flowchart TD
     subgraph "最終的な文字を確定"
 
         pressedKeys --> isKeysReleased{"キーは全て<br>離されたか？"};
-        
+
         isKeysReleased -- Yes --> processOutput["processOutput関数実行"];
-        
+
         processOutput --> checkMaintain{"モード符単独の<br>キー解放か？"};
-        
+
         checkMaintain -- Yes --> finish("モード維持");
-        
+
         checkMaintain -- No --> isWaitingMode{"Dakuon / Youon<br>などの待機モードか？"};
-        
+
         isWaitingMode -- Yes --> convert["getConvertedCharacterで変換"];
         convert --> outputChar["onOutputで確定文字を出力"];
         outputChar --> resetMode["setCurrentMode('Kana')"];
 
         isWaitingMode -- No --> isModeFu{"確定文字は<br>モード符か？"};
-        
+
         isModeFu -- Yes --> setWaitingMode["setCurrentModeで待機モードへ"];
-        
+
         isModeFu -- No --> outputKana["onOutputで清音を出力"];
     end
 ```
