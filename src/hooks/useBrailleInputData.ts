@@ -4,7 +4,7 @@ import { getBrailleData, getNumberData, getAlphabetData, getCurrentDots, isBrail
 import { getConvertedCharacter } from '../utils/modeLogic';
 import { dotsToHex } from '../utils/dotsToHex';
 import { hexToBraille } from '../utils/hexToBraille';
-import { brailleCodes } from '../data/table'; 
+import { brailleCodes } from '../data/table';
 
 type BrailleInputResult = {
   data: BrailleData;
@@ -21,13 +21,13 @@ type BrailleInputResult = {
  * @returns { BrailleInputResult | null } 判定された BrailleData（確定前文字、点字、点配列）を含むオブジェクト、または入力がない場合は null。
  */
 export function useBrailleInputData(
-  stabilizedKeys: Set<string> | null, 
+  stabilizedKeys: Set<string> | null,
   currentMode: InputMode
 ): BrailleInputResult | null {
   if (!stabilizedKeys) {
     return null;
   }
-  
+
   // 点字キー（f, d, s, j, k, l）が1つも含まれていない場合（スペースキー単体など）は点字データとして処理しない
   const hasDotKeys = ['f', 'd', 's', 'j', 'k', 'l'].some(key => stabilizedKeys.has(key));
   if (!hasDotKeys) {
@@ -39,23 +39,23 @@ export function useBrailleInputData(
   // --- Suujiモードの処理 ---
   if (currentMode === 'Suuji') {
     // 1. 数符が押された場合 (0x3C)
-    if (isBrailleCodeMatch(stabilizedKeys, brailleCodes.suufu)) {
+    if (isBrailleCodeMatch(stabilizedKeys, brailleCodes.sufu)) {
       // 数符自体はここではモードデータではないが、Suujiモードの特殊入力として扱う
 
       const data: BrailleData = {
           character: '数符',
-          brailleChar: hexToBraille(brailleCodes.suufu),
+          brailleChar: hexToBraille(brailleCodes.sufu),
           dots: currentDots,
       };
 
-      return { data }; 
-    } 
-    
+      return { data };
+    }
+
     // 2. 数字・記号への変換（あ行・ら行などはここで数字として処理される）
     const numberData = getNumberData(stabilizedKeys);
     if (numberData !== null) {
       return { data: numberData };
-    } 
+    }
 
     // 3. Suujiモードで数字に該当しない場合、モード符がないものとして通常の点字（ひらがな等）を試す
     const characterData = getBrailleData(stabilizedKeys);
@@ -66,7 +66,7 @@ export function useBrailleInputData(
     // 4. Suujiモードで不明な点字の場合
     let brailleText: BrailleChar = '';
     if (currentDots.length > 0) {
-      brailleText = hexToBraille(dotsToHex(currentDots)); 
+      brailleText = hexToBraille(dotsToHex(currentDots));
     }
     const unknownData: BrailleData = {
       character: '不明',
@@ -74,7 +74,7 @@ export function useBrailleInputData(
       dots: currentDots,
     };
 
-    return { data: unknownData }; 
+    return { data: unknownData };
   }
 
   // --- Alphabetモードの処理 ---
@@ -89,19 +89,19 @@ export function useBrailleInputData(
           dots: currentDots,
       };
 
-      return { data }; 
-    } 
-    
+      return { data };
+    }
+
     // 2. アルファベット・記号への変換
     const alphabetData = getAlphabetData(stabilizedKeys);
     if (alphabetData !== null) {
       return { data: alphabetData };
-    } 
+    }
 
     // 3. Alphabetモードで不明な点字の場合
     let brailleText:BrailleChar = '';
     if (currentDots.length > 0) {
-      brailleText = hexToBraille(dotsToHex(currentDots)); 
+      brailleText = hexToBraille(dotsToHex(currentDots));
     }
     const unknownData: BrailleData = {
       character: '不明',
@@ -109,7 +109,7 @@ export function useBrailleInputData(
       dots: currentDots,
     };
 
-    return { data: unknownData }; 
+    return { data: unknownData };
   }
 
   // --- 通常の点字入力判定 (Kana) ---
@@ -142,7 +142,7 @@ export function useBrailleInputData(
   // ---通常モードで不明な点字の表示ロジック ---
   let brailleText:BrailleChar = '';
   if (currentDots.length > 0) {
-    brailleText = hexToBraille(dotsToHex(currentDots)); 
+    brailleText = hexToBraille(dotsToHex(currentDots));
   }
 
   const unknownData: BrailleData = {

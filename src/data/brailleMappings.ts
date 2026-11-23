@@ -207,7 +207,7 @@ const numberTableWithSuFu = {
 }satisfies Record<string, brailleHex>;
 
 // 文字（または数字）ごとのコメント（語呂合わせなど）を定義する辞書
-const commentMapSuji: Record<string, string> = {
+const commentMapSuuji: Record<string, string> = {
   '数符': '次に来る文字が、数字であることを示す\n数字が続く場合は、打たなくて良い',
   '小数点(.)': '促音の「っ」に同じ。\n例）たいおんが(間)[数符] 36.5ど',
   'つなぎ符': '数字の後に、あ行・ら行が続く時に使用\n例）[数符] 50 [つなぎ符] えん',
@@ -233,7 +233,7 @@ export const numberMappings: BrailleData[] = Object.entries(numberTableWithSuFu)
       character: character, // 数符、数字
       dots: hexToDots(hexCode), // 点の配列
       brailleChar: hexToBraille(hexCode), // Unicode点字文字
-      comment: commentMapSuji[character], // コメント（覚えやすくするため）
+      comment: commentMapSuuji[character], // コメント（覚えやすくするため）
     };
   }
 );
