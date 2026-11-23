@@ -1,0 +1,563 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  title="指点字・点字ルール解説"
+  siteDescription="点字のレッスン構成をベースに、6点の仕組み、五十音、濁音・拗音・特殊音、句読符、数字・アルファベット、練習問題と指点字での考え方をまとめた解説ページです。"
+>
+  <main class="rules-page-main">
+    <header class="rules-hero">
+      <h1 class="rules-title">指点字・点字のルール解説</h1>
+      <p class="rules-lead">
+        点字の基本ルールの解説です。指点字（ゆびてんじ）を学ぶ際も大事になってきます。
+        実際の入力練習や点字表とあわせて活用してください。
+      </p>
+
+      <div class="finger-note-banner">
+        点字と指点字の違いについて：
+        点字は紙に点を打つ。もしくは専用の印刷機で印刷。文節などの区切りはマスあけ（空白）で表現します。指点字は両手の人差し指・中指・薬指（1〜6点）に指を触れて伝えます。文節の区切りを「間（ま）」で表す点が異なります。また点字は、読む側の凸面。紙を裏返して打つ凹面は左右反転しています。指点字では、裏返す必要がないため、打つ側と読み取る側も同じ点字の配置になります（向かい合う場合、反転します。指点字を打つ人は普段と同じまま打つことが多いです）。
+      </div>
+
+      <nav class="toc-card" aria-label="目次">
+        <h2>目次</h2>
+        <ol class="toc-list">
+          <li><a href="#lesson-1">Lesson 1：6点の仕組みと書き方・区切り</a></li>
+          <li><a href="#lesson-2">Lesson 2：五十音・撥音・促音・長音</a></li>
+          <li><a href="#lesson-3">Lesson 3：濁音・半濁音・拗音・特殊音・句読符</a></li>
+          <li><a href="#lesson-4">Lesson 4：数字とアルファベット</a></li>
+          <!-- <li><a href="#practice-problems">練習問題</a></li> -->
+        </ol>
+      </nav>
+    </header>
+
+    <div class="rules-content">
+      <!-- Lesson 1 -->
+      <section id="lesson-1" class="lesson-section">
+        <div class="lesson-header">
+          <span class="lesson-badge">Lesson 1</span>
+          <h2>点字の書き方（6点の配置と区切り）</h2>
+        </div>
+
+        <p>
+          点字は縦3点・横2点の6点を1つの単位（マス）として構成され、マスが横に並んだものを行と呼びます。
+          用紙に点筆で打ち込む凹面と、裏返して読む凸面では左右の位置が逆になります。
+        </p>
+
+        <div class="dot-diagram-grid">
+          <div class="dot-box">
+            <h3>凸面（読むときの向き／左→右）</h3>
+            <div class="braille-grid-6" aria-label="凸面の6点配置">
+              <span>1</span><span>4</span>
+              <span>2</span><span>5</span>
+              <span>3</span><span>6</span>
+            </div>
+            <p class="caption">左側が1・2・3点、右側が4・5・6点です。</p>
+          </div>
+
+          <div class="dot-box">
+            <h3>凹面（書くときの向き／右→左）</h3>
+            <div class="braille-grid-6" aria-label="凹面の6点配置">
+              <span>4</span><span>1</span>
+              <span>5</span><span>2</span>
+              <span>6</span><span>3</span>
+            </div>
+            <p class="caption">凸面と左右が反転します。</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <h3>言葉の区切りについて</h3>
+          <p>
+            かな文字体系の点字では、続け書きすると読みにくくなるため、文節などで区切って書きます。
+            指点字では紙の空白（マスあけ）の代わりに、「間（ま）」で区切ります。
+          </p>
+        </div>
+      </section>
+
+      <!-- Lesson 2 -->
+      <section id="lesson-2" class="lesson-section">
+        <div class="lesson-header">
+          <span class="lesson-badge">Lesson 2</span>
+          <h2>五十音（母音・子音と特殊かな）</h2>
+        </div>
+
+        <p>
+          日本語の点字はローマ字のように母音と子音の組み合わせが基本になっています。
+          あ行（あいうえお）の母音に、行ごとの子音を表す点を加えることで各行が作られます。
+        </p>
+
+        <div class="table-wrap">
+          <table class="rules-table">
+            <thead>
+              <tr>
+                <th>行</th>
+                <th>基本となる点</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>あ行（母音）</td>
+                <td>1・2・4の点を中心にした配置</td>
+                <td>あ・い・う・え・お</td>
+              </tr>
+              <tr>
+                <td>か行</td>
+                <td>あ行に 6の点を加える（kの子音イメージ）</td>
+                <td>か・き・く・け・こ</td>
+              </tr>
+              <tr>
+                <td>さ行</td>
+                <td>あ行に 5・6の点を加える</td>
+                <td>さ・し・す・せ・そ</td>
+              </tr>
+              <tr>
+                <td>た行</td>
+                <td>あ行に 3・5 の点を加える</td>
+                <td>た・ち・つ・て・と</td>
+              </tr>
+              <tr>
+                <td>な行</td>
+                <td>あ行に 3 の点を加える</td>
+                <td>な・に・ぬ・ね・の</td>
+              </tr>
+              <tr>
+                <td>は行</td>
+                <td>あ行に 3・6の点を加える</td>
+                <td>は・ひ・ふ・へ・ほ</td>
+              </tr>
+              <tr>
+                <td>ま行</td>
+                <td>あ行に 3・5・6の点を加える</td>
+                <td>ま・み・む・め・も</td>
+              </tr>
+              <tr>
+                <td>ら行</td>
+                <td>あ行に 5 の点を加える</td>
+                <td>ら・り・る・れ・ろ</td>
+              </tr>
+              <tr>
+                <td>や行・わ行</td>
+                <td>6点の組み合わせの都合上、位置を下げたり4を加えたりする変則配置</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <ul class="bullet-list">
+          <li>撥音「ん」：撥音符（3・5・6）を用います。</li>
+          <li>促音「っ」：促音符（2）を用います。</li>
+          <li>長音「ー」：長音符（2・5）を用います。</li>
+        </ul>
+      </section>
+
+      <!-- Lesson 3 -->
+      <section id="lesson-3" class="lesson-section">
+        <div class="lesson-header">
+          <span class="lesson-badge">Lesson 3</span>
+          <h2>濁音・拗音・特殊音および句読符など</h2>
+        </div>
+
+        <p>
+          6点の組み合わせは63通りに限られるため、濁音・半濁音・拗音などは2マス（前置符＋もとの文字）で表します。
+          指点字の場合も、前置符で「これから濁音がくるな」とか「次は拗音（きゃ・きゅ・きょ など）」が来ることがわかります。
+        </p>
+
+        <div class="rule-grid-2">
+          <div class="sub-card">
+            <h3>濁音・半濁音</h3>
+            <ul class="bullet-list">
+              <li>濁音（5の点）：5の点のあとに「か」を打つと「が」。ぎ・ぐ・げ・ごや、ざ行・だ行・ば行も同様に表します。</li>
+              <li>半濁音（6の点）：6の点のあとに「は」を打つと「ぱ」。ぴ・ぷ・ぺ・ぽも同様に表します。</li>
+            </ul>
+          </div>
+
+          <div class="sub-card">
+            <h3>拗音・拗濁音・拗半濁音</h3>
+            <ul class="bullet-list">
+              <li>拗音（4の点）：小さい「ゃ・ゅ・ょ」を添える代わりに、4の点を前置して「か」を打つと「きゃ」。しゃ〜りょまで同様です。</li>
+              <li>拗濁音（4・5の点）：4・5の点のあとに「か」で「ぎゃ」。びゃ〜ぴょ（拗半濁音は4・6の点）も前置符で表現します。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout">
+          <h3>特殊音と句読符・カッコ類</h3>
+          <p>
+            外来語などに使う特殊音は使用頻度が比較的少ないため、一覧表を確認しながら少しずつ覚えるのがおすすめです。
+            また、文章の区切りや記号として以下のルールがあります。
+          </p>
+          <ul class="bullet-list">
+            <li>句点「。」（3・5・6）：文の終わりに置きます。点字の場合は後ろは2マスあけますが、指点字ではマス空けがありません。また指点字では、つけないことも多くあります</li>
+            <!-- <li>読点「、」（2・5・6）／中点「・」（2・5）：切れ目に応じて使い、後ろは1マスあけます。</li>
+            <li>第1カッコ《マルカッコ》（ ）／第1カギ《カギカッコ》「 」：必要に応じて記号を用います。</li> -->
+          </ul>
+        </div>
+      </section>
+
+      <!-- Lesson 4 -->
+      <section id="lesson-4" class="lesson-section">
+        <div class="lesson-header">
+          <span class="lesson-badge">Lesson 4</span>
+          <h2>数字とアルファベット</h2>
+        </div>
+
+        <div class="sub-block">
+          <h3>1. 数字の表し方</h3>
+          <p>
+            数字を書くときは、直前に数符（3・4・5・6の点）を前置します。
+            数符のあとに続く文字は数字として読まれるため、数符を1つ置いて数字を続けて書くことで大きな数も表せます。
+            数字の1〜0にはアルファベットの a〜j に対応する点（1・2・4・5の組み合わせ）が用いられます。
+          </p>
+          <p class="example-line">
+            例： 1、2、3、4、5、6、7、8、9、0 ／ 32、711、806、5798
+          </p>
+        </div>
+
+        <div class="sub-block">
+          <h3>2. アルファベットの表し方</h3>
+          <p>
+            アルファベットを表すときは、外字符（56の点）を前置してアルファベットであることを示します。
+          </p>
+          <ul class="bullet-list">
+            <li>a〜j：上の4つの点（1・2・4・5）の組み合わせが基本です。</li>
+            <li>k〜t：a〜j に 3 の点を加えて表します。</li>
+            <li>u〜z：3・6の点などを加えて表します（<code>w</code> は、点字の生まれたフランスではあまり使わないため例外的な配置になります）。</li>
+            <li>大文字の区別：点字では大文字と小文字をそのままでは区別できないため、大文字には大文字符（6）、連続する大文字には二重大文字符（6を2つ）を前置します。指点字では、書き言葉より話し言葉に近いため、大文字を明確に区別しないことが多いです（大文字符を使っても間違いではありません）</li>
+          </ul>
+          <p class="example-line">
+            例： a、c、J、X ／ km、Hz ／ dB、CD、DVD、PTA
+          </p>
+        </div>
+      </section>
+
+      <!-- Practice Problems -->
+      <!-- <section id="practice-problems" class="lesson-section">
+        <div class="lesson-header">
+          <span class="lesson-badge">Exercises</span>
+          <h2>練習問題</h2>
+        </div>
+        <p>
+          実際に点字・指点字で変換したり、指の動かし方をイメージしたりするための練習リストです。
+        </p>
+
+        <div class="practice-grid">
+          <div class="practice-card">
+            <h3>Lesson 2 練習問題（五十音・基本語）</h3>
+            <ol class="problem-list">
+              <li>(1) 藍 ／ 上 ／ 青</li>
+              <li>(2) 柿 ／ 菊 ／ お稽古</li>
+              <li>(3) すし ／ 世界 ／ お誘い</li>
+              <li>(4) 退屈 ／ 定期 ／ 土地</li>
+              <li>(5) 担い手 ／ 猫 ／ 布</li>
+              <li>(6) 花 ／ 皮膚 ／ 歩兵</li>
+              <li>(7) 豆 ／ 昔 ／ 樅</li>
+              <li>(8) 山 ／ 夢 ／ 読み物</li>
+              <li>(9) カラス ／ ルリ色 ／ 失礼</li>
+              <li>(10) 私 ／ 酸素 ／ マッチ ／ セーター</li>
+            </ol>
+          </div>
+
+          <div class="practice-card">
+            <h3>Lesson 3 練習問題（濁音・拗音・外来語など）</h3>
+            <ol class="problem-list">
+              <li>(1) 銀河 ／ グラス ／ ゴルフ</li>
+              <li>(2) 雑誌 ／ 風 ／ 継続</li>
+              <li>(3) 団子 ／ 小包 ／ ドングリ</li>
+              <li>(4) バラ ／ 武士 ／ ボタン</li>
+              <li>(5) パイプ ／ ピンポン ／ ペンキ</li>
+              <li>(6) 客 ／ マニキュア ／ 巨人</li>
+              <li>(7) 写真 ／ 歌手 ／ 食事</li>
+              <li>(8) 茶碗 ／ ミニチュア ／ 貯金</li>
+              <li>(9) 般若 ／ モニュメント ／ 如来</li>
+              <li>(10) 百 ／ ヒューマニズム ／ 流氷</li>
+              <li>(11) 山脈 ／ ミュージアム ／ ミョンドン（明洞）</li>
+              <li>(12) 計略 ／ リュック ／ 旅行</li>
+              <li>(13) 逆転 ／ 牛肉 ／ 制御</li>
+              <li>(14) 大蛇 ／ ジュース ／ 女性</li>
+              <li>(15) 湯呑み茶碗 ／ フグ提灯</li>
+              <li>(16) 白檀 ／ ビュッフェ ／ 発表</li>
+            </ol>
+          </div>
+
+          <div class="practice-card practice-card-wide">
+            <h3>Lesson 4 練習問題（数字とアルファベット）</h3>
+            <ol class="problem-list">
+              <li>(1) 1 ／ 4 ／ 8 ／ 3 ／ 7</li>
+              <li>(2) 16 ／ 20 ／ 35 ／ 78 ／ 94</li>
+              <li>(3) 246 ／ 325 ／ 478 ／ 825 ／ 912</li>
+              <li>(4) 1398 ／ 2025 ／ 4718 ／ 5645 ／ 7621</li>
+              <li>(5) a ／ c ／ h ／ j ／ k</li>
+              <li>(6) o ／ r ／ s ／ w ／ x</li>
+              <li>(7) cc ／ mm ／ kl ／ ppm</li>
+              <li>(8) A ／ X ／ S ／ M ／ L</li>
+              <li>(9) No.（ナンバー） ／ pH（ペーハー）</li>
+              <li>(10) TV ／ AV ／ CG ／ PHS ／ OPEC</li>
+            </ol>
+          </div>
+        </div>
+      </section> -->
+    </div>
+  </main>
+
+  <style>
+    .rules-page-main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+      color: var(--color-text);
+    }
+
+    .rules-hero {
+      margin-bottom: 2.5rem;
+    }
+
+    .rules-title {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .rules-lead {
+      color: var(--color-darkgray);
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+    }
+
+    .finger-note-banner {
+      background-color: var(--color-paleblue);
+      border: 1px solid var(--color-aqua);
+      border-left: 4px solid var(--color-primary);
+      border-radius: var(--border-radius-md);
+      padding: 0.9rem 1.1rem;
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: var(--color-text);
+      margin-bottom: 1.5rem;
+    }
+
+    .toc-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-light-gray);
+      border-radius: var(--border-radius-lg);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .toc-card h2 {
+      font-size: 1.05rem;
+      color: var(--color-sub-header-text);
+      margin-bottom: 0.6rem;
+    }
+
+    .toc-list {
+      margin-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .toc-list a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc-list a:hover {
+      text-decoration: underline;
+    }
+
+    .rules-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .lesson-section {
+      background: var(--color-white);
+      border: 1px solid var(--color-light-gray);
+      border-radius: var(--border-radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .lesson-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--color-aqua);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .lesson-badge {
+      background: var(--color-primary);
+      color: var(--color-white);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    .lesson-header h2 {
+      font-size: 1.3rem;
+      color: var(--color-sub-header-text);
+    }
+
+    .lesson-section p {
+      color: var(--color-darkgray);
+      line-height: 1.75;
+      margin-bottom: 0.9rem;
+    }
+
+    .dot-diagram-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+
+    .dot-box {
+      background: var(--color-bg);
+      border: 1px solid var(--color-light-gray);
+      border-radius: var(--border-radius-md);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .dot-box h3 {
+      font-size: 0.95rem;
+      color: var(--color-sub-header-text);
+      margin-bottom: 0.75rem;
+    }
+
+    .braille-grid-6 {
+      display: inline-grid;
+      grid-template-columns: repeat(2, 36px);
+      gap: 8px;
+      padding: 10px;
+      border: 2px dashed var(--color-primary);
+      border-radius: var(--border-radius-lg);
+      background: var(--color-white);
+      font-size: 1rem;
+      color: var(--color-text);
+    }
+
+    .braille-grid-6 span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      width: 36px;
+      border-radius: 50%;
+      background: var(--color-paleblue);
+    }
+
+    .caption {
+      font-size: 0.85rem;
+      margin-top: 0.65rem;
+      margin-bottom: 0;
+    }
+
+    .callout,
+    .sub-block,
+    .sub-card {
+      background: var(--color-bg);
+      border-radius: var(--border-radius-md);
+      padding: 1rem 1.15rem;
+      margin-top: 1rem;
+    }
+
+    .callout h3,
+    .sub-block h3,
+    .sub-card h3 {
+      font-size: 1rem;
+      color: var(--color-sub-header-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .rule-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .rule-grid-2 .sub-card {
+      margin-top: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .rules-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    .rules-table th,
+    .rules-table td {
+      border: 1px solid var(--color-light-gray);
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .rules-table th {
+      background: var(--color-paleblue);
+      color: var(--color-header-text);
+      font-weight: 700;
+    }
+
+    .bullet-list {
+      margin-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      color: var(--color-darkgray);
+      line-height: 1.65;
+    }
+
+    .example-line {
+      background: var(--color-white);
+      border: 1px solid var(--color-light-gray);
+      border-radius: var(--border-radius-sm);
+      padding: 0.65rem 0.85rem;
+      font-size: 0.92rem;
+      margin-top: 0.6rem;
+    }
+
+    .practice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .practice-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-light-gray);
+      border-radius: var(--border-radius-md);
+      padding: 1rem 1.15rem;
+    }
+
+    .practice-card h3 {
+      font-size: 1rem;
+      color: var(--color-sub-header-text);
+      margin-bottom: 0.6rem;
+    }
+
+    .problem-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.9rem;
+      color: var(--color-darkgray);
+    }
+  </style>
+</Layout>

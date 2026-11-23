@@ -10,6 +10,10 @@ const pathname = Astro.url.pathname;
       <a href="/" aria-current={pathname === "/" ? "page" : undefined}>ホーム</a
       >
       <a
+        href="/rules"
+        aria-current={pathname === "/rules" ? "page" : undefined}>ルール</a
+      >
+      <a
         href="/practice"
         aria-current={pathname === "/practice" ? "page" : undefined}>練習</a
       >
@@ -79,6 +83,10 @@ const pathname = Astro.url.pathname;
     </div>
     <nav class="dialog-links" aria-label="メインナビゲーション">
       <a href="/" aria-current={pathname === "/" ? "page" : undefined}>ホーム</a
+      >
+      <a
+        href="/rules"
+        aria-current={pathname === "/rules" ? "page" : undefined}>ルール</a
       >
       <a
         href="/practice"

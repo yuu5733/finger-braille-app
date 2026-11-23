@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 // ヘッダーに表示されるナビゲーション項目を想定
 const navigationLinks = [
   { href: "/", label: "ホーム" },
+  { href: "/rules", label: "指点字のルール" },
   { href: "/practice", label: "練習(PC)" },
   { href: "/practice/mobile", label: "練習(スマホ)" },
   { href: "/braille-table", label: "点字一覧表" },
@@ -115,13 +116,15 @@ const navigationLinks = [
     margin-bottom: 0.25rem;
   }
 
-  .guidance-list {
+  ul.guidance-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px 12px;
+    margin: 16px 0 12px;
     padding: 0;
     margin-bottom: 30px;
-  }
-
-  .guidance-list li {
-    margin: 10px 0;
   }
 
   .guidance-link {
@@ -170,6 +173,10 @@ const navigationLinks = [
 
   /* SP */
   @media (width <= 500px) {
+    ul.guidance-list {
+      display: flex;
+      flex-direction: column;
+    }
     .error-code {
       font-size: 4rem;
     }
